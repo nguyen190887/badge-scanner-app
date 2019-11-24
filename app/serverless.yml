@@ -1,0 +1,53 @@
+service: badge-scanner-api
+app: badge-scanner-app
+org: nguyen190887
+
+plugins:
+  - serverless-offline
+  - serverless-s3-sync
+
+custom:
+  s3Sync:
+    - bucketName: tnn.badge-scanner-web
+      localDir: public
+      acl: public-read # optional 
+      followSymlinks: true # optional 
+      defaultContentType: text/html # optional 
+      params: # optional 
+        - index.html:
+            CacheControl: 'no-cache'
+        - "*.js":
+            CacheControl: 'public, max-age=31536000'
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  stage: dev
+  region: us-east-1
+
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "cloudwatch:*"
+        - "log:*"
+        - "rekognition:DetectText"
+      Resource: "*"
+
+functions:
+  badge-scanner-fn:
+    handler: handler.index
+    events:
+      - http:
+          path: badge/id
+          method: post
+
+resources:
+ Resources:
+  WebSite:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: tnn.badge-scanner-web
+      AccessControl: PublicRead
+      WebsiteConfiguration:
+        IndexDocument: index.html
+        ErrorDocument: index.html
