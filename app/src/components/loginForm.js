@@ -1,11 +1,21 @@
-import React, { useState } from "react"
+import React, { useState } from 'react';
+import { Auth } from 'aws-amplify';
+import { setUser } from '../utils/auth';
 
 const LoginForm = () => {
-  const [username, setUsername] = useState("")
-  const [password, setPassword] = useState("")
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
 
-  function handleSubmit(e) {
-      e.preventDefault();
+  async function handleSubmit(e) {
+    e.preventDefault();
+
+    try {
+      const user = await Auth.signIn(username, password);
+      alert(`Logged in - ${user.username}`);
+      setUser(user);
+    } catch (e) {
+      console.error(e);
+    }
   }
 
   return (
