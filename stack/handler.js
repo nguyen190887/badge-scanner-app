@@ -1,8 +1,6 @@
 "use strict";
 
-const AWS, { Rekognition } = require("aws-sdk");
-const fs = require("fs");
-const multipart = require("aws-lambda-multipart-parser");
+const { Rekognition } = require("aws-sdk");
 const rekonigtion = new Rekognition();
 
 function toArrayBuffer(buf) {

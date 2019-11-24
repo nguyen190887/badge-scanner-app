@@ -10,7 +10,7 @@ custom:
   stage: ${opt:stage, self:provider.stage}
   s3Sync:
     - bucketName: tnn.badge-scanner-web
-      localDir: app/public
+      localDir: ../app/public
       acl: public-read # optional 
       followSymlinks: true # optional 
       defaultContentType: text/html # optional 
