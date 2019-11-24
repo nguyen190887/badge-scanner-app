@@ -1,0 +1,19 @@
+{
+  "name": "badge-scanner-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "handler.js",
+  "dependencies": {
+    "aws-sdk": "^2.577.0"
+  },
+  "devDependencies": {
+    "aws-amplify": "^1.2.4",
+    "serverless-offline": "^5.12.0",
+    "serverless-s3-sync": "^1.9.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}

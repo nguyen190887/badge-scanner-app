@@ -7,9 +7,10 @@ plugins:
   - serverless-s3-sync
 
 custom:
+  stage: ${opt:stage, self:provider.stage}
   s3Sync:
     - bucketName: tnn.badge-scanner-web
-      localDir: public
+      localDir: app/public
       acl: public-read # optional 
       followSymlinks: true # optional 
       defaultContentType: text/html # optional 
@@ -42,12 +43,16 @@ functions:
           method: post
 
 resources:
- Resources:
-  WebSite:
-    Type: AWS::S3::Bucket
-    Properties:
-      BucketName: tnn.badge-scanner-web
-      AccessControl: PublicRead
-      WebsiteConfiguration:
-        IndexDocument: index.html
-        ErrorDocument: index.html
+  - Resources:
+      WebSite:
+        Type: AWS::S3::Bucket
+        Properties:
+          BucketName: tnn.badge-scanner-web
+          AccessControl: PublicRead
+          WebsiteConfiguration:
+            IndexDocument: index.html
+            ErrorDocument: index.html
+
+  - ${file(resources/cognito-user-pool.yml)}
+  - ${file(resources/cognito-identity-pool.yml)}
+  
