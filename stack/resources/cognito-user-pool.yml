@@ -4,11 +4,11 @@ Resources:
     Properties:
       # Generate a name based on the stage
       UserPoolName: ${self:custom.stage}-user-pool
-      # Set email as an alias
-      UsernameAttributes:
-        - email
       AutoVerifiedAttributes:
         - email
+      Policies:
+        PasswordPolicy:
+          MinimumLength: 6
 
   CognitoUserPoolClient:
     Type: AWS::Cognito::UserPoolClient
