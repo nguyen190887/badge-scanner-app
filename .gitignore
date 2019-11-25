@@ -69,3 +69,6 @@ yarn-error.log
 .yarn-integrity
 # Serverless
 stack/.serverless/*
+
+# Seed data
+seed_user.sh

@@ -4,6 +4,8 @@ Resources:
     Properties:
       # Generate a name based on the stage
       UserPoolName: ${self:custom.stage}-user-pool
+      UsernameAttributes:
+        - email
       AutoVerifiedAttributes:
         - email
       Policies:
