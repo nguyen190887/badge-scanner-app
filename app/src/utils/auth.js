@@ -1,26 +1,24 @@
-import { Auth } from 'aws-amplify';
+import Auth from '@aws-amplify/auth';
+import { isBrowser } from './common'
 
-const isBrowser = typeof window !== `undefined`
+export const signIn = async (username, password) =>
+  isBrowser && (await Auth.signIn(username, password));
 
-export const setUser = user =>
-  window.localStorage.appUser = JSON.stringify(user);
+export const signOut = async () => isBrowser && (await Auth.signOut());
 
-const getUser = () => {
-  if (window.localStorage.appUser) {
-    let user = JSON.parse(window.localStorage.appUser);
-    return user ? user : {};
-  }
-  return {};
-};
+export const currentSession = async () =>
+  isBrowser && (await Auth.currentSession());
 
 export const isLoggedIn = async () => {
-  return (await Auth.currentSession()).isValid();
+  return isBrowser && (await Auth.currentSession()).isValid();
 };
 
-export const getCurrentUser = () => isBrowser && getUser();
+export const getUserName = async () =>
+  isBrowser && (await Auth.currentUserInfo()).attributes.email;
 
-export const logout = callback => {
-  if (!isBrowser) return;
-  setUser({});
-  callback();
-};
+
+export const _getUserName = async () => {
+const userInfo = await Auth.currentUserInfo();
+console.log(userInfo);
+return 'test';
+}

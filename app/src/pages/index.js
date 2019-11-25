@@ -4,13 +4,13 @@ import { Link } from 'gatsby';
 import Layout from '../components/layout';
 import SEO from '../components/seo';
 import Scanner from '../components/scanner';
-import { isLoggedIn } from '../utils/auth';
+import UserInfo from '../components/userInfo';
 
 const IndexPage = () => (
   <Layout>
     <SEO title="Scan your badge!" />
     <Scanner />
-    {isLoggedIn ? <></> : <Link to="/login/">Login</Link>}
+    <UserInfo />
   </Layout>
 );
 

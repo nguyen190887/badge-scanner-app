@@ -1,5 +1,5 @@
 import AWS, { Rekognition } from 'aws-sdk';
-import { Auth } from 'aws-amplify';
+import { currentSession } from './auth';
 import {
   REGION,
   COGNITO_IDENTITYPOOL_ID,
@@ -44,7 +44,7 @@ const process = async (based64Image, callback) => {
 };
 
 const callWithCredentials = async callback => {
-  const session = await Auth.currentSession();
+  const session = await currentSession();
   const token = session.getIdToken().getJwtToken();
   const provider = `cognito-idp.${REGION}.amazonaws.com/${COGNITO_USERPOOL_ID}`;
 

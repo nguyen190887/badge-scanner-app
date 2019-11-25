@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { Auth } from 'aws-amplify';
 import { navigate } from 'gatsby';
-import { setUser } from '../utils/auth';
+import { signIn } from '../utils/auth';
 
 const LoginForm = () => {
   const [username, setUsername] = useState('');
@@ -11,8 +10,7 @@ const LoginForm = () => {
     e.preventDefault();
 
     try {
-      await Auth.signIn(username, password);
-      //setUser(user);
+      await signIn(username, password);
       navigate('/');
     } catch (e) {
       alert('Failed to login');
