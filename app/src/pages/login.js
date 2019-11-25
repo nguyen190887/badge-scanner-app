@@ -1,5 +1,6 @@
 import React from 'react';
 import Amplify from 'aws-amplify';
+
 import Layout from '../components/layout';
 import SEO from '../components/seo';
 import LoginForm from '../components/loginForm';
@@ -19,7 +20,7 @@ Amplify.configure({
   },
 });
 
-const LoginPage = () => (
+const LoginPage = ({location}) => (
   <Layout>
     <SEO title="Login" />
     <h1>Login</h1>

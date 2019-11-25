@@ -66,17 +66,17 @@ const extractTextInfo = data => {
   const textDetections = data.TextDetections || [];
   const idPrefix = 'ID:';
 
+  let detectedObj = {};
   textDetections.forEach((item, index) => {
     if (item.Type === 'LINE' && item.DetectedText.startsWith(idPrefix)) {
-      const detectedObj = {};
       detectedObj.id = item.DetectedText.split(idPrefix)[1];
       if (index > 0) {
         detectedObj.name = textDetections[index - 1].DetectedText;
       }
-      return detectedObj;
+      return;
     }
   });
-  return { error: 'ID not found' };
+  return detectedObj;
 };
 
 const detechTexts = async (imageData, callback) => {

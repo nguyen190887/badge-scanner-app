@@ -6,7 +6,7 @@ const Scanner = () => {
 
   const handleSubmit = async e => {
     e.preventDefault();
-
+    // TODO: add loading
     await processImage(imageFileRef.current.files[0], data => {
       alert(JSON.stringify(data));
     });

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Auth } from 'aws-amplify';
+import { navigate } from 'gatsby';
 import { setUser } from '../utils/auth';
 
 const LoginForm = () => {
@@ -10,9 +11,9 @@ const LoginForm = () => {
     e.preventDefault();
 
     try {
-      const user = await Auth.signIn(username, password);
-      setUser(user);
-      window.location.href = '/'; // FIXME: use gatsby style
+      await Auth.signIn(username, password);
+      //setUser(user);
+      navigate('/');
     } catch (e) {
       alert('Failed to login');
       console.error(e);

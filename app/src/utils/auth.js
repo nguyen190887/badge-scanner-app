@@ -1,3 +1,5 @@
+import { Auth } from 'aws-amplify';
+
 const isBrowser = typeof window !== `undefined`
 
 export const setUser = user =>
@@ -11,11 +13,8 @@ const getUser = () => {
   return {};
 };
 
-export const isLoggedIn = () => {
-  if (!isBrowser) return false;
-
-  const user = getUser();
-  if (user) return !!user.username;
+export const isLoggedIn = async () => {
+  return (await Auth.currentSession()).isValid();
 };
 
 export const getCurrentUser = () => isBrowser && getUser();
