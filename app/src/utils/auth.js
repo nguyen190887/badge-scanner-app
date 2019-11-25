@@ -10,7 +10,8 @@ export const currentSession = async () =>
   isBrowser && (await Auth.currentSession());
 
 export const isLoggedIn = async () => {
-  return isBrowser && (await Auth.currentSession()).isValid();
+  const currentSession = await Auth.currentSession();
+  return currentSession && currentSession.isValid();
 };
 
 export const getUserName = async () =>

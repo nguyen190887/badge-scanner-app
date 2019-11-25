@@ -8,12 +8,11 @@ export default () => {
 
   useEffect(() => {
     (async () => {
-      const [loggedIn, username] = await Promise.all([
-        isLoggedIn(),
-        getUserName(),
-      ]);
-      setLoggedIn(loggedIn);
-      setUserName(username);
+      const loggedIn = await isLoggedIn();
+      if (loggedIn) {
+        setUserName(await getUserName());
+        setLoggedIn(loggedIn);
+      }
     })();
   });
 
