@@ -6,14 +6,15 @@ const LoginForm = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  async function handleSubmit(e) {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
       const user = await Auth.signIn(username, password);
-      alert(`Logged in - ${user.username}`);
       setUser(user);
+      window.location.href = '/'; // FIXME: use gatsby style
     } catch (e) {
+      alert('Failed to login');
       console.error(e);
     }
   }
