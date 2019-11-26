@@ -11,9 +11,9 @@ App to scan badge and extract employee ID
 - Create `.env.development` file, then enter below
   ```
   REGION=<region - e.g. us-east-1>
-  COGNITO_IDENTITYPOOL_ID=<id>
-  COGNITO_USERPOOL_ID=<id>
-  COGNITO_USERPOOL_CLIENT_ID=<id>,
+  COGNITO_IDENTITYPOOL_ID=<(Federated Identities > Selected Identity Pool/Create new > Sample code > Select Javascript > Get AWS Credentials)>
+  COGNITO_USERPOOL_ID='us-east-1_XXXXXX', (User pools > General Settings > Pool Id)
+  COGNITO_USERPOOL_CLIENT_ID=<26-char alphanumeric string> (User pools > General Settings > App clients > App client id)
   ```
 - Run `npm start` (or `gatsby develop`)
 
