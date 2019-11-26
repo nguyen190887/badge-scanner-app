@@ -6,14 +6,57 @@ import {
   COGNITO_USERPOOL_ID,
 } from '../constants';
 
-export const processImage = async (file, callback) => {
-  var reader = new FileReader();
-  reader.onload = (() => {
-    return async e => {
-      await process(e.target.result, callback);
+const IMG_STANDARD_WIDTH = 1024;
+
+const resizeImage = (file, width) => {
+  const promise = new Promise(resolve => {
+    const quality = 1;
+    const mime = 'image/jpeg';
+
+    const reader = new FileReader();
+    reader.onload = event => {
+      const img = new Image();
+      img.src = event.target.result;
+
+      img.onload = () => {
+        if (width >= img.width) {
+          resolve(event.target.result);
+          return;
+        }
+
+        const height = (img.height / img.width) * width; // keep proportion
+        console.log(`Resize ${img.width}:${img.height} -> ${width}:${height}`);
+        const elem = document.createElement('canvas');
+        elem.width = width;
+        elem.height = height;
+        const ctx = elem.getContext('2d');
+        // img.width and img.height will contain the original dimensions
+        ctx.drawImage(img, 0, 0, width, height);
+        const data = ctx.canvas.toDataURL(img, mime, quality);
+        resolve(data);
+        // ctx.canvas.toBlob((blob) => {
+        //     const file = new File([blob], fileName, {
+        //         type: 'image/jpeg',
+        //         lastModified: Date.now()
+        //     });
+        // }, 'image/jpeg', 1);
+      };
     };
-  })(file);
-  reader.readAsDataURL(file);
+    reader.onerror = error => console.log(error);
+    reader.readAsDataURL(file);
+  });
+  return promise;
+};
+
+export const processImage = async (file, callback) => {
+  await process(await resizeImage(file, IMG_STANDARD_WIDTH), callback);
+  // var reader = new FileReader();
+  // reader.onload = (() => {
+  //   return async e => {
+  //     await process(e.target.result, callback);
+  //   };
+  // })(file);
+  // reader.readAsDataURL(file);
 };
 
 const process = async (based64Image, callback) => {
@@ -64,16 +107,19 @@ const callWithCredentials = async callback => {
 
 const extractTextInfo = data => {
   const textDetections = data.TextDetections || [];
-  const idPrefix = 'ID:';
+  const idRegex = /ID[:\s]*([0-9]+)/;
 
   let detectedObj = {};
   textDetections.forEach((item, index) => {
-    if (item.Type === 'LINE' && item.DetectedText.startsWith(idPrefix)) {
-      detectedObj.id = item.DetectedText.split(idPrefix)[1];
-      if (index > 0) {
-        detectedObj.name = textDetections[index - 1].DetectedText;
+    if (item.Type === 'LINE') {
+      const parsedArray = idRegex.exec(item.DetectedText);
+      if (parsedArray && parsedArray.length > 1) {
+        detectedObj.id = parsedArray[1];
+        if (index > 0) {
+          detectedObj.name = textDetections[index - 1].DetectedText;
+        }
+        return;
       }
-      return;
     }
   });
   return detectedObj;
