@@ -13,7 +13,8 @@ App to scan badge and extract employee ID
   REGION=<region - e.g. us-east-1>
   COGNITO_IDENTITYPOOL_ID=<id>
   COGNITO_USERPOOL_ID=<id>
-  COGNITO_USERPOOL_CLIENT_ID=<id>,
+  COGNITO_USERPOOL_CLIENT_ID=<id>
+  BUCKET_IMAGE=<bucket>
   ```
 - Run `npm start` (or `gatsby develop`)
 
@@ -29,7 +30,7 @@ App to scan badge and extract employee ID
 - `CD` to root folder
 - Run
   - `. deploy.sh` (for MAC)
-  - `TBD` (for Windows) 
+  - `TBD` (for Windows)
 
 # FAQs
 1. How to get Cognito info?

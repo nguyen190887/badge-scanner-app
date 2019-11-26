@@ -80,7 +80,7 @@ const process = async (based64Image, callback) => {
   await detechTexts(imageBytes, callback);
 };
 
-const callWithCredentials = async callback => {
+export const callWithCredentials = async callback => {
   const session = await currentSession();
   const token = session.getIdToken().getJwtToken();
   const provider = `cognito-idp.${REGION}.amazonaws.com/${COGNITO_USERPOOL_ID}`;
@@ -117,7 +117,7 @@ const extractTextInfo = data => {
         return;
       }
     });
-  
+
   if (!detectedObj.id) {
     detectedObj.id =
       textDetections
