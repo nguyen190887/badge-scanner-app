@@ -34,12 +34,6 @@ const resizeImage = (file, width) => {
         ctx.drawImage(img, 0, 0, width, height);
         const data = ctx.canvas.toDataURL(img, mime, quality);
         resolve(data);
-        // ctx.canvas.toBlob((blob) => {
-        //     const file = new File([blob], fileName, {
-        //         type: 'image/jpeg',
-        //         lastModified: Date.now()
-        //     });
-        // }, 'image/jpeg', 1);
       };
     };
     reader.onerror = error => console.log(error);
@@ -108,10 +102,12 @@ const callWithCredentials = async callback => {
 const extractTextInfo = data => {
   const textDetections = data.TextDetections || [];
   const idRegex = /ID[:\s]*([0-9]+)/;
+  const exactIdRegex = /[0-9]{4}/;
 
   let detectedObj = {};
-  textDetections.forEach((item, index) => {
-    if (item.Type === 'LINE') {
+  textDetections
+    .filter(item => item.Type === 'LINE')
+    .forEach((item, index) => {
       const parsedArray = idRegex.exec(item.DetectedText);
       if (parsedArray && parsedArray.length > 1) {
         detectedObj.id = parsedArray[1];
@@ -120,8 +116,15 @@ const extractTextInfo = data => {
         }
         return;
       }
-    }
-  });
+    });
+  
+  if (!detectedObj.id) {
+    detectedObj.id =
+      textDetections
+        .filter(item => item.Type === 'WORD' && exactIdRegex.test(item.DetectedText))
+        .map(item => item.DetectedText)[0];
+  }
+
   return detectedObj;
 };
 
