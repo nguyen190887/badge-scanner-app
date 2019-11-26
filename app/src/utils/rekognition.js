@@ -82,20 +82,23 @@ const process = async (based64Image, callback) => {
 
 const callWithCredentials = async callback => {
   const session = await currentSession();
-  const token = session.getIdToken().getJwtToken();
-  const provider = `cognito-idp.${REGION}.amazonaws.com/${COGNITO_USERPOOL_ID}`;
-
-  AWS.config.region = REGION;
-  AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-    IdentityPoolId: COGNITO_IDENTITYPOOL_ID,
-    Logins: {
-      [provider]: token,
-    },
-  });
+  
   if (!(AWS.config.credentials.accessKeyId && session.isValid())) {
+    const token = session.getIdToken().getJwtToken();
+    const provider = `cognito-idp.${REGION}.amazonaws.com/${COGNITO_USERPOOL_ID}`;
+
+    AWS.config.region = REGION;
+    AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+      IdentityPoolId: COGNITO_IDENTITYPOOL_ID,
+      Logins: {
+        [provider]: token,
+      },
+    });
     AWS.config.credentials.get(function() {
       callback();
     });
+  } else {
+    callback();
   }
 };
 
@@ -117,12 +120,13 @@ const extractTextInfo = data => {
         return;
       }
     });
-  
+
   if (!detectedObj.id) {
-    detectedObj.id =
-      textDetections
-        .filter(item => item.Type === 'WORD' && exactIdRegex.test(item.DetectedText))
-        .map(item => item.DetectedText)[0];
+    detectedObj.id = textDetections
+      .filter(
+        item => item.Type === 'WORD' && exactIdRegex.test(item.DetectedText)
+      )
+      .map(item => item.DetectedText)[0];
   }
 
   return detectedObj;
