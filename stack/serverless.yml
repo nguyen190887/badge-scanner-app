@@ -8,7 +8,7 @@ plugins:
   - serverless-offline
 
 custom:
-  stage: ${opt:stage, self:provider.stage}
+  stage: ${self:provider.stage}
   s3Sync:
     - bucketName: tnn.badge-scanner-web
       localDir: ../app/public
@@ -28,9 +28,6 @@ custom:
     schema: schema.graphql
     authenticationType: API_KEY
     serviceRole: "${self:service.name}-AppSyncServiceRole"
-    # logConfig:
-    #   loggingRoleArn: { Fn::GetAtt: [AppSyncLoggingServiceRole, Arn] } # Where AppSyncLoggingServiceRole is a role with CloudWatch Logs write access
-    #   level: ERROR # Logging Level: NONE | ERROR | ALL
     mappingTemplates:
       - type: Query
         dataSource: LambdaSource
@@ -42,14 +39,12 @@ custom:
         name: LambdaSource
         description: "Lambda DataSource"
         config:
-          functionName: test-appsync-${self:custom.stage}
-          lambdaFunctionArn: { Fn::GetAtt: [graphql-fn, Arn] }
-          # serviceRoleArn: { Fn::GetAtt: [AppSyncLambdaServiceRole, Arn] }
-# TODO: https://hackernoon.com/building-a-fully-serverless-realtime-cms-using-aws-appsync-and-aurora-serverless-7258fe1925f7
+          functionName: ${self:service.name}-${self:custom.stage}-graphql-fn
+
 provider:
   name: aws
   runtime: nodejs12.x
-  stage: dev2
+  stage: ${opt:stage, 'dev'}
   region: us-east-1
 
   iamRoleStatements:
