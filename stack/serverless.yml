@@ -4,7 +4,7 @@ org: nguyen190887
 
 plugins:
   - serverless-s3-sync
-  - serverless-appsync-offline
+  - serverless-appsync-plugin
   - serverless-offline
 
 custom:
@@ -12,21 +12,44 @@ custom:
   s3Sync:
     - bucketName: tnn.badge-scanner-web
       localDir: ../app/public
-      acl: public-read # optional
-      followSymlinks: true # optional
-      defaultContentType: text/html # optional
+      acl: public-read
+      followSymlinks: true
+      defaultContentType: text/html
       params: # optional
         - index.html:
             CacheControl: 'no-cache'
         - "*.js":
             CacheControl: 'public, max-age=31536000'
-  appsync-offline:
-    port: 62222
-
+  # appsync-offline:
+  #   port: 62222
+  appSync:
+    region: ${self:provider.region}
+    name: ${self:service.name}-${self:custom.stage}
+    schema: schema.graphql
+    authenticationType: API_KEY
+    serviceRole: "${self:service.name}-AppSyncServiceRole"
+    # logConfig:
+    #   loggingRoleArn: { Fn::GetAtt: [AppSyncLoggingServiceRole, Arn] } # Where AppSyncLoggingServiceRole is a role with CloudWatch Logs write access
+    #   level: ERROR # Logging Level: NONE | ERROR | ALL
+    mappingTemplates:
+      - type: Query
+        dataSource: LambdaSource
+        field: getPosts
+        request: "common-request.vtl"
+        response: "common-response.vtl"
+    dataSources:
+      - type: AWS_LAMBDA
+        name: LambdaSource
+        description: "Lambda DataSource"
+        config:
+          functionName: test-appsync-${self:custom.stage}
+          lambdaFunctionArn: { Fn::GetAtt: [graphql-fn, Arn] }
+          # serviceRoleArn: { Fn::GetAtt: [AppSyncLambdaServiceRole, Arn] }
+# TODO: https://hackernoon.com/building-a-fully-serverless-realtime-cms-using-aws-appsync-and-aurora-serverless-7258fe1925f7
 provider:
   name: aws
   runtime: nodejs12.x
-  stage: dev
+  stage: dev2
   region: us-east-1
 
   iamRoleStatements:
@@ -44,6 +67,9 @@ functions:
       - http:
           path: badge/id
           method: post
+
+  graphql-fn:
+    handler: graphqlHandler.index
 
 resources:
   - Resources:
