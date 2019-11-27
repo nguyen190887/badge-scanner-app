@@ -27,6 +27,14 @@ module.exports = {
         icon: `src/images/gatsby-icon.png`, // This path is relative to the root of the site.
       },
     },
+    {
+      resolve: `gatsby-source-google-sheets`,
+      options: {
+        spreadsheetId: `1-VB8_PDm15-TI1dmI--t5GLZtFYdKvCe0aaoSuOxT8M`,
+        worksheetTitle: `Topics`,
+        credentials: require('./keys.json') // TODO: Move this out
+      }
+    }
     // this (optional) plugin enables Progressive Web App + Offline functionality
     // To learn more, visit: https://gatsby.dev/offline
     // `gatsby-plugin-offline`,

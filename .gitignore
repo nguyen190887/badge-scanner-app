@@ -72,3 +72,5 @@ stack/.serverless/*
 
 # Seed data
 seed_user.sh
+
+.vscode/

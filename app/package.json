@@ -15,6 +15,7 @@
     "gatsby-plugin-react-helmet": "^3.1.14",
     "gatsby-plugin-sharp": "^2.2.37",
     "gatsby-source-filesystem": "^2.1.36",
+    "gatsby-source-google-sheets": "^1.1.1",
     "gatsby-transformer-sharp": "^2.3.3",
     "imagemin-pngquant": "^5.0.1",
     "prop-types": "^15.7.2",
