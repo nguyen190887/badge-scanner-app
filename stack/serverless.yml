@@ -3,22 +3,25 @@ app: badge-scanner-app
 org: nguyen190887
 
 plugins:
-  - serverless-offline
   - serverless-s3-sync
+  - serverless-appsync-offline
+  - serverless-offline
 
 custom:
   stage: ${opt:stage, self:provider.stage}
   s3Sync:
     - bucketName: tnn.badge-scanner-web
       localDir: ../app/public
-      acl: public-read # optional 
-      followSymlinks: true # optional 
-      defaultContentType: text/html # optional 
-      params: # optional 
+      acl: public-read # optional
+      followSymlinks: true # optional
+      defaultContentType: text/html # optional
+      params: # optional
         - index.html:
             CacheControl: 'no-cache'
         - "*.js":
             CacheControl: 'public, max-age=31536000'
+  appsync-offline:
+    port: 62222
 
 provider:
   name: aws
@@ -55,4 +58,3 @@ resources:
 
   - ${file(resources/cognito-user-pool.yml)}
   - ${file(resources/cognito-identity-pool.yml)}
-  
