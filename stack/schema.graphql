@@ -3,12 +3,35 @@ type Post {
 	title: String!
 }
 
+type Topic {
+	no: Int!
+	date: String
+	name: String
+	owner: String
+	status: String
+	smeGroup: String
+	duration: String
+	notes: String
+}
+
+type TrackingRow {
+	topic: String!
+	userId: String!
+}
+
+type Mutation {
+	addTrackingRow(topic: String!, userId: String!): TrackingRow
+}
+
 type Query {
 	#  Get a single value of type 'Post' by primary key.
 	## singlePost(id: ID!): Post
 	allPosts: [Post]
+	allTopics: [Topic]
+	topic(no: Int!): Topic
 }
 
 schema {
 	query: Query
+	mutation: Mutation
 }
