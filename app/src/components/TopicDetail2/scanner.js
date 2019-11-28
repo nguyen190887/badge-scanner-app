@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import AWS from 'aws-sdk';
-import { callWithCredentials } from '../utils/rekognition';
-import { BUCKET } from '../constants';
+import { callWithCredentials } from '../../utils/aws';
+import { BUCKET } from '../../constants';
 
-const Scanner = () => {
+const Scanner = ({topicId, updateRecord}) => {
   const [loading, setLoading] = useState(false);
   let imageFileRef = React.createRef();
 
@@ -12,13 +12,14 @@ const Scanner = () => {
       const s3 = new AWS.S3();
       const params = {
         Bucket: BUCKET,
-        Key: file.name,
+        Key: `${topicId}~${file.name}`,
         Body: file
       };
       s3.upload(params, function(err, data){
         if (err) console.log(err, err.stack);
         else {
-          alert(JSON.stringify(data.Location));
+        //   alert(JSON.stringify(data.Location));
+          updateRecord(data.Location);
           console.log(data);
           console.log(file);
         }
@@ -29,9 +30,9 @@ const Scanner = () => {
   const handleSubmit = async e => {
     e.preventDefault();
     setLoading(true);
+
     // upload file to S3
     await uploadFileToS3(imageFileRef.current.files[0]);
-    setLoading(false);
   };
 
   return (
