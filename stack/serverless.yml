@@ -10,6 +10,7 @@ plugins:
 custom:
   stage: ${self:provider.stage}
   websiteBucket: "tnn.badge-scanner-web-${self:custom.stage}"
+  imageBucket: "tnn.image-badge-store-${self:custom.stage}"
   s3Sync:
     - bucketName: ${self:custom.websiteBucket}
       localDir: ../app/public
@@ -73,7 +74,7 @@ functions:
     handler: processImageHandler.index
     events:
       - s3:
-          bucket: tnn.image-badge-store-2
+          bucket: ${self:custom.imageBucket}
           events: s3:ObjectCreated:*
           
 resources:
