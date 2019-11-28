@@ -54,6 +54,7 @@ provider:
         - "cloudwatch:*"
         - "log:*"
         - "rekognition:DetectText"
+        - "s3:*"
       Resource: "*"
 
 functions:
@@ -67,6 +68,13 @@ functions:
   graphql-fn:
     handler: graphqlHandler.index
 
+  process-image-fn:
+    handler: processImageHandler.index
+    events:
+      - s3:
+          bucket: tnn.image-badge-store-2
+          events: s3:ObjectCreated:*
+          
 resources:
   - Resources:
       WebSite:
