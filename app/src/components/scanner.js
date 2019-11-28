@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import AWS from 'aws-sdk';
-import { processImage, callWithCredentials } from '../utils/rekognition';
-import { REGION, BUCKET } from '../constants';
+import { callWithCredentials } from '../utils/rekognition';
+import { BUCKET } from '../constants';
 
 const Scanner = () => {
   const [loading, setLoading] = useState(false);
@@ -29,13 +29,9 @@ const Scanner = () => {
   const handleSubmit = async e => {
     e.preventDefault();
     setLoading(true);
-    // TODO: add loading, move it to lambda
-    await processImage(imageFileRef.current.files[0], data => {
-      setLoading(false);
-      alert(JSON.stringify(data));
-    });
     // upload file to S3
     await uploadFileToS3(imageFileRef.current.files[0]);
+    setLoading(false);
   };
 
   return (
