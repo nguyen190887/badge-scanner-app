@@ -32,6 +32,17 @@ module.exports = {
       },
     },
     {
+      resolve: `gatsby-source-google-sheets`,
+      options: {
+        spreadsheetId: `1-VB8_PDm15-TI1dmI--t5GLZtFYdKvCe0aaoSuOxT8M`,
+        worksheetTitle: `Topics`,
+        credentials: require('./keys.json') // TODO: Move this out
+      }
+    },
+    // this (optional) plugin enables Progressive Web App + Offline functionality
+    // To learn more, visit: https://gatsby.dev/offline
+    // `gatsby-plugin-offline`,
+    {
       resolve: "gatsby-source-graphql", // see more https://www.gatsbyjs.org/packages/gatsby-source-graphql/
       options: {
         typeName: "AppSyncPosts",
