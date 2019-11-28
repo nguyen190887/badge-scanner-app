@@ -15,6 +15,8 @@ App to scan badge and extract employee ID
   COGNITO_USERPOOL_ID=<id>
   COGNITO_USERPOOL_CLIENT_ID=<id>
   BUCKET_IMAGE=<bucket>
+  APPSYNC_API_KEY=<key>
+  APPSYNC_ENDPOINT=<endpoint>
   ```
 - Run `npm start` (or `gatsby develop`)
 
@@ -28,9 +30,11 @@ App to scan badge and extract employee ID
   - `cd` to `stack/`, then run `serverless` and follow steps
 - Ensure `.env.production` file is setup correctly (similar to `.env.development`, but different keys/ids)
 - `CD` to root folder
-- Run
-  - `. deploy.sh` (for MAC)
-  - `TBD` (for Windows)
+- Open `bash` (Windows) or `terminal` (Mac), then run `. deploy.sh`
+
+## Deploy using stage
+- `cd` to `stack/`
+- Run `sls deploy --stage <stage_name>` (allowed stages are currently: `dev`, `qa`, `prod`)
 
 # FAQs
 1. How to get Cognito info?
