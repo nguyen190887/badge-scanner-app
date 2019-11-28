@@ -3,27 +3,49 @@ app: badge-scanner-app
 org: nguyen190887
 
 plugins:
-  - serverless-offline
   - serverless-s3-sync
+  - serverless-appsync-plugin
+  - serverless-offline
 
 custom:
-  stage: ${opt:stage, self:provider.stage}
+  stage: ${self:provider.stage}
+  websiteBucket: "tnn.badge-scanner-web-${self:custom.stage}"
   s3Sync:
-    - bucketName: tnn.badge-scanner-web
+    - bucketName: ${self:custom.websiteBucket}
       localDir: ../app/public
-      acl: public-read # optional 
-      followSymlinks: true # optional 
-      defaultContentType: text/html # optional 
-      params: # optional 
+      acl: public-read
+      followSymlinks: true
+      defaultContentType: text/html
+      params: # optional
         - index.html:
             CacheControl: 'no-cache'
         - "*.js":
             CacheControl: 'public, max-age=31536000'
+  # appsync-offline:
+  #   port: 62222
+  appSync:
+    region: ${self:provider.region}
+    name: ${self:service.name}-${self:custom.stage}
+    schema: schema.graphql
+    authenticationType: API_KEY
+    serviceRole: "${self:service.name}-AppSyncServiceRole"
+    mappingTemplates:
+      - type: Query
+        dataSource: LambdaSource
+        field: allPosts
+        request: "common-request.vtl"
+        response: "common-response.vtl"
+    dataSources:
+      - type: AWS_LAMBDA
+        name: LambdaSource
+        description: "Lambda DataSource"
+        config:
+          functionName: graphql-fn
 
 provider:
   name: aws
   runtime: nodejs12.x
-  stage: dev
+  stage: ${opt:stage, 'dev'}
   region: us-east-1
 
   iamRoleStatements:
@@ -42,12 +64,15 @@ functions:
           path: badge/id
           method: post
 
+  graphql-fn:
+    handler: graphqlHandler.index
+
 resources:
   - Resources:
       WebSite:
         Type: AWS::S3::Bucket
         Properties:
-          BucketName: tnn.badge-scanner-web
+          BucketName: ${self:custom.websiteBucket}
           AccessControl: PublicRead
           WebsiteConfiguration:
             IndexDocument: index.html
@@ -55,4 +80,3 @@ resources:
 
   - ${file(resources/cognito-user-pool.yml)}
   - ${file(resources/cognito-identity-pool.yml)}
-  

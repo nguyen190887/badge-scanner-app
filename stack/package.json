@@ -5,6 +5,7 @@
   "main": "handler.js",
   "dependencies": {},
   "devDependencies": {
+    "serverless-appsync-plugin": "^1.1.2",
     "serverless-offline": "^5.12.0",
     "serverless-s3-sync": "^1.9.1"
   },
