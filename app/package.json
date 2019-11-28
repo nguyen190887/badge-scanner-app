@@ -18,7 +18,6 @@
     "gatsby-source-google-sheets": "^1.1.1",
     "gatsby-source-graphql": "^2.1.25",
     "gatsby-transformer-sharp": "^2.3.3",
-    "imagemin-pngquant": "^5.0.1",
     "prop-types": "^15.7.2",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
