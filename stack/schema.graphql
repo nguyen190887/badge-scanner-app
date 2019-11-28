@@ -1,0 +1,14 @@
+type Post {
+	id: Int!
+	title: String!
+}
+
+type Query {
+	#  Get a single value of type 'Post' by primary key.
+	## singlePost(id: ID!): Post
+	allPosts: [Post]
+}
+
+schema {
+	query: Query
+}
