@@ -28,6 +28,7 @@ custom:
     name: ${self:service.name}-${self:custom.stage}
     schema: schema.graphql
     authenticationType: API_KEY
+    apiKey: 'some-key'
     serviceRole: "${self:service.name}-AppSyncServiceRole"
     mappingTemplates:
       - type: Query

@@ -1,10 +1,5 @@
-import AWS, { Rekognition } from 'aws-sdk';
-import { currentSession } from './auth';
-import {
-  REGION,
-  COGNITO_IDENTITYPOOL_ID,
-  COGNITO_USERPOOL_ID,
-} from '../constants';
+import { Rekognition } from 'aws-sdk';
+import {callWithCredentials} from './aws';
 
 const IMG_STANDARD_WIDTH = 1024;
 
@@ -44,13 +39,6 @@ const resizeImage = (file, width) => {
 
 export const processImage = async (file, callback) => {
   await process(await resizeImage(file, IMG_STANDARD_WIDTH), callback);
-  // var reader = new FileReader();
-  // reader.onload = (() => {
-  //   return async e => {
-  //     await process(e.target.result, callback);
-  //   };
-  // })(file);
-  // reader.readAsDataURL(file);
 };
 
 const process = async (based64Image, callback) => {
@@ -78,28 +66,6 @@ const process = async (based64Image, callback) => {
   }
   //Call Rekognition
   await detechTexts(imageBytes, callback);
-};
-
-export const callWithCredentials = async callback => {
-  const session = await currentSession();
-  
-  if (!(AWS.config.credentials.accessKeyId && session.isValid())) {
-    const token = session.getIdToken().getJwtToken();
-    const provider = `cognito-idp.${REGION}.amazonaws.com/${COGNITO_USERPOOL_ID}`;
-
-    AWS.config.region = REGION;
-    AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-      IdentityPoolId: COGNITO_IDENTITYPOOL_ID,
-      Logins: {
-        [provider]: token,
-      },
-    });
-    AWS.config.credentials.get(function() {
-      callback();
-    });
-  } else {
-    callback();
-  }
 };
 
 const extractTextInfo = data => {

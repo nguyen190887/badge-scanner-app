@@ -13,7 +13,7 @@ Resources:
             Ref: CognitoUserPoolClient
           ProviderName:
             Fn::GetAtt: [ "CognitoUserPool", "ProviderName" ]
-            
+
   # IAM roles
   CognitoIdentityPoolRoles:
     Type: AWS::Cognito::IdentityPoolRoleAttachment
@@ -23,7 +23,7 @@ Resources:
       Roles:
         authenticated:
           Fn::GetAtt: [CognitoAuthRole, Arn]
-          
+
   # IAM role used for authenticated users
   CognitoAuthRole:
     Type: AWS::IAM::Role
@@ -55,7 +55,11 @@ Resources:
                   # - 'cognito-identity:*'
                   - 'rekognition:DetectText'
                 Resource: '*'
-  
+              - Effect: 'Allow'
+                Action:
+                  - 's3:PutObject'
+                Resource: ${self:custom.websiteBucket}
+
 # Print out the Id of the Identity Pool that is created
 Outputs:
   IdentityPoolId:
