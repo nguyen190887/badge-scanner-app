@@ -54,6 +54,7 @@ provider:
         - "cloudwatch:*"
         - "log:*"
         - "rekognition:DetectText"
+        - "s3:*"
       Resource: "*"
 
 functions:
@@ -67,6 +68,13 @@ functions:
   graphql-fn:
     handler: graphqlHandler.index
 
+  process-image-fn:
+    handler: processImageHandler.index
+    events:
+      - s3:
+          bucket: tnn.image-badge-store-2
+          events: s3:ObjectCreated:*
+          
 resources:
   - Resources:
       WebSite:
@@ -77,16 +85,6 @@ resources:
           WebsiteConfiguration:
             IndexDocument: index.html
             ErrorDocument: index.html
-      ImageStore:
-        Type: AWS::S3::Bucket
-        Properties:
-          BucketName: tnn.image-badge-store
-          AccessControl: PublicReadWrite
-          NotificationConfiguration: 
-            LambdaConfigurations:
-              Event: s3:ObjectCreated:*
-              Function: arn:aws:lambda:us-east-1:927542456580:function:lambda-processing-image
-
 
   - ${file(resources/cognito-user-pool.yml)}
   - ${file(resources/cognito-identity-pool.yml)}
