@@ -1,10 +1,8 @@
+const GoogleSpreadsheet = require('google-spreadsheet');
 
 module.exports.index = async (event) => {
   console.log('Write Sheet Handler');
-  try {
-    var GoogleSpreadsheet = require('google-spreadsheet');
-    // var creds = require('./google-service-credentials.json');
-    var doc = new GoogleSpreadsheet('1-VB8_PDm15-TI1dmI--t5GLZtFYdKvCe0aaoSuOxT8M');
+    var doc = new GoogleSpreadsheet(process.env.SHEET_ID);
     var creds =
     {
       "private_key": process.env.PRIVATE_KEY,
@@ -13,19 +11,19 @@ module.exports.index = async (event) => {
 
     console.log(event.queryStringParameters);
 
-    doc.useServiceAccountAuth(creds, function (err) {
-      if (err) {
-        console.log(err);
-      }
-      doc.addRow(2, {
-        topic: event.queryStringParameters.topic,
-        userid: event.queryStringParameters.userid,
-      }, function () {
-        return {};
+    const promise = new Promise(resolve => {
+      doc.useServiceAccountAuth(creds, function (err) {
+        if (err) {
+          console.log(err);
+        }
+        doc.addRow(2, {
+          topic: event.queryStringParameters.topic,
+          userid: event.queryStringParameters.userid,
+        }, function () {
+          resolve({}); //todo
+          return {};
+        });
       });
     });
-
-  } catch (err) {
-    console.log(err);
-  }
+    return promise;
 };

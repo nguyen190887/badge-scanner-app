@@ -1,22 +1,25 @@
+const GoogleSpreadsheet = require('google-spreadsheet');
+
 module.exports.index = async event => {
   console.log('Read Sheet Handler');
-  try {
-    var GoogleSpreadsheet = require('google-spreadsheet');
-    // var creds = require('./google-service-credentials.json');
-    var doc = new GoogleSpreadsheet('1-VB8_PDm15-TI1dmI--t5GLZtFYdKvCe0aaoSuOxT8M');
-    var creds =
-    {
-      "private_key": process.env.PRIVATE_KEY,
-      "client_email": process.env.CLIENT_EMAIL
-    };
+  console.log(event);
 
-    var response = [];
-    doc.useServiceAccountAuth(creds, function (err) {
+  var doc = new GoogleSpreadsheet(
+    process.env.SHEET_ID
+  );
+  var creds = {
+    private_key: process.env.PRIVATE_KEY,
+    client_email: process.env.CLIENT_EMAIL,
+  };
+
+  var response = [];
+  const promise = new Promise(resolve => {
+    doc.useServiceAccountAuth(creds, function(err) {
       if (err) {
-        console.log(err);
+        console.error(err);
       }
-      doc.getRows(1, function (err, rows) {
-        rows.forEach(function (row) {
+      doc.getRows(1, function(err, rows) {
+        rows.forEach(function(row) {
           response.push({
             no: row['no.'],
             date: row.date,
@@ -25,15 +28,12 @@ module.exports.index = async event => {
             status: row.status,
             smeGroup: row.smegroup,
             duration: row.duration,
-            notes: row.notes
-          })
+            notes: row.notes,
+          });
         });
-        console.log(response);
-        return response;
+        resolve(response);
       });
     });
-
-  } catch (err) {
-    console.log(err);
-  }
+  });
+  return promise;
 };

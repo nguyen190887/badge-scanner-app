@@ -58,7 +58,8 @@ Resources:
               - Effect: 'Allow'
                 Action:
                   - 's3:PutObject'
-                Resource: ${self:custom.websiteBucket}
+                Resource:
+                  Fn::GetAtt: [WebSite, Arn]
 
 # Print out the Id of the Identity Pool that is created
 Outputs:

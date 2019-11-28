@@ -36,6 +36,9 @@ App to scan badge and extract employee ID
 - `cd` to `stack/`
 - Run `sls deploy --stage <stage_name>` (allowed stages are currently: `dev`, `qa`, `prod`)
 
+## Deploy a function
+- Run `sls deploy function -f <fn_name>`
+
 # FAQs
 1. How to get Cognito info?
   - `cd` to `stack/`, then run `sls info -v`
