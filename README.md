@@ -13,7 +13,9 @@ App to scan badge and extract employee ID
   REGION=<region - e.g. us-east-1>
   COGNITO_IDENTITYPOOL_ID=<id>
   COGNITO_USERPOOL_ID=<id>
-  COGNITO_USERPOOL_CLIENT_ID=<id>,
+  COGNITO_USERPOOL_CLIENT_ID=<id>
+  APPSYNC_API_KEY=<key>
+  APPSYNC_ENDPOINT=<endpoint>
   ```
 - Run `npm start` (or `gatsby develop`)
 
