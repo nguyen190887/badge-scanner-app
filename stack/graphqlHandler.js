@@ -1,4 +1,4 @@
-export const index = async event => {
+module.exports.index = async event => {
   console.log('Event', event);
   return [
     {
