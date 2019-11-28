@@ -9,6 +9,8 @@ plugins:
 
 custom:
   stage: ${self:provider.stage}
+  googlePrivateKey: "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDJBBBM4PozAIFf\nWOHWU7YreV6MAlrvCgSa4hSbSaH3n9JcaUIblGfuKhALAYcgo1sHJ0+xoQTgLQh1\npZfdbRT71OMnp1xhZPqAJo7p4yo4Q8Y7ika08igoWuVIlPxqh/8OSLtREI68GsBe\n7/GMBy1dr97Kaa+HDwmQ6hZJznM/wD9nd6vWN4XtIwA0lHaQ9dD4woJkNq5i1g9b\n4Cln8Xblq/dk2IAyrxLCvr3OIGyRS+1Jc2ntYkPenF2Jma9n8t8sF/Vymvbm2pxM\n1xrKalH2gIv0WwJK5LiOher6GxIdBxE1SEKVovOScRribdb1M9goMo51BBedNHJU\nZ7ardLUrAgMBAAECggEABBtygYegstDLU+ufpIfyoQIPDv4CLzbiHaIJ7+RVVWBt\nQNjXKSqsUmOG6oheGhfVhYZBCBq+XB32S+46LKPV3mzTxxO2arh1HY/sIFZHjFjm\nvBMiJEmgX7a2mHfZIDD4K85UxzB3D9vdf/MX2U6H8x+/BfkIaeSv+kdj4sQIxBcF\nG/3Pzlb0lBnp+U19uS4vec0mmVQvhbHUa706pKg7IP13HT3iyG5o8Fh1bAc+Xtu+\nNs1QxA5w62hnWraxCutdXMDdywEnOBWflG7ZgOvV+YcDuYGb5pqT0LC3jL9ZVp6/\nvKzZdbUEobPklsuiK1cB/MzmYHxKMX4zmIwKuDkdgQKBgQD9uv9QVJPRbI1pmkSt\nkp4JAPv+jMBBDw3amx+Yf3gOcLzTCcP/dqEhGWwqmdM7OmLQaoYdUllhLhYtJLly\nelFrLclCJALqOPvRUd9NiVgu9IzQglXXeoWIZ+F/2tDa0WLca4LK0d8THn1M7PBz\ny3PD0RIlI6SA5aTdXAYXvqy4qwKBgQDK0Fu4NksANhhMV/dY1dSsBH3p/SNuEutY\n0VCj/jJptjeCjY0Fkcf0/Ekn+9FlwdbCcvJ2Mo7ITwQ/ZIaYW6hBGqBPgoXDVLda\nBlfFbrKDbZZAwp6a0RmIenClO7Z15fWbVAtUujzhv7xcqgAhzJl3o5P8MPNcpAM6\nJ4xoPRD1gQKBgQDMnKobq7jwn6uCR6eumZfcBvEwG21Gic9QRNw77D9y1bNQNIXc\nU1wpBwlVaWsQTks1a1Hv/2KYncPAb+ckzEMwPWIZdlTrcTyRVobPTjzQ0OFlnFWB\nSQq6L5uHsXvPmh8xRXnZ+Vj9YA8Ho+NcXetjNAx/6rhUQdyrrfQz3c4HtQKBgGAq\nicMAI3H3NHBGqab6xTvHaXjgqcMQv30+ytDnwDm1x/5kZgDFDh4Q3hNSaQip784F\nuQfokyFRrj7syJFHrLEqEeeBiTGEYugR595azdRZywvr/E6GZWf8Pptqg+rFXj8H\ni9Ph9upIAuWhSiy8mexLqOjEwTAlKM6TYBUxF3CBAoGAVDCBDO/Hkd2OcRvbi00k\nZ+oNlznX9EZ9C55J/8THyVb4H90Ysa5x/u1zojdFCoEL94m97lkGFfAYtDRJVjSy\n77Ud4a1ljzVwiZ2HrYP8cdIaINUqUFT6E0cjAiqEckktHTtJfikAcZz6WqZ3o8rL\nmj4d0uzHKe6Cm/f2Fyzr+6E=\n-----END PRIVATE KEY-----\n"
+  googleClientEmail: "googlesheet@cox-sharing-tracker.iam.gserviceaccount.com"
   websiteBucket: "tnn.badge-scanner-web-${self:custom.stage}"
   imageBucket: "tnn.image-badge-store-${self:custom.stage}"
   s3Sync:
@@ -37,12 +39,22 @@ custom:
         field: allPosts
         request: "common-request.vtl"
         response: "common-response.vtl"
+      - type: Query
+        dataSource: GoogleSheetDataSource
+        field: allTopics
+        request: "all-topics-request.vtl"
+        response: "common-response.vtl"
     dataSources:
       - type: AWS_LAMBDA
         name: LambdaSource
         description: "Lambda DataSource"
         config:
           functionName: graphql-fn
+      - type: AWS_LAMBDA
+        name: GoogleSheetDataSource
+        description: "GoogleSheet DataSource"
+        config:
+          functionName: read-from-sheet-fn
 
 provider:
   name: aws
@@ -76,6 +88,22 @@ functions:
       - s3:
           bucket: ${self:custom.imageBucket}
           events: s3:ObjectCreated:*
+  
+  write-to-sheet-fn:
+    handler: handlers/writeSheetHandler.index
+    environment:
+      PRIVATE_KEY: ${self:custom.googlePrivateKey}
+      CLIENT_EMAIL: ${self:custom.googleClientEmail}
+    events:
+      - http:
+          path: write 
+          method: get
+
+  read-from-sheet-fn:
+    handler: handlers/readSheetHandler.index
+    environment:
+      PRIVATE_KEY: ${self:custom.googlePrivateKey}
+      CLIENT_EMAIL: ${self:custom.googleClientEmail}
           
 resources:
   - Resources:

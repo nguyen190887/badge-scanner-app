@@ -1,27 +1,25 @@
 import React from "react"
 import { useStaticQuery, graphql, Link } from "gatsby"
 
-export const topicRowQuery = graphql`
-  query RowsQuery {
-    allGoogleSheetTopicsRow {
-      edges {
-        node {
-          no
-          date
-          name
-          owner
-          status
-          smegroup
-          duration
-          notes
-        }
+export const query = graphql`
+  query getAllTopics {
+    topics {
+      allTopics {
+        no
+        date
+        name
+        owner
+        status
+        smeGroup
+        duration
+        notes
       }
     }
   }
 `;
 
-const TopicList = () => {
-  const data = useStaticQuery(topicRowQuery)
+const TopicList = ({ data }) => {
+  // const data = useStaticQuery(topicRowQuery)
   return (
     <table>
       <tr>
@@ -34,16 +32,17 @@ const TopicList = () => {
         <th>Notes</th>
       </tr>
       {
-        data.allGoogleSheetTopicsRow.edges.map((d, i) => (
-          <tr key={d.node.id}>
-            <td>{d.node.date}</td>
-            <td>{d.node.name}</td>
-            <td>{d.node.owner}</td>
-            <td>{d.node.status}</td>
-            <td>{d.node.smegroup}</td>
-            <td>{d.node.duration}</td>
-            <td>{d.node.notes}</td>
-            <td><Link to={`/topic/`} state={{ topic: d.node }}>Detail</Link></td>
+        data && 
+        data.topics.allTopics.map((topic, i) => (
+          <tr key={topic.id}>
+            <td>{topic.date}</td>
+            <td>{topic.name}</td>
+            <td>{topic.owner}</td>
+            <td>{topic.status}</td>
+            <td>{topic.smeGroup}</td>
+            <td>{topic.duration}</td>
+            <td>{topic.notes}</td>
+            <td><Link to={`/topic/`} state={{ topic: topic }}>Detail</Link></td>
           </tr>
         ))
       }
