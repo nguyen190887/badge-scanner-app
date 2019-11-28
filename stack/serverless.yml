@@ -9,8 +9,9 @@ plugins:
 
 custom:
   stage: ${self:provider.stage}
+  websiteBucket: "tnn.badge-scanner-web-${self:custom.stage}"
   s3Sync:
-    - bucketName: tnn.badge-scanner-web
+    - bucketName: ${self:custom.websiteBucket}
       localDir: ../app/public
       acl: public-read
       followSymlinks: true
@@ -31,7 +32,7 @@ custom:
     mappingTemplates:
       - type: Query
         dataSource: LambdaSource
-        field: getPosts
+        field: allPosts
         request: "common-request.vtl"
         response: "common-response.vtl"
     dataSources:
@@ -39,7 +40,7 @@ custom:
         name: LambdaSource
         description: "Lambda DataSource"
         config:
-          functionName: ${self:service.name}-${self:custom.stage}-graphql-fn
+          functionName: graphql-fn
 
 provider:
   name: aws
@@ -71,7 +72,7 @@ resources:
       WebSite:
         Type: AWS::S3::Bucket
         Properties:
-          BucketName: tnn.badge-scanner-web
+          BucketName: ${self:custom.websiteBucket}
           AccessControl: PublicRead
           WebsiteConfiguration:
             IndexDocument: index.html
