@@ -16,11 +16,11 @@ const topicAttendance = ({ records }) => {
         records.map(r => (
           <tr>
             <td>{index++}</td>
-            <td>{r.id}</td>
-            <td>-</td>
+            <td>{r.userId}</td>
+            <td>{r.email}</td>
             <td>{r.imagePath}</td>
-            <td>-</td>
-            <td>-</td>
+            <td>{r.rating}</td>
+            <td>{r.comment}</td>
           </tr>
         ))}
     </table>

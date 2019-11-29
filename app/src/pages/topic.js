@@ -1,4 +1,7 @@
 import React from 'react';
+import { graphqlOperation } from '@aws-amplify/api';
+import * as queries from '../graphql/queries';
+import { Connect } from 'aws-amplify-react';
 
 import Layout from '../components/layout';
 import SEO from '../components/seo';
@@ -17,7 +20,7 @@ const mockData = [
   }
 ];
 
-const TopicPage = props => {
+const TopicPage = (props) => {
   const { loggedIn } = useAuth();
   const topic = props.location.state.topic;
 
@@ -39,7 +42,14 @@ const TopicPage = props => {
         <div>no luck! By keying ID</div>
         <IdForm saveId={saveId} />
       </fieldset>
-      <TopicAttendance records={mockData} />
+      <Connect query={graphqlOperation(queries.topicAttendance, { id: topic.no })}>
+        {({ data: { topicAttendance }, loading, errors }) => {
+          if (loading || !topicAttendance) return (<div>Loading</div>);
+          return (
+            <TopicAttendance records={topicAttendance} />
+          );
+        }}
+      </Connect >
     </Layout>
   );
 };
