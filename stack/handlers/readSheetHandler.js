@@ -2,9 +2,9 @@ const GoogleSpreadsheet = require('google-spreadsheet');
 
 const readTopics = async (doc) => {
   return new Promise(resolve => {
-    doc.getRows(1, function(err, rows) {
+    doc.getRows(1, function (err, rows) {
       let response = [];
-      rows.forEach(function(row) {
+      rows.forEach(function (row) {
         response.push({
           no: row['no.'],
           date: row.date,
@@ -23,9 +23,11 @@ const readTopics = async (doc) => {
 
 const readTopicAttendance = async (doc = new GoogleSpreadsheet(), args) => {
   return new Promise(resolve => {
-    const topicId = 1; // todo: parse from args
+    const { id } = args;
     // todo: need enhance w/ filter
-    doc.getRows(2, function(_err, rows) {
+    doc.getRows(2, {
+      query: `(topicid=${id})`
+    }, function (_err, rows) {
       console.info(rows);
       let response = [];
       rows.forEach(row => {
@@ -61,14 +63,14 @@ module.exports.index = async event => {
   };
 
   const promise = new Promise(resolve => {
-    doc.useServiceAccountAuth(creds, async function(err) {
+    doc.useServiceAccountAuth(creds, async function (err) {
       if (err) {
         console.error(err);
       }
-      
+
       if (fieldMapping[event.field]) {
         console.log('im here');
-        resolve(await fieldMapping[event.field](doc));
+        resolve(await fieldMapping[event.field](doc, event.arguments));
         return;
       }
 
