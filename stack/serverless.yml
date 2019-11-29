@@ -45,6 +45,11 @@ custom:
         field: allTopics
         request: "all-topics-request.vtl"
         response: "common-response.vtl"
+      - type: Query
+        dataSource: GoogleSheetDataSource
+        field: topicAttendance
+        request: "topic-attendance-request.vtl"
+        response: "common-response.vtl"
     dataSources:
       - type: AWS_LAMBDA
         name: LambdaSource

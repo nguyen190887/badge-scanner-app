@@ -15,20 +15,23 @@ type Topic {
 }
 
 type TrackingRow {
-	topic: String!
-	userId: String!
+	id: Int!
+	userId: String
+	email: String
+	imagePath: String
+	rating: String
+	comment: String
 }
 
 type Mutation {
-	addTrackingRow(topic: String!, userId: String!): TrackingRow
+	addTrackingRow(id: Int!, userId: String!): TrackingRow
 }
 
 type Query {
-	#  Get a single value of type 'Post' by primary key.
-	## singlePost(id: ID!): Post
 	allPosts: [Post]
 	allTopics: [Topic]
 	topic(no: Int!): Topic
+	topicAttendance(id: Int!): [TrackingRow]
 }
 
 schema {

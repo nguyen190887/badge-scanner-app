@@ -1,8 +1,56 @@
 const GoogleSpreadsheet = require('google-spreadsheet');
 
+const readTopics = async (doc) => {
+  return new Promise(resolve => {
+    doc.getRows(1, function(err, rows) {
+      let response = [];
+      rows.forEach(function(row) {
+        response.push({
+          no: row['no.'],
+          date: row.date,
+          name: row.name,
+          owner: row.owner,
+          status: row.status,
+          smeGroup: row.smegroup,
+          duration: row.duration,
+          notes: row.notes,
+        });
+      });
+      resolve(response);
+    });
+  });
+}
+
+const readTopicAttendance = async (doc = new GoogleSpreadsheet(), args) => {
+  return new Promise(resolve => {
+    const topicId = 1; // todo: parse from args
+    // todo: need enhance w/ filter
+    doc.getRows(2, function(_err, rows) {
+      console.info(rows);
+      let response = [];
+      rows.forEach(row => {
+        response.push({
+          id: row.topicid,
+          userId: row.userid,
+          email: row.email,
+          imagePath: row.imagepath,
+          rating: row.rating,
+          comment: row.comment
+        })
+      });
+      resolve(response);
+    });
+  });
+}
+
+const fieldMapping = {
+  getAllTopics: readTopics,
+  getTopicAttendance: readTopicAttendance
+};
+
 module.exports.index = async event => {
   console.log('Read Sheet Handler');
-  console.log(event);
+  console.log(event.field);
 
   var doc = new GoogleSpreadsheet(
     process.env.SHEET_ID
@@ -12,27 +60,19 @@ module.exports.index = async event => {
     client_email: process.env.CLIENT_EMAIL,
   };
 
-  var response = [];
   const promise = new Promise(resolve => {
-    doc.useServiceAccountAuth(creds, function(err) {
+    doc.useServiceAccountAuth(creds, async function(err) {
       if (err) {
         console.error(err);
       }
-      doc.getRows(1, function(err, rows) {
-        rows.forEach(function(row) {
-          response.push({
-            no: row['no.'],
-            date: row.date,
-            name: row.name,
-            owner: row.owner,
-            status: row.status,
-            smeGroup: row.smegroup,
-            duration: row.duration,
-            notes: row.notes,
-          });
-        });
-        resolve(response);
-      });
+      
+      if (fieldMapping[event.field]) {
+        console.log('im here');
+        resolve(await fieldMapping[event.field](doc));
+        return;
+      }
+
+      resolve([]);
     });
   });
   return promise;

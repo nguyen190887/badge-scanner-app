@@ -1,22 +1,30 @@
-import React from "react"
+import React from 'react';
 
-const topicAttendance = ({ topic }) => {
+const topicAttendance = ({ records }) => {
+  let index = 1;
   return (
     <table>
       <tr>
+        <th>No.</th>
         <th>ID</th>
         <th>Email</th>
+        <th>ImagePath</th>
         <th>Rating</th>
         <th>Comment</th>
       </tr>
-      <tr>
-        <td>ID</td>
-        <td>Email</td>
-        <td>Rating</td>
-        <td>Comment</td>
-      </tr>
+      {records &&
+        records.map(r => (
+          <tr>
+            <td>{index++}</td>
+            <td>{r.id}</td>
+            <td>-</td>
+            <td>{r.imagePath}</td>
+            <td>-</td>
+            <td>-</td>
+          </tr>
+        ))}
     </table>
-  )
-}
+  );
+};
 
 export default topicAttendance;
