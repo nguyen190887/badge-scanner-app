@@ -51,15 +51,12 @@ Resources:
               - Effect: 'Allow'
                 Action:
                   - 'mobileanalytics:PutEvents'
-                  # - 'cognito-sync:*'
-                  # - 'cognito-identity:*'
                   - 'rekognition:DetectText'
                 Resource: '*'
               - Effect: 'Allow'
                 Action:
                   - 's3:PutObject'
-                Resource:
-                  Fn::GetAtt: [WebSite, Arn]
+                Resource: "arn:aws:s3:::${self:custom.imageBucket}/*" #todo: find a way to get reference
 
 # Print out the Id of the Identity Pool that is created
 Outputs:
