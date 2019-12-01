@@ -16,6 +16,7 @@ const IndexPage = ({data}) => {
   </Layout>
 )};
 
+// todo: update to user client query
 export const query = graphql`
   query getAllTopics {
     topics {
