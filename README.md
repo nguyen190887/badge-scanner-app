@@ -6,22 +6,23 @@ App to scan badge and extract employee ID
 - Install [Serverless Framework](https://serverless.com/)
 
 ## Web App
-- `CD` to `app/`
+- `cd` to `app/`
+- Run `. gen_env.sh` to generate `.env.devolopment` file
+  - The file looks like below
+    ```
+    REGION=<region - e.g. us-east-1>
+    COGNITO_IDENTITYPOOL_ID=<id>
+    COGNITO_USERPOOL_ID=<id>
+    COGNITO_USERPOOL_CLIENT_ID=<id>
+    BUCKET_IMAGE=<bucket>
+    APPSYNC_API_KEY=<key>
+    APPSYNC_ENDPOINT=<endpoint>
+    ```
 - Run `npm i` to install packages
-- Create `.env.development` file, then enter below
-  ```
-  REGION=<region - e.g. us-east-1>
-  COGNITO_IDENTITYPOOL_ID=<id>
-  COGNITO_USERPOOL_ID=<id>
-  COGNITO_USERPOOL_CLIENT_ID=<id>
-  BUCKET_IMAGE=<bucket>
-  APPSYNC_API_KEY=<key>
-  APPSYNC_ENDPOINT=<endpoint>
-  ```
 - Run `npm start` (or `gatsby develop`)
 
 ## Backend
-- `CD` to `stack/`
+- `cd` to `stack/`
 - Run `npm i` to install packages
 - Run `sls offline`
 
@@ -29,7 +30,7 @@ App to scan badge and extract employee ID
 - Ensure you already logged in to [Serverless](https://dashboard.serverless.com/)
   - `cd` to `stack/`, then run `serverless` and follow steps
 - Ensure `.env.production` file is setup correctly (similar to `.env.development`, but different keys/ids)
-- `CD` to root folder
+- `cd` to root folder
 - Open `bash` (Windows) or `terminal` (Mac), then run `. deploy.sh`
 
 ## Deploy using stage
