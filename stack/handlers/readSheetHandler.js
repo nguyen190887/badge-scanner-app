@@ -24,7 +24,6 @@ const readTopics = async (doc) => {
 const readTopicAttendance = async (doc = new GoogleSpreadsheet(), args) => {
   return new Promise(resolve => {
     const { id } = args;
-    // todo: need enhance w/ filter
     doc.getRows(2, {
       query: `(topicid=${id})`
     }, function (_err, rows) {
@@ -69,7 +68,6 @@ module.exports.index = async event => {
       }
 
       if (fieldMapping[event.field]) {
-        console.log('im here');
         resolve(await fieldMapping[event.field](doc, event.arguments));
         return;
       }
