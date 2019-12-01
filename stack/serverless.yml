@@ -83,17 +83,21 @@ functions:
       - http:
           path: badge/id
           method: post
+        
 
   graphql-fn:
     handler: graphqlHandler.index
 
   process-image-fn:
     handler: processImageHandler.index
+    environment:
+      S3_ARN: { "Fn::GetAtt" : [ "ImageStore", "Arn" ] }
     events:
       - s3:
           bucket: ${self:custom.imageBucket}
           events: s3:ObjectCreated:*
-  
+          existing: true
+
   write-to-sheet-fn:
     handler: handlers/writeSheetHandler.index
     environment:
@@ -122,6 +126,33 @@ resources:
           WebsiteConfiguration:
             IndexDocument: index.html
             ErrorDocument: index.html
+      ImageStore:
+        Type: AWS::S3::Bucket
+        Properties:
+          BucketName: ${self:custom.imageBucket}
+          AccessControl: PublicReadWrite  
+          CorsConfiguration:
+            CorsRules:
+              - AllowedOrigins: 
+                  - "*"
+                AllowedMethods:
+                  - GET
+                  - PUT
+                  - POST
+                  - HEAD
+                  - DELETE
+                AllowedHeaders:
+                  - "*"   
+      ProcessingLambdaPermissionPhotosS3:
+        Type: 'AWS::Lambda::Permission'
+        Properties:
+          FunctionName:
+            'Fn::GetAtt':
+              - ProcessDashimageDashfnLambdaFunction
+              - Arn
+          Principal: 's3.amazonaws.com'
+          Action: 'lambda:InvokeFunction'
+          SourceArn: !GetAtt ImageStore.Arn
 
   - ${file(resources/cognito-user-pool.yml)}
   - ${file(resources/cognito-identity-pool.yml)}
