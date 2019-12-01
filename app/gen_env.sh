@@ -1,5 +1,3 @@
-
-# URL="$(serverless info --verbose | grep UserPoolClientId | sed s/UserPoolClientId\:\ //g)"
 cd ../stack
 TEMP_FILE=sls-info.temp
 ENV_FILE=../app/.env.development
