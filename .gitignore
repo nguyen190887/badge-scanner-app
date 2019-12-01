@@ -74,3 +74,4 @@ stack/.serverless/*
 seed_user.sh
 
 .vscode/
+keys.json

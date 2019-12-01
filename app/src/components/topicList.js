@@ -1,25 +1,8 @@
 import React from "react"
 import { useStaticQuery, graphql, Link } from "gatsby"
 
-export const query = graphql`
-  query getAllTopics {
-    topics {
-      allTopics {
-        no
-        date
-        name
-        owner
-        status
-        smeGroup
-        duration
-        notes
-      }
-    }
-  }
-`;
 
 const TopicList = ({ data }) => {
-  // const data = useStaticQuery(topicRowQuery)
   return (
     <table>
       <tr>
