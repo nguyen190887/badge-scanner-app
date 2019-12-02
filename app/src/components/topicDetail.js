@@ -1,5 +1,4 @@
-
-import React from "react"
+import React from 'react';
 // import { useStaticQuery, graphql, Link } from "gatsby"
 
 const topicDetail = ({ topic }) => {
@@ -13,7 +12,7 @@ const topicDetail = ({ topic }) => {
       <div>{topic.duration}</div>
       <div>{topic.notes}</div>
     </div>
-  )
-}
+  );
+};
 
 export default topicDetail;
