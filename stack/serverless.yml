@@ -153,6 +153,10 @@ resources:
           Principal: 's3.amazonaws.com'
           Action: 'lambda:InvokeFunction'
           SourceArn: !GetAtt ImageStore.Arn
+    Outputs:
+      ImageBucket:
+        Value:
+          Ref: ImageStore
 
   - ${file(resources/cognito-user-pool.yml)}
   - ${file(resources/cognito-identity-pool.yml)}
