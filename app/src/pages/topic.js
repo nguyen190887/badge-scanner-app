@@ -10,19 +10,18 @@ import UserInfo from '../components/userInfo';
 import { TopicDetail, TopicAttendance, IdForm } from '../components';
 import useAuth from '../utils/useAuth';
 
-console.log('Topic', new Date().toISOString());
-const mockData = [
-  {
-    id: '0123',
-  },
-  {
-    imagePath: '1~IMG-001.jpg'
-  }
-];
-
 const TopicPage = (props) => {
   const { loggedIn } = useAuth();
-  const topic = props.location.state.topic;
+  const topic = props.location && props.location.state && props.location.state.topic; // todo: fix this to use route
+
+  // todo: use later
+  // const getTopicId = location => {
+  //     // console.log(location);
+  //     if (location.search) {
+  //         return location.search.split('id=')[1];
+  //     }
+  //     return -1;
+  // }
 
   const saveId = id => {
     // todo save data
@@ -33,23 +32,28 @@ const TopicPage = (props) => {
     <Layout>
       <SEO title="Scan your badge!" />
       <UserInfo />
-      <TopicDetail topic={topic} />
 
-      <fieldset>
-        <legend>Track Attendees</legend>
-        <div>by scanning ID Badge</div>
-        {loggedIn && <Scanner />}
-        <div>no luck! By keying ID</div>
-        <IdForm saveId={saveId} />
-      </fieldset>
-      <Connect query={graphqlOperation(queries.topicAttendance, { id: topic.no })}>
-        {({ data: { topicAttendance }, loading, errors }) => {
-          if (loading || !topicAttendance) return (<div>Loading</div>);
-          return (
-            <TopicAttendance records={topicAttendance} />
-          );
-        }}
-      </Connect >
+      {topic && (
+        <>
+          <TopicDetail topic={topic} />
+
+          <fieldset>
+            <legend>Track Attendees</legend>
+            <div>by scanning ID Badge</div>
+            {loggedIn && <Scanner />}
+            <div>no luck! By keying ID</div>
+            <IdForm saveId={saveId} />
+          </fieldset>
+          <Connect query={graphqlOperation(queries.topicAttendance, { id: topic.no })}>
+            {({ data: { topicAttendance }, loading, errors }) => {
+              if (loading || !topicAttendance) return (<div>Loading</div>);
+              return (
+                <TopicAttendance records={topicAttendance} />
+              );
+            }}
+          </Connect >
+        </>
+      )}
     </Layout>
   );
 };
