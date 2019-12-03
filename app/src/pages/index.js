@@ -7,14 +7,15 @@ import UserInfo from '../components/userInfo';
 import TopicList from '../components/topicList';
 
 console.log('Index', new Date().toISOString());
-const IndexPage = ({data}) => {
+const IndexPage = ({ data }) => {
   return (
-  <Layout>
-    <SEO title="Scan your badge!" />
-    <UserInfo />
-    <TopicList data={data}/>
-  </Layout>
-)};
+    <Layout>
+      <SEO title="Scan your badge!" />
+      <UserInfo />
+      <TopicList data={data} />
+    </Layout>
+  )
+};
 
 // todo: update to user client query
 export const query = graphql`
