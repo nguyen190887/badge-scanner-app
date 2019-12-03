@@ -9,6 +9,7 @@ module.exports = {
     author: `@nguyen190887`,
   },
   plugins: [
+    `gatsby-plugin-emotion`,
     `gatsby-plugin-react-helmet`,
     {
       resolve: `gatsby-source-filesystem`,
@@ -35,26 +36,26 @@ module.exports = {
     // To learn more, visit: https://gatsby.dev/offline
     // `gatsby-plugin-offline`,
     {
-      resolve: "gatsby-source-graphql", // see more https://www.gatsbyjs.org/packages/gatsby-source-graphql/
+      resolve: 'gatsby-source-graphql', // see more https://www.gatsbyjs.org/packages/gatsby-source-graphql/
       options: {
-        typeName: "AppSyncPosts",
-        fieldName: "posts",
+        typeName: 'AppSyncPosts',
+        fieldName: 'posts',
         url: `${process.env.APPSYNC_ENDPOINT}`,
         headers: {
-          "x-api-key": `${process.env.APPSYNC_API_KEY}`,
+          'x-api-key': `${process.env.APPSYNC_API_KEY}`,
         },
       },
     },
     {
-      resolve: "gatsby-source-graphql", // see more https://www.gatsbyjs.org/packages/gatsby-source-graphql/
+      resolve: 'gatsby-source-graphql', // see more https://www.gatsbyjs.org/packages/gatsby-source-graphql/
       options: {
-        typeName: "AppSyncTopics",
-        fieldName: "topics",
+        typeName: 'AppSyncTopics',
+        fieldName: 'topics',
         url: `${process.env.APPSYNC_ENDPOINT}`,
         headers: {
-          "x-api-key": `${process.env.APPSYNC_API_KEY}`,
+          'x-api-key': `${process.env.APPSYNC_API_KEY}`,
         },
       },
     },
   ],
-}
+};
