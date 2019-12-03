@@ -5,7 +5,6 @@ import Layout from '../components/layout';
 import SEO from '../components/seo';
 import UserInfo from '../components/userInfo';
 import TopicList from '../components/topicList';
-import { allTopics } from '../graphql/queries';
 
 console.log('Index', new Date().toISOString());
 
@@ -26,11 +25,7 @@ const IndexPage = () => {
     <Layout>
       <SEO title="Scan your badge!" />
       <UserInfo />
-      {topicsState.loading ? (
-        <div>Loading</div>
-      ) : (
-        <TopicList topics={topicsState.topics} />
-      )}
+      <TopicList data={data} />
     </Layout>
   );
 };
