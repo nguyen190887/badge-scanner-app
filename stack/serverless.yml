@@ -117,46 +117,6 @@ functions:
       SHEET_ID: ${self:custom.sheetId}
           
 resources:
-  - Resources:
-      WebSite:
-        Type: AWS::S3::Bucket
-        Properties:
-          BucketName: ${self:custom.websiteBucket}
-          AccessControl: PublicRead
-          WebsiteConfiguration:
-            IndexDocument: index.html
-            ErrorDocument: index.html
-      ImageStore:
-        Type: AWS::S3::Bucket
-        Properties:
-          BucketName: ${self:custom.imageBucket}
-          AccessControl: PublicReadWrite  
-          CorsConfiguration:
-            CorsRules:
-              - AllowedOrigins: 
-                  - "*"
-                AllowedMethods:
-                  - GET
-                  - PUT
-                  - POST
-                  - HEAD
-                  - DELETE
-                AllowedHeaders:
-                  - "*"   
-      ProcessingLambdaPermissionPhotosS3:
-        Type: 'AWS::Lambda::Permission'
-        Properties:
-          FunctionName:
-            'Fn::GetAtt':
-              - ProcessDashimageDashfnLambdaFunction
-              - Arn
-          Principal: 's3.amazonaws.com'
-          Action: 'lambda:InvokeFunction'
-          SourceArn: !GetAtt ImageStore.Arn
-    Outputs:
-      ImageBucket:
-        Value:
-          Ref: ImageStore
-
+  - ${file(resources/s3-image-bucket.yml)}
   - ${file(resources/cognito-user-pool.yml)}
   - ${file(resources/cognito-identity-pool.yml)}
