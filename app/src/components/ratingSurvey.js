@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 
-const SurveyTitle = ({ title = 'Dynamic Title' }) => {
+const SurveyTitle = ({ title }) => {
   return <h1>{title}</h1>;
 };
 
-const Email = ({ email = 'Dynamic Email' }) => {
+const Email = ({ email }) => {
   return <span>{email}</span>;
 };
 
@@ -60,7 +60,12 @@ const Comment = ({ content, setComment }) => {
   );
 };
 
-const RatingSurvey = ({ title, email, start = 1, length = 5 }) => {
+const RatingSurvey = ({
+  title = 'Dynamic Title',
+  email = 'Dynamic Email',
+  start = 1,
+  length = 5,
+}) => {
   const [rating, setRating] = useState(null);
   const [comment, setComment] = useState('');
   const [isValid, setValidStatus] = useState(true);
@@ -81,12 +86,12 @@ const RatingSurvey = ({ title, email, start = 1, length = 5 }) => {
       />
       <Comment comment={comment} setComment={setComment} />
       {!isValid && 'Please fill in the required fields'}
-      <button onClick={handleSubmit} />
-      <sub>* is required field</sub>
+      <div>
+        <button onClick={handleSubmit}>Submit</button>
+        <sub>* is required field</sub>
+      </div>
     </div>
   );
 };
-
-RatingSurvey.name = 'RatingSurvey';
 
 export default RatingSurvey;
