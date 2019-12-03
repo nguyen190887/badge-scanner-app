@@ -24,7 +24,7 @@ type TrackingRow {
 }
 
 type Mutation {
-	addTrackingRow(id: Int!, userId: String!): TrackingRow
+	addTrackingRow(id: Int!, userId: String!): TrackingRow!
 }
 
 type Query {
@@ -34,7 +34,13 @@ type Query {
 	topicAttendance(id: Int!): [TrackingRow]
 }
 
+type Subscription {
+	onTrackingRowAdded(id: Int!): TrackingRow
+	@aws_subscribe(mutations: ["addTrackingRow"])
+}
+
 schema {
 	query: Query
 	mutation: Mutation
+	subscription: Subscription
 }

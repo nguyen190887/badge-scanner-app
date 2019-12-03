@@ -1,6 +1,8 @@
 import React from 'react';
 import { graphqlOperation } from '@aws-amplify/api';
-import * as queries from '../graphql/queries';
+import { topicAttendance } from '../graphql/queries';
+import { onTrackingRowAdded } from '../graphql/subscriptions';
+import { addTrackingRow } from '../graphql/mutations';
 import { Connect } from 'aws-amplify-react';
 
 import Layout from '../components/layout';
@@ -36,15 +38,26 @@ const TopicPage = (props) => {
       {topic && (
         <>
           <TopicDetail topic={topic} />
-
           <fieldset>
             <legend>Track Attendees</legend>
             <div>by scanning ID Badge</div>
             {loggedIn && <Scanner />}
             <div>no luck! By keying ID</div>
-            <IdForm saveId={saveId} />
+            <Connect mutation={graphqlOperation(addTrackingRow)}>
+              {({ mutation }) => (
+                <IdForm onCreate={mutation} topicId={topic.no} />
+              )}
+            </Connect>
           </fieldset>
-          <Connect query={graphqlOperation(queries.topicAttendance, { id: topic.no })}>
+          <Connect query={graphqlOperation(topicAttendance, { id: topic.no })}
+            subscription={graphqlOperation(onTrackingRowAdded, { id: topic.no })}
+            onSubscriptionMsg={(prev, data) => {
+              console.log(data.onTrackingRowAdded);
+              return {
+                topicAttendance: [...prev.topicAttendance, data.onTrackingRowAdded],
+              }
+            }}
+          >
             {({ data: { topicAttendance }, loading, errors }) => {
               if (loading || !topicAttendance) return (<div>Loading</div>);
               return (
