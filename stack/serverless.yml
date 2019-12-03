@@ -54,11 +54,6 @@ custom:
         field: addTrackingRow
         request: "track-topic-request.vtl"
         response: "common-response.vtl"
-      - type: Subscription
-        dataSource: GoogleSheetWriteDataSource
-        field: onTrackingRowAdded
-        request: "track-topic-request.vtl"
-        response: "common-response.vtl"
     dataSources:
       - type: AWS_LAMBDA
         name: LambdaSource
