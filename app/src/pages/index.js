@@ -21,14 +21,16 @@ const IndexPage = () => {
   });
   useEffect(() => {
     fetchTopics(setTopics);
-  }, [])
+  }, []);
   return (
     <Layout>
       <SEO title="Scan your badge!" />
       <UserInfo />
-      {topicsState.loading ? <div>Loading</div> :
+      {topicsState.loading ? (
+        <div>Loading</div>
+      ) : (
         <TopicList topics={topicsState.topics} />
-      }
+      )}
     </Layout>
   );
 };

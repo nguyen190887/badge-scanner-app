@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import { css } from '@emotion/core';
 
+<<<<<<< HEAD
 const RatingChoices = styled('ul')`
   text-decoration: none;
   list-style: none;
@@ -22,6 +23,8 @@ const Rating = styled('li')`
   }
 `;
 
+=======
+>>>>>>> Finish Survey Structure
 const SurveyTitle = ({ title }) => {
   return <h1>{title}</h1>;
 };
