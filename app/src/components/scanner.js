@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import AWS from 'aws-sdk';
 import { callWithCredentials } from '../utils/aws';
-import { REGION, BUCKET, COGNITO_IDENTITYPOOL_ID } from '../constants';
+import { IMAGE_BUCKET } from '../constants';
 import { resizeImage } from '../utils/common';
 
 const Scanner = () => {
@@ -13,7 +13,7 @@ const Scanner = () => {
     await callWithCredentials(() => {
       const s3 = new AWS.S3();
       const params = {
-        Bucket: BUCKET,
+        Bucket: IMAGE_BUCKET,
         Key: fileName,
         Body: file,
       };
