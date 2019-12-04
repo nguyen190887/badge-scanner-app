@@ -83,17 +83,21 @@ functions:
       - http:
           path: badge/id
           method: post
+        
 
   graphql-fn:
     handler: graphqlHandler.index
 
   process-image-fn:
     handler: processImageHandler.index
+    environment:
+      S3_ARN: { "Fn::GetAtt" : [ "ImageStore", "Arn" ] }
     events:
       - s3:
           bucket: ${self:custom.imageBucket}
           events: s3:ObjectCreated:*
-  
+          existing: true
+
   write-to-sheet-fn:
     handler: handlers/writeSheetHandler.index
     environment:
@@ -113,15 +117,6 @@ functions:
       SHEET_ID: ${self:custom.sheetId}
           
 resources:
-  - Resources:
-      WebSite:
-        Type: AWS::S3::Bucket
-        Properties:
-          BucketName: ${self:custom.websiteBucket}
-          AccessControl: PublicRead
-          WebsiteConfiguration:
-            IndexDocument: index.html
-            ErrorDocument: index.html
-
+  - ${file(resources/s3-image-bucket.yml)}
   - ${file(resources/cognito-user-pool.yml)}
   - ${file(resources/cognito-identity-pool.yml)}

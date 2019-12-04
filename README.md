@@ -18,6 +18,7 @@ App to scan badge and extract employee ID
     APPSYNC_API_KEY=<key>
     APPSYNC_ENDPOINT=<endpoint>
     ```
+  - To generate for another stage, run `. gen_env.sh <stage>`
 - Run `npm i` to install packages
 - Run `npm start` (or `gatsby develop`)
 

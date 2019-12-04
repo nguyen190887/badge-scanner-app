@@ -5,7 +5,6 @@ module.exports.index = async (event, context, callback) => {
     var AWS = require('aws-sdk');
 
     // get reference to S3 client
-    var s3 = new AWS.S3();
     const extractTextInfo = data => {
         const textDetections = data.TextDetections || [];
         const idRegex = /ID[:\s]*([0-9]+)/;
@@ -62,5 +61,7 @@ module.exports.index = async (event, context, callback) => {
     var rekognition = new AWS.Rekognition();
     
     const data = await rekognition.detectText(params).promise();
-    return extractTextInfo(data);
+    const textInfo = extractTextInfo(data);
+    console.info(textInfo);
+    return textInfo;
 }

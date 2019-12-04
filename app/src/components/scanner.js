@@ -8,23 +8,21 @@ const Scanner = () => {
   const [loading, setLoading] = useState(false);
   let imageFileRef = React.createRef();
 
-  const uploadFileToS3 = async file => {
+  const uploadFileToS3 = async (fileName, file) => {
     // TODO: FIXME - not work
     await callWithCredentials(() => {
-    const s3 = new AWS.S3();
-    const params = {
-      Bucket: BUCKET,
-      Key: file.name,
-      Body: file,
-    };
-    s3.upload(params, function(err, data) {
-      if (err) console.log(err, err.stack);
-      else {
-        alert(JSON.stringify(data.Location));
-        console.log(data);
-        console.log(file);
-      }
-    });
+      const s3 = new AWS.S3();
+      const params = {
+        Bucket: BUCKET,
+        Key: fileName,
+        Body: file,
+      };
+      s3.upload(params, function(err, data) {
+        if (err) console.log(err, err.stack);
+        else {
+          alert(JSON.stringify(data.Location));
+        }
+      });
     });
   };
 
@@ -33,11 +31,14 @@ const Scanner = () => {
     setLoading(true);
     // upload file to S3
     try {
-      const resizedImgFile = await resizeImage(
-        imageFileRef.current.files[0],
-        800
-      );
-      await uploadFileToS3(resizedImgFile);
+      console.log(imageFileRef.current.files[0]);
+      const fileName = imageFileRef.current.files[0].name;
+      // TODO: output current function is invalid format
+      // const resizedImgFile = await resizeImage(
+      //   imageFileRef.current.files[0],
+      //   800
+      // );
+      await uploadFileToS3(fileName, imageFileRef.current.files[0]);
     } catch (err) {
       console.error('Failed to upload', err);
     }

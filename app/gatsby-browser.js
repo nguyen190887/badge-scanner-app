@@ -1,5 +1,6 @@
 import Amplify from '@aws-amplify/core';
 
+// todo: put these configs in correct place
 export const onRouteUpdate = ({ location, prevLocation }) => {
   console.log('routeUpdate', new Date().toISOString());
   Amplify.configure({

@@ -1,0 +1,42 @@
+Resources:
+  WebSite:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: ${self:custom.websiteBucket}
+      AccessControl: PublicRead
+      WebsiteConfiguration:
+        IndexDocument: index.html
+        ErrorDocument: index.html
+  ImageStore:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: ${self:custom.imageBucket}
+      # TODO: limit the AccessControl to Cognito Identity only
+      # Reference: https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_examples_s3_cognito-bucket.html
+      AccessControl: PublicReadWrite
+      CorsConfiguration:
+        CorsRules:
+          - AllowedOrigins: 
+              - "*"
+            AllowedMethods:
+              - GET
+              - PUT
+              - POST
+              - HEAD
+              - DELETE
+            AllowedHeaders:
+              - "*"   
+  ProcessingLambdaPermissionPhotosS3:
+    Type: 'AWS::Lambda::Permission'
+    Properties:
+      FunctionName:
+        'Fn::GetAtt':
+          - ProcessDashimageDashfnLambdaFunction
+          - Arn
+      Principal: "s3.amazonaws.com"
+      Action: "lambda:InvokeFunction"
+      SourceArn: !GetAtt ImageStore.Arn
+Outputs:
+  ImageBucket:
+    Value:
+      Ref: ImageStore
