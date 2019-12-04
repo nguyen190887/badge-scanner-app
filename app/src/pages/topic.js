@@ -1,7 +1,7 @@
-import React from 'react';
-import { graphqlOperation } from '@aws-amplify/api';
-import * as queries from '../graphql/queries';
-import { Connect } from 'aws-amplify-react';
+import React, { useEffect, useReducer } from 'react';
+import API, { graphqlOperation } from '@aws-amplify/api';
+import { topicAttendance } from '../graphql/queries';
+import { onTrackingRowAdded } from '../graphql/subscriptions';
 
 import Layout from '../components/layout';
 import SEO from '../components/seo';
@@ -9,6 +9,40 @@ import Scanner from '../components/scanner';
 import UserInfo from '../components/userInfo';
 import { TopicDetail, TopicAttendance, IdForm } from '../components';
 import useAuth from '../utils/useAuth';
+
+const initialState = {
+  attendance: [],
+  loading: true,
+  error: false
+}
+
+function reducer(state, action) {
+  switch (action.type) {
+    case 'fetchRowsSuccess':
+      return { ...state, attendance: action.attendance, loading: false }
+    case 'onTrackingRowAdded':
+      return { ...state, attendance: [action.row, ...state.attendance] }
+    case 'fetchRowsError':
+      return { ...state, loading: false, error: true }
+    default:
+      throw new Error();
+  }
+}
+
+async function fetchRows(dispatch, topicId) {
+  try {
+    const rowData = await API.graphql(graphqlOperation(topicAttendance, { id: topicId }))
+    dispatch({
+      type: 'fetchRowsSuccess',
+      attendance: rowData.data.topicAttendance
+    })
+  } catch (err) {
+    console.log('error fetching posts...: ', err)
+    dispatch({
+      type: 'fetchRowsError',
+    })
+  }
+}
 
 const TopicPage = (props) => {
   const { loggedIn } = useAuth();
@@ -23,10 +57,24 @@ const TopicPage = (props) => {
   //     return -1;
   // }
 
-  const saveId = id => {
-    // todo save data
-    console.info('save', id);
-  };
+  const [rowsState, dispatch] = useReducer(reducer, initialState)
+
+  useEffect(() => {
+    fetchRows(dispatch, topic.no)
+  }, [topic])
+
+  useEffect(() => {
+    const subscriber = API.graphql(graphqlOperation(onTrackingRowAdded, { id: topic.no })).subscribe({
+      next: data => {
+        const newRowFromSub = data.value.data.onTrackingRowAdded
+        dispatch({
+          type: 'onTrackingRowAdded',
+          row: newRowFromSub
+        })
+      }
+    });
+    return () => subscriber.unsubscribe()
+  }, [topic])
 
   return (
     <Layout>
@@ -36,22 +84,17 @@ const TopicPage = (props) => {
       {topic && (
         <>
           <TopicDetail topic={topic} />
-
           <fieldset>
             <legend>Track Attendees</legend>
             <div>by scanning ID Badge</div>
             {loggedIn && <Scanner />}
             <div>no luck! By keying ID</div>
-            <IdForm saveId={saveId} />
+            <IdForm topicId={topic.no} />
           </fieldset>
-          <Connect query={graphqlOperation(queries.topicAttendance, { id: topic.no })}>
-            {({ data: { topicAttendance }, loading, errors }) => {
-              if (loading || !topicAttendance) return (<div>Loading</div>);
-              return (
-                <TopicAttendance records={topicAttendance} />
-              );
-            }}
-          </Connect >
+          {rowsState.loading ? <div>Loading</div>
+            : rowsState.attendance &&
+            <TopicAttendance records={rowsState.attendance} />
+          }
         </>
       )}
     </Layout>
