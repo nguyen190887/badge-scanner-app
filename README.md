@@ -44,3 +44,14 @@ App to scan badge and extract employee ID
 # FAQs
 1. How to get Cognito info?
   - `cd` to `stack/`, then run `sls info -v`
+
+2. How to seed user for testing?
+  - Run below script (or create `.sh` file, then execute)
+  ```bash
+  USERPOOL_ID=us-east-1_xxxxxxxx
+  USERNAME=your@user.name
+  PASSWORD=yourpwd
+  aws cognito-idp admin-create-user --user-pool-id $USERPOOL_ID --username $USERNAME 
+  aws cognito-idp admin-set-user-password --user-pool-id $USERPOOL_ID --username $USERNAME --password $PASSWORD --permanent
+
+  ```
