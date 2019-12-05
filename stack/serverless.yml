@@ -132,3 +132,4 @@ resources:
   - ${file(resources/s3-image-bucket.yml)}
   - ${file(resources/cognito-user-pool.yml)}
   - ${file(resources/cognito-identity-pool.yml)}
+
