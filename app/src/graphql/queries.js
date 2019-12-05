@@ -21,8 +21,8 @@ export const allTopics = `query AllTopics {
   }
 }
 `;
-export const topic = `query Topic($no: Int!) {
-  topic(no: $no) {
+export const topic = `query Topic($id: Int!) {
+  topic(id: $id) {
     no
     date
     name

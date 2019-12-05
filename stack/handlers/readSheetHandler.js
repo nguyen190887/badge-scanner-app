@@ -6,7 +6,7 @@ const readTopics = async (doc) => {
       let response = [];
       rows.forEach(function (row) {
         response.push({
-          no: row['no.'],
+          no: row.no,
           date: row.date,
           name: row.name,
           owner: row.owner,
@@ -17,6 +17,31 @@ const readTopics = async (doc) => {
         });
       });
       resolve(response);
+    });
+  });
+}
+
+const readTopic = async (doc, args) => {
+  return new Promise(resolve => {
+    const { id } = args;
+    doc.getRows(1, {
+      query: `(no=${id})`
+    }, function (err, rows) {
+      if (rows) {
+        resolve({
+          no: rows[0].no,
+          date: rows[0].date,
+          name: rows[0].name,
+          owner: rows[0].owner,
+          status: rows[0].status,
+          smeGroup: rows[0].smegroup,
+          duration: rows[0].duration,
+          notes: rows[0].notes,
+        });
+      }
+      else {
+        resolve({});
+      }
     });
   });
 }
@@ -46,6 +71,7 @@ const readTopicAttendance = async (doc = new GoogleSpreadsheet(), args) => {
 
 const fieldMapping = {
   getAllTopics: readTopics,
+  getTopic: readTopic,
   getTopicAttendance: readTopicAttendance
 };
 
