@@ -1,7 +1,5 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import { css } from '@emotion/core';
-import { Link } from "gatsby"
 
 export const StyledTable = styled.table`
   overflow: hidden;
