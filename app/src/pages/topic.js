@@ -15,7 +15,7 @@ const initialState = {
   loading: true,
   error: false
 }
-
+// TODO: issue #20
 function reducer(state, action) {
   switch (action.type) {
     case 'fetchRowsSuccess':
@@ -61,9 +61,6 @@ const TopicPage = (props) => {
 
   useEffect(() => {
     fetchRows(dispatch, topic.no)
-  }, [topic])
-
-  useEffect(() => {
     const subscriber = API.graphql(graphqlOperation(onTrackingRowAdded, { id: topic.no })).subscribe({
       next: data => {
         const newRowFromSub = data.value.data.onTrackingRowAdded

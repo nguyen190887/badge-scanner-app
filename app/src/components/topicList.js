@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from "gatsby"
+import { Link } from 'gatsby';
 import { StyledTable, Header, Row } from './table';
 
 const TopicList = ({ topics: { data: { allTopics = {} } = {} } = {} }) => {
