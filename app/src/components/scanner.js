@@ -4,7 +4,7 @@ import { callWithCredentials } from '../utils/aws';
 import { IMAGE_BUCKET } from '../constants';
 import { resizeImage } from '../utils/common';
 
-const Scanner = () => {
+const Scanner = ({topicId}) => {
   const [loading, setLoading] = useState(false);
   let imageFileRef = React.createRef();
 
@@ -14,7 +14,7 @@ const Scanner = () => {
       const s3 = new AWS.S3();
       const params = {
         Bucket: IMAGE_BUCKET,
-        Key: fileName,
+        Key: `${topicId}~${fileName}`,
         Body: file,
       };
       s3.upload(params, function(err, data) {

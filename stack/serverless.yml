@@ -84,6 +84,7 @@ provider:
         - "log:*"
         - "rekognition:DetectText"
         - "s3:*"
+        - "lambda:InvokeFunction"
       Resource: "*"
 
 functions:
@@ -102,6 +103,7 @@ functions:
     handler: processImageHandler.index
     environment:
       S3_ARN: { "Fn::GetAtt" : [ "ImageStore", "Arn" ] }
+      SHEET_UPDATING_LAMBDA: "${self:service.name}-${self:custom.stage}-write-to-sheet-fn" #todo: find better way
     events:
       - s3:
           bucket: ${self:custom.imageBucket}

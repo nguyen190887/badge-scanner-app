@@ -1,6 +1,8 @@
 const AWS = require('aws-sdk');
 
 const supportedTypes = ['jpg', 'jpeg', 'png'];
+const sheetUpdatingLambda = process.env.SHEET_UPDATING_LAMBDA;
+const region = process.env.AWS_REGION;
 
 // get reference to S3 client
 const extractTextInfo = data => {
@@ -30,13 +32,47 @@ const extractTextInfo = data => {
   return detectedObj;
 };
 
+const updateSheet = async (topicId, userId, userName, imagePath) => {
+  var lambda = new AWS.Lambda({ region });
+
+  const payload = {
+    arguments: {
+      id: topicId,
+      userId,
+      userName,
+      imagePath,
+    },
+  };
+  try {
+    const data = await lambda
+      .invoke({
+        FunctionName: sheetUpdatingLambda,
+        Payload: JSON.stringify(payload),
+      })
+      .promise();
+    console.info('Invocation Response', data);
+  } catch (err) {
+    // advoid lambda execution retry
+    console.error('Failed to invoke lambda', err);
+  }
+};
+
 module.exports.index = async (event, context, callback) => {
+  console.log('S3 object', event.Records[0].s3);
+
   // Read options from the event.
-  var srcBucket = event.Records[0].s3.bucket.name;
+  const srcBucket = event.Records[0].s3.bucket.name;
+
   // Object key may have spaces or unicode non-ASCII characters.
-  var srcKey = decodeURIComponent(
+  const srcKey = decodeURIComponent(
     event.Records[0].s3.object.key.replace(/\+/g, ' ')
   );
+
+  const topicId = srcKey.split('~')[0];
+  if (!topicId) {
+    context.done('error', 'No topic id found in image file');
+    return;
+  }
 
   // Infer the image type.
   var typeMatch = srcKey.match(/\.([^.]*)$/);
@@ -63,5 +99,8 @@ module.exports.index = async (event, context, callback) => {
   const data = await rekognition.detectText(params).promise();
   const textInfo = extractTextInfo(data);
   console.info(textInfo);
+
+  await updateSheet(topicId, textInfo.id, textInfo.name, srcKey);
+
   return textInfo;
 };
