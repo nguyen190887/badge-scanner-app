@@ -60,3 +60,6 @@ App to scan badge and extract employee ID
   - Declare new type in `stack/schema.graphql`
   - Run `amplify codegen` in `stack`
   - New type is added to `app/graphql` to use on client side 
+
+# Learning
+- [Serverless Best Practices](https://medium.com/@PaulDJohnston/serverless-best-practices-b3c97d551535)
