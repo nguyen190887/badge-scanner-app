@@ -21,7 +21,7 @@ const IndexPage = () => {
   });
   useEffect(() => {
     fetchTopics(setTopics);
-  })
+  }, [])
   return (
     <Layout>
       <SEO title="Scan your badge!" />
