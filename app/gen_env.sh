@@ -17,5 +17,5 @@ printf "\nCOGNITO_USERPOOL_ID=$(getValue UserPoolId)" >> $ENV_FILE
 printf "\nCOGNITO_USERPOOL_CLIENT_ID=$(getValue UserPoolClientId)" >> $ENV_FILE
 printf "\nAPPSYNC_ENDPOINT=$(getValue GraphQlApiUrl)" >> $ENV_FILE
 printf "\nAPPSYNC_API_KEY=$(getValue GraphQlApiKeyDefault)" >> $ENV_FILE
-printf "\nBUCKET_NAME=$(getValue ImageBucket)" >> $ENV_FILE
+printf "\nIMAGE_BUCKET=$(getValue ImageBucket)" >> $ENV_FILE
 cd ../app

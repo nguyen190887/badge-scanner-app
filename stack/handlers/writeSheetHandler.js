@@ -11,16 +11,18 @@ module.exports.index = async (event) => {
 
   console.log(event.queryStringParameters);
 
-  const promise = new Promise(resolve => {
+  return new Promise(resolve => {
     doc.useServiceAccountAuth(creds, function (err) {
       if (err) {
         console.log(err);
       }
-      let { id: topicid, userId: userid } = event.arguments;
+      let { id: topicid, userId: userid, userName: username, imagePath: imagepath } = event.arguments;
       userid = "'" + ("0000" + userid).slice(-4);
       doc.addRow(2, {
         topicid,
         userid,
+        username,
+        imagepath
       }, function (data) {
         console.info('Added', data);
         resolve({
@@ -35,5 +37,4 @@ module.exports.index = async (event) => {
       });
     });
   });
-  return promise;
 };
