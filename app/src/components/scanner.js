@@ -4,6 +4,8 @@ import { callWithCredentials } from '../utils/aws';
 import { IMAGE_BUCKET } from '../constants';
 import { resizeImage } from '../utils/common';
 
+const maxImageWidth = 800;
+
 const Scanner = ({topicId}) => {
   const [loading, setLoading] = useState(false);
   let imageFileRef = React.createRef();
@@ -33,12 +35,11 @@ const Scanner = ({topicId}) => {
     try {
       console.log(imageFileRef.current.files[0]);
       const fileName = imageFileRef.current.files[0].name;
-      // TODO: output current function is invalid format
-      // const resizedImgFile = await resizeImage(
-      //   imageFileRef.current.files[0],
-      //   800
-      // );
-      await uploadFileToS3(fileName, imageFileRef.current.files[0]);
+      const resizedImgFile = await resizeImage(
+        imageFileRef.current.files[0],
+        maxImageWidth
+      );
+      await uploadFileToS3(fileName, resizedImgFile);
     } catch (err) {
       console.error('Failed to upload', err);
     }
