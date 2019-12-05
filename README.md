@@ -55,3 +55,8 @@ App to scan badge and extract employee ID
   aws cognito-idp admin-set-user-password --user-pool-id $USERPOOL_ID --username $USERNAME --password $PASSWORD --permanent
 
   ```
+
+3. How to add new GraphQL type?
+  - Declare new type in `stack/schema.graphql`
+  - Run `amplify codegen` in `stack`
+  - New type is added to `app/graphql` to use on client side 
