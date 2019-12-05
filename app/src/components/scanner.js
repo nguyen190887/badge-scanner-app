@@ -22,17 +22,15 @@ const Scanner = ({topicId}) => {
       s3.upload(params, function(err, data) {
         if (err) console.log(err, err.stack);
         else {
-          alert(JSON.stringify(data.Location));
+          console.log(JSON.stringify(data.Location));
         }
       });
     });
   };
 
-  const handleSubmit = async e => {
-    e.preventDefault();
-    setLoading(true);
-    // upload file to S3
+  const handleFileUpload = async e => {
     try {
+      setLoading(true);
       console.log(imageFileRef.current.files[0]);
       const fileName = imageFileRef.current.files[0].name;
       const resizedImgFile = await resizeImage(
@@ -40,24 +38,25 @@ const Scanner = ({topicId}) => {
         maxImageWidth
       );
       await uploadFileToS3(fileName, resizedImgFile);
+      
+      setLoading(false);
+      imageFileRef.current.value = ''; // reset
+      alert('File was uploaded');
     } catch (err) {
       console.error('Failed to upload', err);
     }
-    setLoading(false);
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form>
       <input
         disabled={loading}
         ref={imageFileRef}
         type="file"
         accept="image/*"
         capture="camera"
+        onChange={handleFileUpload}
       />
-      <button disabled={loading} type="submit">
-        Submit
-      </button>
       <div>{loading ? 'Processing ...' : ''}</div>
     </form>
   );
