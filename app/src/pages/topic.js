@@ -79,7 +79,7 @@ const TopicPage = (props) => {
       <SEO title="Scan your badge!" />
       <UserInfo />
 
-      {topic && (
+      {topicId && (
         <>
           {topicState.loading ? <p>Loading</p> :
             <TopicDetail data={topicState.data} />}
@@ -88,7 +88,7 @@ const TopicPage = (props) => {
             <div>by scanning ID Badge</div>
             {loggedIn && <Scanner topicId={topic.no} />}
             <div>no luck! By keying ID</div>
-            <IdForm topicId={topic.no} />
+            <IdForm topicId={topicId} />
           </fieldset>
           {rowsState.loading ? <div>Loading</div>
             : rowsState.attendance &&
