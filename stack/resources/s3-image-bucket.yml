@@ -11,9 +11,6 @@ Resources:
     Type: AWS::S3::Bucket
     Properties:
       BucketName: ${self:custom.imageBucket}
-      # TODO: limit the AccessControl to Cognito Identity only
-      # Reference: https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_examples_s3_cognito-bucket.html
-      AccessControl: PublicReadWrite
       CorsConfiguration:
         CorsRules:
           - AllowedOrigins: 
@@ -25,7 +22,7 @@ Resources:
               - HEAD
               - DELETE
             AllowedHeaders:
-              - "*"   
+              - "*"
   ProcessingLambdaPermissionPhotosS3:
     Type: 'AWS::Lambda::Permission'
     Properties:
