@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'gatsby';
 import { StyledTable, Header, Row } from './table';
 
-const TopicList = ({ topics: { data: { allTopics = {} } = {} } = {} }) => {
+const TopicList = ({ topics: { allTopics = [] } = {} }) => {
   return (
     <StyledTable className='topic-table'>
       <tbody>
