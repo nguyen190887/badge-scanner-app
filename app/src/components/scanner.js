@@ -40,8 +40,8 @@ const Scanner = ({topicId}) => {
       await uploadFileToS3(fileName, resizedImgFile);
       
       setLoading(false);
-      imageFileRef.current.value = ''; // reset
-      alert('File was uploaded');
+      // imageFileRef.current.value = ''; // reset -> todo: fix me
+      // alert('File was uploaded');
     } catch (err) {
       console.error('Failed to upload', err);
     }
