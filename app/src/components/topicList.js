@@ -17,7 +17,7 @@ const TopicList = ({ topics: { data: { allTopics = {} } = {} } = {} }) => {
           <th />
         </Header>
         {
-          allTopics.map((topic, i) => (
+          allTopics.map((topic) => (
             <Row key={topic.no}>
               <td>{topic.date}</td>
               <td>{topic.name}</td>
@@ -26,7 +26,7 @@ const TopicList = ({ topics: { data: { allTopics = {} } = {} } = {} }) => {
               <td>{topic.smeGroup}</td>
               <td>{topic.duration}</td>
               <td>{topic.notes}</td>
-              <td><Link to={`/topic/${topic.no}`} state={{ topic: topic }}>Detail</Link></td>
+              <td><Link to={`/topic/${topic.no}`}>Detail</Link></td>
             </Row>
           ))
         }
