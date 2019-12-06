@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import AWS from 'aws-sdk';
 import { callWithCredentials } from '../utils/aws';
 import { IMAGE_BUCKET } from '../constants';
@@ -8,7 +8,7 @@ const maxImageWidth = 800;
 
 const Scanner = ({topicId}) => {
   const [loading, setLoading] = useState(false);
-  let imageFileRef = React.createRef();
+  const imageFileRef = useRef(null);
 
   const uploadFileToS3 = async (fileName, file) => {
     // TODO: FIXME - not work
@@ -22,6 +22,10 @@ const Scanner = ({topicId}) => {
       s3.upload(params, function(err, data) {
         if (err) console.log(err, err.stack);
         else {
+          setLoading(false);
+          if (imageFileRef && imageFileRef.current) {
+            imageFileRef.current.value = '';
+          }
           console.log(JSON.stringify(data.Location));
         }
       });
@@ -38,10 +42,6 @@ const Scanner = ({topicId}) => {
         maxImageWidth
       );
       await uploadFileToS3(fileName, resizedImgFile);
-      
-      setLoading(false);
-      // imageFileRef.current.value = ''; // reset -> todo: fix me
-      // alert('File was uploaded');
     } catch (err) {
       console.error('Failed to upload', err);
     }
