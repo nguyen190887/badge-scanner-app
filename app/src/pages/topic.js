@@ -45,8 +45,12 @@ async function fetchRows(dispatch, topicId) {
 }
 
 async function fetchTopic(topicId, setTopic) {
-  const data = await API.graphql(graphqlOperation(topic, { id: topicId }));
-  setTopic({ data: data, loading: false });
+  try {
+    const data = await API.graphql(graphqlOperation(topic, { id: topicId }));
+    setTopic({ data: data, loading: false, error: false });
+  } catch (err) {
+    setTopic({ loading: false, error: true });
+  }
 }
 
 const TopicPage = (props) => {
@@ -57,6 +61,7 @@ const TopicPage = (props) => {
   const [topicState, setTopic] = useState({
     data: {},
     loading: true,
+    error: false,
   });
 
   useEffect(() => {
@@ -82,7 +87,8 @@ const TopicPage = (props) => {
       {topicId && (
         <>
           {topicState.loading ? <p>Loading</p> :
-            <TopicDetail data={topicState.data} />}
+            topicState.error ? <></> :
+              <TopicDetail data={topicState.data} />}
           <fieldset>
             <legend>Track Attendees</legend>
             <div>by scanning ID Badge</div>
@@ -90,9 +96,10 @@ const TopicPage = (props) => {
             <div>no luck! By keying ID</div>
             <IdForm topicId={topicId} />
           </fieldset>
-          {rowsState.loading ? <div>Loading</div>
-            : rowsState.attendance &&
-            <TopicAttendance records={rowsState.attendance} />
+          {rowsState.loading ? <div>Loading</div> :
+            rowsState.error ? <></> :
+              rowsState.attendance &&
+              <TopicAttendance records={rowsState.attendance} />
           }
         </>
       )}
