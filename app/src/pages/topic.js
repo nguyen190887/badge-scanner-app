@@ -1,6 +1,6 @@
-import React, { useEffect, useReducer } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 import API, { graphqlOperation } from '@aws-amplify/api';
-import { topicAttendance } from '../graphql/queries';
+import { topicAttendance, topic } from '../graphql/queries';
 import { onTrackingRowAdded } from '../graphql/subscriptions';
 
 import Layout from '../components/layout';
@@ -44,24 +44,30 @@ async function fetchRows(dispatch, topicId) {
   }
 }
 
+async function fetchTopic(topicId, setTopic) {
+  try {
+    const data = await API.graphql(graphqlOperation(topic, { id: topicId }));
+    setTopic({ data: data, loading: false, error: false });
+  } catch (err) {
+    setTopic({ loading: false, error: true });
+  }
+}
+
 const TopicPage = (props) => {
   const { loggedIn } = useAuth();
-  const topic = props.location && props.location.state && props.location.state.topic; // todo: fix this to use route
+  const topicId = props.id ? props.id : '';
 
-  // todo: use later
-  // const getTopicId = location => {
-  //     // console.log(location);
-  //     if (location.search) {
-  //         return location.search.split('id=')[1];
-  //     }
-  //     return -1;
-  // }
-
-  const [rowsState, dispatch] = useReducer(reducer, initialState)
+  const [rowsState, dispatch] = useReducer(reducer, initialState);
+  const [topicState, setTopic] = useState({
+    data: {},
+    loading: true,
+    error: false,
+  });
 
   useEffect(() => {
-    fetchRows(dispatch, topic.no)
-    const subscriber = API.graphql(graphqlOperation(onTrackingRowAdded, { id: topic.no })).subscribe({
+    fetchTopic(topicId, setTopic);
+    fetchRows(dispatch, topicId);
+    const subscriber = API.graphql(graphqlOperation(onTrackingRowAdded, { id: topicId })).subscribe({
       next: data => {
         const newRowFromSub = data.value.data.onTrackingRowAdded
         dispatch({
@@ -71,26 +77,29 @@ const TopicPage = (props) => {
       }
     });
     return () => subscriber.unsubscribe()
-  }, [topic])
+  }, [topicId])
 
   return (
     <Layout>
       <SEO title="Scan your badge!" />
       <UserInfo />
 
-      {topic && (
+      {topicId && (
         <>
-          <TopicDetail topic={topic} />
+          {topicState.loading ? <p>Loading</p> :
+            topicState.error ? <></> :
+              <TopicDetail data={topicState.data} />}
           <fieldset>
             <legend>Track Attendees</legend>
             <div>by scanning ID Badge</div>
             {loggedIn && <Scanner topicId={topic.no} />}
             <div>no luck! By keying ID</div>
-            <IdForm topicId={topic.no} />
+            <IdForm topicId={topicId} />
           </fieldset>
-          {rowsState.loading ? <div>Loading</div>
-            : rowsState.attendance &&
-            <TopicAttendance records={rowsState.attendance} />
+          {rowsState.loading ? <div>Loading</div> :
+            rowsState.error ? <></> :
+              rowsState.attendance &&
+              <TopicAttendance records={rowsState.attendance} />
           }
         </>
       )}
