@@ -21,10 +21,11 @@ type TrackingRow {
 	imagePath: String
 	rating: String
 	comment: String
+	userName: String
 }
 
 type Mutation {
-	addTrackingRow(id: Int!, userId: String!): TrackingRow!
+	addTrackingRow(id: Int!, userId: String!, userName: String): TrackingRow!
 }
 
 type Query {

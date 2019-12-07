@@ -58,6 +58,7 @@ const readTopicAttendance = async (doc = new GoogleSpreadsheet(), args) => {
         response.push({
           id: row.topicid,
           userId: row.userid,
+          userName: row.username,
           email: row.email,
           imagePath: row.imagepath,
           rating: row.rating,

@@ -9,6 +9,7 @@ export const onTrackingRowAdded = `subscription OnTrackingRowAdded($id: Int!) {
     imagePath
     rating
     comment
+    userName
   }
 }
 `;
