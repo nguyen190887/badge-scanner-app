@@ -94,12 +94,7 @@ provider:
 
 functions:
   badge-scanner-fn:
-    handler: handler.index
-    # events:
-    #   - http:
-    #       path: badge/id
-    #       method: post
-        
+    handler: handler.index        
 
   graphql-fn:
     handler: graphqlHandler.index
@@ -121,10 +116,6 @@ functions:
       PRIVATE_KEY: ${self:custom.googlePrivateKey}
       CLIENT_EMAIL: ${self:custom.googleClientEmail}
       SHEET_ID: ${self:custom.sheetId}
-    events:
-      - http:
-          path: write 
-          method: get
 
   read-from-sheet-fn:
     handler: handlers/readSheetHandler.index
