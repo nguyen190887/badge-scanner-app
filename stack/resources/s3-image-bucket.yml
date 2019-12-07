@@ -1,12 +1,4 @@
 Resources:
-  # WebSite:
-  #   Type: AWS::S3::Bucket
-  #   Properties:
-  #     BucketName: ${self:custom.websiteBucket}
-  #     AccessControl: PublicRead
-  #     WebsiteConfiguration:
-  #       IndexDocument: index.html
-  #       ErrorDocument: index.html
   ImageStore:
     Type: AWS::S3::Bucket
     Properties:
