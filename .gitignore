@@ -76,3 +76,4 @@ seed_user.sh
 .vscode/
 keys.json
 stack/sls-info.temp
+stack/compiled-cloudformation-template.json
