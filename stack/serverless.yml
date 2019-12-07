@@ -135,6 +135,6 @@ functions:
           
 resources:
   - ${file(resources/s3-image-bucket.yml)}
-  # - ${file(resources/s3-website-bucket.yml)} #todo: fix this
+  - ${file(resources/s3-website-bucket.yml)}
   - ${file(resources/cognito-user-pool.yml)}
   - ${file(resources/cognito-identity-pool.yml)}
