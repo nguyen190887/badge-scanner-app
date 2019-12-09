@@ -15,7 +15,7 @@ type Topic {
 }
 
 type TrackingRow {
-	id: Int!
+	topicId: Int!
 	userId: String
 	email: String
 	imagePath: String
@@ -24,18 +24,18 @@ type TrackingRow {
 }
 
 type Mutation {
-	addTrackingRow(id: Int!, userId: String!): TrackingRow!
+	addTrackingRow(topicId: Int!, userId: String!): TrackingRow!
 }
 
 type Query {
 	allPosts: [Post]
 	allTopics: [Topic]
-	topic(id: Int!): Topic
-	topicAttendance(id: Int!): [TrackingRow]
+	topic(topicId: Int!): Topic
+	topicAttendance(topicId: Int!): [TrackingRow]
 }
 
 type Subscription {
-	onTrackingRowAdded(id: Int!): TrackingRow
+	onTrackingRowAdded(topicId: Int!): TrackingRow
 	@aws_subscribe(mutations: ["addTrackingRow"])
 }
 

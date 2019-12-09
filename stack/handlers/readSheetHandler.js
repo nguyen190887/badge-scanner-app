@@ -23,9 +23,9 @@ const readTopics = async (doc) => {
 
 const readTopic = async (doc, args) => {
   return new Promise(resolve => {
-    const { id } = args;
+    const { topicId } = args;
     doc.getRows(1, {
-      query: `(no=${id})`
+      query: `(no=${topicId})`
     }, function (err, rows) {
       if (rows) {
         resolve({
@@ -48,15 +48,15 @@ const readTopic = async (doc, args) => {
 
 const readTopicAttendance = async (doc = new GoogleSpreadsheet(), args) => {
   return new Promise(resolve => {
-    const { id } = args;
+    const { topicId } = args;
     doc.getRows(2, {
-      query: `(topicid=${id})`
+      query: `(topicid=${topicId})`
     }, function (_err, rows) {
       console.info(rows);
       let response = [];
       rows.forEach(row => {
         response.push({
-          id: row.topicid,
+          topicId: row.topicid,
           userId: row.userid,
           email: row.email,
           imagePath: row.imagepath,

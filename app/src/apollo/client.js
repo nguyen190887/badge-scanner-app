@@ -7,6 +7,8 @@ import { ApolloLink } from 'apollo-link';
 import { createAuthLink } from 'aws-appsync-auth-link';
 import { createSubscriptionHandshakeLink } from 'aws-appsync-subscription-link';
 
+const cache = (typeof window === 'undefined') ? new InMemoryCache({ addTypename: true }) : new InMemoryCache({ addTypename: true }).restore(window.__APOLLO_STATE__);
+
 const url = `${process.env.APPSYNC_ENDPOINT}`;
 
 const httpLink = createHttpLink({
@@ -36,6 +38,6 @@ const link = ApolloLink.from([
 
 export const client = new ApolloClient({
   link,
-  cache: new InMemoryCache(),
+  cache,
   fetch,
 });

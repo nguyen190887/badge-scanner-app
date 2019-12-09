@@ -16,7 +16,7 @@ module.exports.index = async (event) => {
       if (err) {
         console.log(err);
       }
-      let { id: topicid, userId: userid, userName: username, imagePath: imagepath } = event.arguments;
+      let { topicId: topicid, userId: userid, userName: username, imagePath: imagepath } = event.arguments;
       userid = "'" + ("0000" + userid).slice(-4);
       doc.addRow(2, {
         topicid,
@@ -26,7 +26,7 @@ module.exports.index = async (event) => {
       }, function (data) {
         console.info('Added', data);
         resolve({
-          id: topicid,
+          topicId: topicid,
           userId: userid.slice(-4),
           email: '',
           imagePath: '',

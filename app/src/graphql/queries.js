@@ -21,8 +21,8 @@ export const allTopics = `query AllTopics {
   }
 }
 `;
-export const topic = `query Topic($id: Int!) {
-  topic(id: $id) {
+export const topic = `query Topic($topicId: Int!) {
+  topic(topicId: $topicId) {
     no
     date
     name
@@ -34,9 +34,9 @@ export const topic = `query Topic($id: Int!) {
   }
 }
 `;
-export const topicAttendance = `query TopicAttendance($id: Int!) {
-  topicAttendance(id: $id) {
-    id
+export const topicAttendance = `query TopicAttendance($topicId: Int!) {
+  topicAttendance(topicId: $topicId) {
+    topicId
     userId
     email
     imagePath
