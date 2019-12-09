@@ -35,11 +35,6 @@ custom:
     serviceRole: "${self:service.name}-AppSyncServiceRole"
     mappingTemplates:
       - type: Query
-        dataSource: LambdaSource
-        field: allPosts
-        request: "common-request.vtl"
-        response: "common-response.vtl"
-      - type: Query
         dataSource: GoogleSheetDataSource
         field: allTopics
         request: "all-topics-request.vtl"

@@ -6,7 +6,7 @@ const readTopics = async (doc) => {
       let response = [];
       rows.forEach(function (row) {
         response.push({
-          no: row.no,
+          topicId: row.no,
           date: row.date,
           name: row.name,
           owner: row.owner,
@@ -29,7 +29,7 @@ const readTopic = async (doc, args) => {
     }, function (err, rows) {
       if (rows) {
         resolve({
-          no: rows[0].no,
+          topicId: rows[0].no,
           date: rows[0].date,
           name: rows[0].name,
           owner: rows[0].owner,

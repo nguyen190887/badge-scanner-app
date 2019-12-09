@@ -1,13 +1,31 @@
 import fetch from 'isomorphic-fetch';
 import { ApolloClient } from 'apollo-client';
-import { InMemoryCache } from 'apollo-cache-inmemory';
+import { InMemoryCache, defaultDataIdFromObject } from 'apollo-cache-inmemory';
 import { createHttpLink } from 'apollo-link-http';
 import { onError } from 'apollo-link-error';
 import { ApolloLink } from 'apollo-link';
+import { toIdValue } from 'apollo-utilities';
 import { createAuthLink } from 'aws-appsync-auth-link';
 import { createSubscriptionHandshakeLink } from 'aws-appsync-subscription-link';
 
-const cache = (typeof window === 'undefined') ? new InMemoryCache({ addTypename: true }) : new InMemoryCache({ addTypename: true }).restore(window.__APOLLO_STATE__);
+const cacheInstance = new InMemoryCache({
+  addTypename: true,
+  dataIdFromObject: object => {
+    switch (object.__typename) {
+      case 'Topic': return `Topic:${object.topicId}`;
+      default: return defaultDataIdFromObject(object); // fall back to default handling
+    }
+  },
+  cacheRedirects: {
+    Query: {
+      topic: (_, args) => toIdValue(cache.config.dataIdFromObject({ __typename: 'Topic', topicId: args.topicId })),
+    },
+  },
+});
+
+const cache = (typeof window === 'undefined') ?
+  cacheInstance :
+  cacheInstance.restore(window.__APOLLO_STATE__);
 
 const url = `${process.env.APPSYNC_ENDPOINT}`;
 

@@ -1,16 +1,9 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const allPosts = `query AllPosts {
-  allPosts {
-    id
-    title
-  }
-}
-`;
 export const allTopics = `query AllTopics {
   allTopics {
-    no
+    topicId
     date
     name
     owner
@@ -23,7 +16,7 @@ export const allTopics = `query AllTopics {
 `;
 export const topic = `query Topic($topicId: Int!) {
   topic(topicId: $topicId) {
-    no
+    topicId
     date
     name
     owner

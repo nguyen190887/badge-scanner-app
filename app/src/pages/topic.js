@@ -31,7 +31,7 @@ const TopicPage = (props) => {
           <fieldset>
             <legend>Track Attendees</legend>
             <div>by scanning ID Badge</div>
-            {loggedIn && <Scanner topicId={topic.no} />}
+            {loggedIn && <Scanner topicId={topic.topicId} />}
             <div>no luck! By keying ID</div>
             <IdForm topicId={topicId} />
           </fieldset>
