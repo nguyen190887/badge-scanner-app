@@ -33,7 +33,6 @@ const TopicPage = (props) => {
             <div>by scanning ID Badge</div>
             {loggedIn && <Scanner topicId={topic.topicId} />}
             <div>no luck! By keying ID</div>
-            <IdForm topicId={topicId} />
           </fieldset>
           <TopicAttendance topicId={topicId} />
         </>

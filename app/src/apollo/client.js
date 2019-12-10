@@ -13,7 +13,8 @@ const cacheInstance = new InMemoryCache({
   dataIdFromObject: object => {
     switch (object.__typename) {
       case 'Topic': return `Topic:${object.topicId}`;
-      default: return defaultDataIdFromObject(object); // fall back to default handling
+      case 'TrackingRow': return `TrackingRow:${object.topicId}_${object.userId}`;
+      default: return defaultDataIdFromObject(object);
     }
   },
   cacheRedirects: {
@@ -23,9 +24,7 @@ const cacheInstance = new InMemoryCache({
   },
 });
 
-const cache = (typeof window === 'undefined') ?
-  cacheInstance :
-  cacheInstance.restore(window.__APOLLO_STATE__);
+const cache = (typeof window === 'undefined') ? cacheInstance : cacheInstance.restore(window.__APOLLO_STATE__);
 
 const url = `${process.env.APPSYNC_ENDPOINT}`;
 

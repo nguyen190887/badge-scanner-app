@@ -1,63 +1,68 @@
-import React, { useEffect } from 'react';
-import { useQuery } from '@apollo/react-hooks';
+import React from 'react';
+import styled from '@emotion/styled';
+import { useQuery, useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import { topicAttendance } from '../graphql/queries';
-import { onTrackingRowAdded } from '../graphql/subscriptions';
+import { addTrackingRow } from '../graphql/mutations';
+import { IdForm } from '.';
+
+const AttendanceTable = styled.div``;
+const TableFunction = styled.div``;
+const Table = styled.table`
+
+`;
 
 export default ({ topicId }) => {
-  const { loading, error, data, subscribeToMore } = useQuery(gql`${topicAttendance}`,
+  const { loading, error, data, refetch } = useQuery(gql`${topicAttendance}`,
     { variables: { topicId } }
   );
 
-  const subscribe = () =>
-    subscribeToMore({
-      document: gql`${onTrackingRowAdded}`,
-      variables: { topicId },
-      updateQuery: (prev, { subscriptionData }) => {
-        if (!subscriptionData.data) {
-          return prev;
-        }
-        const newRow = subscriptionData.data.onTrackingRowAdded;
-        if (prev.topicAttendance.find(e => e.userId === newRow.userId)) {
-          return prev;
-        }
-
-        return Object.assign({}, prev, {
-          topicAttendance: [newRow, ...prev.topicAttendance]
+  const [addRow] = useMutation(gql`${addTrackingRow}`,
+    {
+      update(cache, { data: { addTrackingRow } }) {
+        const data = cache.readQuery({ query: gql`${topicAttendance}`, variables: { topicId } });
+        data.topicAttendance = [addTrackingRow, ...data.topicAttendance];
+        cache.writeQuery({
+          query: gql`${topicAttendance}`,
+          variables: { topicId },
+          data
         });
-      }
-    })
-
-  useEffect(() => {
-    subscribe();
-  }, [topicId])
+      },
+    }
+  );
 
   return (
     <>
+      <IdForm topicId={topicId} addRow={addRow} />
       {loading ? <div>Loading...</div> :
         error ? <div>Error</div> :
-          <table>
-            <tbody>
-              <tr>
-                <th>No.</th>
-                <th>ID</th>
-                <th>Email</th>
-                <th>ImagePath</th>
-                <th>Rating</th>
-                <th>Comment</th>
-              </tr>
-              {data && data.topicAttendance && data.topicAttendance.map((r, i) => (
-                <tr>
-                  <td>{i + 1}</td>
-                  <td>{r.userId}</td>
-                  <td>{r.email}</td>
-                  <td>{r.imagePath}</td>
-                  <td>{r.rating}</td>
-                  <td>{r.comment}</td>
+          <AttendanceTable>
+            <TableFunction>
+              <button onClick={() => { refetch() }}>Refresh</button>
+            </TableFunction>
+            <Table>
+              <tbody>
+                <tr key='header'>
+                  <th>No.</th>
+                  <th>ID</th>
+                  <th>Email</th>
+                  <th>ImagePath</th>
+                  <th>Rating</th>
+                  <th>Comment</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+                {data && data.topicAttendance.map((r, i) => (
+                  <tr key={r.id}>
+                    <td>{i + 1}</td>
+                    <td>{r.userId}</td>
+                    <td>{r.email}</td>
+                    <td>{r.imagePath}</td>
+                    <td>{r.rating}</td>
+                    <td>{r.comment}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          </AttendanceTable>
       }
     </>
   );
