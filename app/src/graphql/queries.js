@@ -35,6 +35,7 @@ export const topicAttendance = `query TopicAttendance($topicId: Int!) {
     imagePath
     rating
     comment
+    userName
   }
 }
 `;

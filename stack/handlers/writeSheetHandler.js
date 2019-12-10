@@ -28,6 +28,7 @@ module.exports.index = async (event) => {
         resolve({
           topicId: topicid,
           userId: userid.slice(-4),
+          userName: username,
           email: '',
           imagePath: imagepath,
           rating: '',

@@ -1,8 +1,9 @@
 STAGE=${1:-dev}
+ENV_STAGE=${2:-$STAGE}
 TEMP_FILE=sls-info.temp
 ENV_FILE=../app/.env.development
 
-if [ "$STAGE" = "prod" ]; then
+if [ "$ENV_STAGE" = "prod" ]; then
     ENV_FILE=../app/.env.production
 fi
 

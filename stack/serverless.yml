@@ -3,7 +3,6 @@ app: badge-scanner-app
 org: nguyen190887
 
 plugins:
-  - serverless-s3-sync
   - serverless-appsync-plugin
   - serverless-offline
 
@@ -14,17 +13,6 @@ custom:
   sheetId: "1-VB8_PDm15-TI1dmI--t5GLZtFYdKvCe0aaoSuOxT8M"
   websiteBucket: "tnn.badge-scanner-web-${self:custom.stage}"
   imageBucket: "tnn.image-badge-store-${self:custom.stage}"
-  s3Sync:
-    - bucketName: ${self:custom.websiteBucket}
-      localDir: ../app/public
-      acl: public-read
-      followSymlinks: true
-      defaultContentType: text/html
-      params: # optional
-        - index.html:
-            CacheControl: 'no-cache'
-        - "*.js":
-            CacheControl: 'public, max-age=31536000'
   # appsync-offline:
   #   port: 62222
   appSync:
@@ -89,12 +77,7 @@ provider:
 
 functions:
   badge-scanner-fn:
-    handler: handler.index
-    events:
-      - http:
-          path: badge/id
-          method: post
-        
+    handler: handler.index        
 
   graphql-fn:
     handler: graphqlHandler.index
@@ -116,10 +99,6 @@ functions:
       PRIVATE_KEY: ${self:custom.googlePrivateKey}
       CLIENT_EMAIL: ${self:custom.googleClientEmail}
       SHEET_ID: ${self:custom.sheetId}
-    events:
-      - http:
-          path: write 
-          method: get
 
   read-from-sheet-fn:
     handler: handlers/readSheetHandler.index
@@ -130,6 +109,6 @@ functions:
           
 resources:
   - ${file(resources/s3-image-bucket.yml)}
+  - ${file(resources/s3-website-bucket.yml)}
   - ${file(resources/cognito-user-pool.yml)}
   - ${file(resources/cognito-identity-pool.yml)}
-
