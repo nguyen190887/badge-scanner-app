@@ -62,7 +62,8 @@ const readTopicAttendance = async (doc = new GoogleSpreadsheet(), args) => {
           email: row.email,
           imagePath: row.imagepath,
           rating: row.rating,
-          comment: row.comment
+          comment: row.comment,
+          userName: row.username
         })
       });
       resolve(response);

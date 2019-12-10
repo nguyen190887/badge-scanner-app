@@ -46,6 +46,7 @@ export default ({ topicId }) => {
                   <th>No.</th>
                   <th>ID</th>
                   <th>Email</th>
+                  <th>Name</th>
                   <th>ImagePath</th>
                   <th>Rating</th>
                   <th>Comment</th>
@@ -55,6 +56,7 @@ export default ({ topicId }) => {
                     <td>{i + 1}</td>
                     <td>{r.userId}</td>
                     <td>{r.email}</td>
+                    <td>{r.userName}</td>
                     <td>{r.imagePath}</td>
                     <td>{r.rating}</td>
                     <td>{r.comment}</td>
