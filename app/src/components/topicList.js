@@ -1,14 +1,14 @@
 import React from 'react';
 import { Link } from 'gatsby';
 import { Paper, Table, TableBody, TableRow, TableHead, TableCell } from '@material-ui/core';
-import {StyledTableRow } from './table';
+import { StyledTableRow } from './table';
 
 const TopicList = ({ topics: { allTopics = [] } = {} }) => {
   return (
     <Paper>
       <Table>
         <TableHead>
-          <StyledTableRow>
+          <TableRow>
             <TableCell>Date</TableCell>
             <TableCell>Topic</TableCell>
             <TableCell>Owner</TableCell>
@@ -17,7 +17,7 @@ const TopicList = ({ topics: { allTopics = [] } = {} }) => {
             <TableCell>Duration</TableCell>
             <TableCell>Notes</TableCell>
             <TableCell />
-          </StyledTableRow>
+          </TableRow>
         </TableHead>
         <TableBody>
           {

@@ -8,9 +8,12 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 
 export const StyledTableRow = withStyles(theme => ({
-  // root: {
-    // '&:nth-of-type(odd)': {
-    //   backgroundColor: theme.palette.background.default,
-    // },
-  // },
+  root: {
+    '&:nth-of-type(even)': {
+      backgroundColor: theme.palette.grey[50],
+    },
+    '&:hover': {
+      backgroundColor: theme.palette.grey[100],
+    },
+  },
 }))(TableRow);
