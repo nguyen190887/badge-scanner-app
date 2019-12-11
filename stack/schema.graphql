@@ -1,47 +1,61 @@
 type Post {
-	id: Int!
-	title: String!
+  id: Int!
+  title: String!
 }
 
 type Topic {
-	no: Int!
-	date: String
-	name: String
-	owner: String
-	status: String
-	smeGroup: String
-	duration: String
-	notes: String
+  no: Int!
+  date: String
+  name: String
+  owner: String
+  status: String
+  smeGroup: String
+  duration: String
+  notes: String
 }
 
 type TrackingRow {
-	id: Int!
-	userId: String
-	email: String
-	imagePath: String
-	rating: String
-	comment: String
-	userName: String
+  id: Int!
+  userId: String
+  email: String
+  imagePath: String
+  rating: String
+  comment: String
+  userName: String
+}
+
+type RatingResult {
+  id: Int!
+  email: String!
+  rating: String!
+  comment: String!
+  topicId: Int!
 }
 
 type Mutation {
-	addTrackingRow(id: Int!, userId: String!, userName: String): TrackingRow!
+  addTrackingRow(id: Int!, userId: String!, userName: String): TrackingRow!
+  submitSurvey(
+    topicId: Int!
+    email: String!
+    rating: String!
+    comment: String!
+  ): RatingResult!
 }
 
 type Query {
-	allPosts: [Post]
-	allTopics: [Topic]
-	topic(id: Int!): Topic
-	topicAttendance(id: Int!): [TrackingRow]
+  allPosts: [Post]
+  allTopics: [Topic]
+  topic(id: Int!): Topic
+  topicAttendance(id: Int!): [TrackingRow]
 }
 
 type Subscription {
-	onTrackingRowAdded(id: Int!): TrackingRow
-	@aws_subscribe(mutations: ["addTrackingRow"])
+  onTrackingRowAdded(id: Int!): TrackingRow
+    @aws_subscribe(mutations: ["addTrackingRow"])
 }
 
 schema {
-	query: Query
-	mutation: Mutation
-	subscription: Subscription
+  query: Query
+  mutation: Mutation
+  subscription: Subscription
 }

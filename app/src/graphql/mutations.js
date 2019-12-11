@@ -13,3 +13,12 @@ export const addTrackingRow = `mutation AddTrackingRow($id: Int!, $userId: Strin
   }
 }
 `;
+
+export const submitSurvey = `mutation SubmitSurvey($topicId: Int!, $email: String!, $rating: String!, $comment: String!) {
+  submitSurvey(topicId: $topicId, email: $email, rating: $rating, comment: $comment) {
+    topicId
+    email
+    rating
+    comment
+  }
+}`;
