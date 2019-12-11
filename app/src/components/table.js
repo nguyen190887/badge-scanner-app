@@ -1,30 +1,16 @@
-import styled from '@emotion/styled';
+import React from 'react';
+import { withStyles, makeStyles } from '@material-ui/core/styles';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
 
-export const StyledTable = styled.table`
-  overflow: hidden;
-
-  tr {
-    width: 100%;
-  }
-
-  // a {
-  //   position: absolute;
-  //   width: 100%;
-  //   height: 10px;
-  //   cursor: pointer;
-  //   ${document && document.querySelector('.table').getBoundingClientRect()};
-  // }
-`;
-
-export const Header = styled.tr`
-  background-color: #339933;
-  color: white;
-`;
-
-export const Row = styled.tr`
-  background-color: #fffdf7;
-
-  :hover {
-    background-color: #fff5bf;
-  }
-`;
+export const StyledTableRow = withStyles(theme => ({
+  // root: {
+    // '&:nth-of-type(odd)': {
+    //   backgroundColor: theme.palette.background.default,
+    // },
+  // },
+}))(TableRow);

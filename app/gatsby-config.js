@@ -9,6 +9,15 @@ module.exports = {
     author: `@nguyen190887`,
   },
   plugins: [
+    {
+      resolve: 'gatsby-plugin-material-ui',
+      // If you want to use styled components you should change the injection order.
+      options: {
+        // stylesProvider: {
+        //   injectFirst: true,
+        // },
+      },
+    },
     `gatsby-plugin-react-helmet`,
     {
       resolve: `gatsby-source-filesystem`,
@@ -35,16 +44,5 @@ module.exports = {
     // this (optional) plugin enables Progressive Web App + Offline functionality
     // To learn more, visit: https://gatsby.dev/offline
     // `gatsby-plugin-offline`,
-    {
-      resolve: "gatsby-source-graphql", // see more https://www.gatsbyjs.org/packages/gatsby-source-graphql/
-      options: {
-        typeName: "AppSyncTopics",
-        fieldName: "topics",
-        url: `${process.env.APPSYNC_ENDPOINT}`,
-        headers: {
-          "x-api-key": `${process.env.APPSYNC_API_KEY}`,
-        },
-      },
-    },
   ],
 }
