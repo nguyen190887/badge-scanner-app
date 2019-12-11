@@ -2,16 +2,12 @@ import React from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import { topic } from '../graphql/queries';
-
+import Grid from '@material-ui/core/Grid';
 import Layout from '../components/layout';
 import SEO from '../components/seo';
-import Scanner from '../components/scanner';
-import UserInfo from '../components/userInfo';
-import { TopicDetail, TopicAttendance, IdForm } from '../components';
-import useAuth from '../utils/useAuth';
+import { TopicDetail, TrackAttendee } from '../components';
 
 const TopicPage = (props) => {
-  const { loggedIn } = useAuth();
   const topicId = props.id ? props.id : '';
 
   const { loading: topicLoading, error: topicError, data: topicData } = useQuery(gql`${topic}`,
@@ -21,21 +17,19 @@ const TopicPage = (props) => {
   return (
     <Layout>
       <SEO title="Scan your badge!" />
-      <UserInfo />
 
       {topicId && (
-        <>
+        <Grid container spacing={2}>
           {topicLoading ? <p>Loading</p> :
             topicError ? <></> :
-              <TopicDetail data={topicData} />}
-          <fieldset>
-            <legend>Track Attendees</legend>
-            <div>by scanning ID Badge</div>
-            {loggedIn && <Scanner topicId={topicId} />}
-            <div>no luck! By keying ID</div>
-          </fieldset>
-          <TopicAttendance topicId={topicId} />
-        </>
+              <Grid item xs={12} sm={3}>
+                <TopicDetail data={topicData} />
+              </Grid>
+          }
+          <Grid item xs={12} sm={9}>
+            <TrackAttendee topicId={topicId} />
+          </Grid>
+        </Grid>
       )}
     </Layout >
   );
