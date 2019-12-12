@@ -46,7 +46,7 @@ export default ({ loading, error, data, refetch }) => {
               <TableBody>
                 {data && data.topicAttendance.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((r, i) => (
                   <TableRow key={r.id}>
-                    <TableCell>{page * rowsPerPage + i}</TableCell>
+                    <TableCell>{page * rowsPerPage + i + 1}</TableCell>
                     <TableCell>{r.userId}</TableCell>
                     <Hidden mdDown>
                       <TableCell>{r.email}</TableCell>

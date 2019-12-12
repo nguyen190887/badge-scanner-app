@@ -8,29 +8,31 @@ import { resizeImage } from '../utils/common';
 
 const maxImageWidth = 800;
 
-const Scanner = ({ topicId }) => {
+const Scanner = ({ topicId, addRow }) => {
   const [loading, setLoading] = useState(false);
   const imageFileRef = useRef(null);
 
   const uploadFileToS3 = async (fileName, file) => {
     // TODO: FIXME - not work
-    await callWithCredentials(() => {
-      const s3 = new AWS.S3();
-      const params = {
-        Bucket: IMAGE_BUCKET,
-        Key: `${topicId}~${fileName}`,
-        Body: file,
-      };
-      s3.upload(params, function (err, data) {
-        if (err) console.log(err, err.stack);
-        else {
-          setLoading(false);
-          if (imageFileRef && imageFileRef.current) {
-            imageFileRef.current.value = '';
+    return new Promise(resolve => {
+      callWithCredentials(() => {
+        const s3 = new AWS.S3();
+        const params = {
+          Bucket: IMAGE_BUCKET,
+          Key: `${topicId}~${fileName}`,
+          Body: file,
+        };
+        s3.upload(params, function (err, data) {
+          if (err) console.log(err, err.stack);
+          else {
+            // setLoading(false);
+            if (imageFileRef && imageFileRef.current) {
+              imageFileRef.current.value = '';
+            }
+            resolve(data);
           }
-          console.log(JSON.stringify(data.Location));
-        }
-      });
+        });
+      })
     });
   };
 
@@ -43,8 +45,12 @@ const Scanner = ({ topicId }) => {
         imageFileRef.current.files[0],
         maxImageWidth
       );
-      await uploadFileToS3(fileName, resizedImgFile);
+      const result = await uploadFileToS3(fileName, resizedImgFile);
+      console.log(result);
+      addRow({ variables: { srcBucket: result.Bucket, srcKey: result.Key } });
+      setLoading(false);
     } catch (err) {
+      setLoading(false);
       console.error('Failed to upload', err);
     }
   };
