@@ -10,7 +10,7 @@ const styles = makeStyles({
   },
 });
 
-const TopicDetail = ({ data: { topic  = [] } = {} }) => {
+const TopicDetail = ({ data: { topic  = {} } = {} }) => {
   const classes = styles();
 
   return (

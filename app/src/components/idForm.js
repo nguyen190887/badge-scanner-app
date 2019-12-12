@@ -34,7 +34,7 @@ export default ({ topicId, addRow }) => {
     <form onSubmit={onSubmit} className={classes.root}>
       <TextField inputRef={inputRef} label="Employee ID" id="standard-size-normal" type='tel' />
       <TextField inputRef={userNameRef} label="Name" id="standard-size-normal" type='text' disabled={true} />
-      <Button type='submit' variant='raised' color='secondary' className={classes.button}>Submit</Button>
+      <Button type='submit' variant='text' className={classes.button}>Submit</Button>
     </form>
   );
 };

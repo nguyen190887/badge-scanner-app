@@ -53,7 +53,6 @@ App to scan badge and extract employee ID
   PASSWORD=yourpwd
   aws cognito-idp admin-create-user --user-pool-id $USERPOOL_ID --username $USERNAME 
   aws cognito-idp admin-set-user-password --user-pool-id $USERPOOL_ID --username $USERNAME --password $PASSWORD --permanent
-
   ```
 
 3. How to add new GraphQL type?
