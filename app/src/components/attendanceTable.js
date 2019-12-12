@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import { useQuery, useMutation } from '@apollo/react-hooks';
-import gql from 'graphql-tag';
 import Button from '@material-ui/core/Button';
 import Hidden from '@material-ui/core/Hidden';
 import Table from '@material-ui/core/Table';
@@ -9,31 +7,10 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TablePagination from '@material-ui/core/TablePagination';
-import { topicAttendance } from '../graphql/queries';
-import { addTrackingRow } from '../graphql/mutations';
-import { IdForm } from '.';
 
-export default ({ topicId }) => {
+export default ({ loading, error, data, refetch }) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-
-  const { loading, error, data, refetch } = useQuery(gql`${topicAttendance}`,
-    { variables: { topicId } }
-  );
-
-  const [addRow] = useMutation(gql`${addTrackingRow}`,
-    {
-      update(cache, { data: { addTrackingRow } }) {
-        const data = cache.readQuery({ query: gql`${topicAttendance}`, variables: { topicId } });
-        data.topicAttendance = [addTrackingRow, ...data.topicAttendance];
-        cache.writeQuery({
-          query: gql`${topicAttendance}`,
-          variables: { topicId },
-          data
-        });
-      },
-    }
-  );
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -46,7 +23,6 @@ export default ({ topicId }) => {
 
   return (
     <>
-      <IdForm topicId={topicId} addRow={addRow} />
       {loading ? <div>Loading...</div> :
         error ? <div>Error</div> :
           <div>
