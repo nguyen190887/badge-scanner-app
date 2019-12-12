@@ -9,6 +9,9 @@ const useStyles = makeStyles(theme => ({
       margin: theme.spacing(1),
     },
   },
+  button: {
+    verticalAlign: 'bottom'
+  }
 }));
 
 export default ({ topicId, addRow }) => {
@@ -29,9 +32,9 @@ export default ({ topicId, addRow }) => {
 
   return (
     <form onSubmit={onSubmit} className={classes.root}>
-      <TextField ref={inputRef} label="Employee ID" id="standard-size-normal" type='tel' />
-      <TextField ref={userNameRef} label="Name" id="standard-size-normal" type='text' />
-      <Button type='submit' variant='contained' color='secondary'>Submit</Button>
+      <TextField inputRef={inputRef} label="Employee ID" id="standard-size-normal" type='tel' />
+      <TextField inputRef={userNameRef} label="Name" id="standard-size-normal" type='text' disabled={true} />
+      <Button type='submit' variant='raised' color='secondary' className={classes.button}>Submit</Button>
     </form>
   );
 };

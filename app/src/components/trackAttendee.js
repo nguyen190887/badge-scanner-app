@@ -28,7 +28,6 @@ const TrackAttendee = ({ topicId }) => {
       <Typography className={classes.pos} color="textSecondary">
         Upload a photo of your ID badge or input your ID to text field below
       </Typography>
-      <div>Scanning ID Badge</div>
       {loggedIn && <Scanner topicId={topicId} />}
       <TopicAttendance topicId={topicId} />
     </Paper>

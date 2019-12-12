@@ -30,9 +30,9 @@ const Layout = ({ children }) => {
         />
       </Helmet>
       <ThemeProvider theme={theme}>
-      <Header siteTitle={data.site.siteMetadata.title} />
-        <CssBaseline />
-        {children}
+        <Header siteTitle={data.site.siteMetadata.title} />
+          <CssBaseline />
+          {children}
       </ThemeProvider>
     </React.Fragment>
   );

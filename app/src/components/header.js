@@ -1,6 +1,5 @@
 import PropTypes from "prop-types"
 import React from 'react';
-import { Link } from "gatsby"
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -27,9 +26,9 @@ const Header = ({ siteTitle }) => {
   return (
     <AppBar position="static">
       <Toolbar>
-        <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+        {/* <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
           <MenuIcon />
-        </IconButton>
+        </IconButton> */}
         <Typography variant="h6" className={classes.title}>
           {siteTitle}
         </Typography>

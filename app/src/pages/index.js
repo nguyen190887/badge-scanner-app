@@ -1,7 +1,7 @@
 import React from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
-
+import Container from '@material-ui/core/Container';
 import Layout from '../components/layout';
 import SEO from '../components/seo';
 import TopicList from '../components/topicList';
@@ -14,11 +14,13 @@ const IndexPage = () => {
   return (
     <Layout>
       <SEO title="Scan your badge!" />
-      {
-        loading ? <p>Loading...</p> :
-          error ? <></> :
-            <TopicList topics={data} />
-      }
+      <Container maxWidth="lg">
+        {
+          loading ? <p>Loading...</p> :
+            error ? <></> :
+              <TopicList topics={data} />
+        }
+      </Container>
     </Layout>
   )
 };
