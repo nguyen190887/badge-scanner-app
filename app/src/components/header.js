@@ -5,6 +5,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
+import Link from '@material-ui/core/Link';
 import UserInfo from '../components/userInfo';
 
 const useStyles = makeStyles(theme => ({
@@ -17,6 +18,11 @@ const useStyles = makeStyles(theme => ({
   title: {
     flexGrow: 1,
   },
+  link: {
+    '&:hover': {
+      textDecoration: 'none'
+    }
+  }
 }));
 
 const Header = ({ siteTitle }) => {
@@ -26,7 +32,7 @@ const Header = ({ siteTitle }) => {
     <AppBar position="static">
       <Toolbar>
         <Typography variant="h6" className={classes.title}>
-          {siteTitle}
+          <Link color="inherit" href="/" className={classes.link}>{siteTitle}</Link>
         </Typography>
         <UserInfo />
       </Toolbar>

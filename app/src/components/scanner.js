@@ -68,7 +68,7 @@ const Scanner = ({ topicId, addRow }) => {
         onChange={handleFileUpload}
       />
       <label htmlFor="raised-button-file">
-        <Button variant="contained" component="span" color='secondary'>
+        <Button variant="contained" component="span" color='secondary' disabled={loading}>
           Scanning ID Badge
         </Button>
       </label>

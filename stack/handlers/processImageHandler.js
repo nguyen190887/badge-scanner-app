@@ -103,17 +103,8 @@ module.exports.index = async (event, context, callback) => {
   console.info(textInfo);
 
   const response = await updateSheet(topicId, textInfo.id, textInfo.name, srcKey);
-  console.info(`response ${response}`)
-  // return response;
-  const returnResult = {
-    topicId: Number.parseInt(topicId),
-    userId: response.userId,
-    userName: response.userName,
-    email: response.email,
-    imagePath: response.imagePath,
-    rating: '',
-    comment: ''
-  };
-  console.info(`return ${returnResult}`);
+  let returnResult = JSON.parse(response);
+  returnResult.topicId = Number.parseInt(topicId);
+
   return returnResult;
 };
