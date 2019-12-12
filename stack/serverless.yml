@@ -19,7 +19,7 @@ custom:
 provider:
   name: aws
   runtime: nodejs12.x
-  stage: ${opt:stage, 'dev'}
+  stage: ${opt:stage, "dev"}
   region: us-east-1
 
   iamRoleStatements:
@@ -64,8 +64,18 @@ functions:
       CLIENT_EMAIL: ${self:custom.googleClientEmail}
       SHEET_ID: ${self:custom.sheetId}
 
+website:
+  component: "@serverless/website"
+  inputs:
+    code:
+      root: ../app
+      src: ../app/public
+      hook: . gen_env.sh ${self:custom.stage} prod && npm run build
+    region: ${self:provider.stage}
+    bucketName: ${self:custom.websiteBucket}
+
 appsync:
-  component: '@serverless/aws-app-sync'
+  component: "@serverless/aws-app-sync"
   inputs:
     name: ${self:service.name}-${self:custom.stage}
     authenticationType: API_KEY
@@ -116,6 +126,6 @@ appsync:
 
 resources:
   - ${file(resources/s3-image-bucket.yml)}
-  - ${file(resources/s3-website-bucket.yml)}
+  # - ${file(resources/s3-website-bucket.yml)}
   - ${file(resources/cognito-user-pool.yml)}
   - ${file(resources/cognito-identity-pool.yml)}
