@@ -1,21 +1,13 @@
 import React, { useRef } from 'react';
-import API, { graphqlOperation } from '@aws-amplify/api';
-import { addTrackingRow } from '../graphql/mutations';
 
-export default ({ topicId }) => {
+export default ({ topicId, addRow }) => {
   const inputRef = useRef(null);
   const userNameRef = useRef(null);
 
   const onSubmit = async e => {
     e.preventDefault();
     try {
-      await API.graphql(
-        graphqlOperation(addTrackingRow, {
-          id: topicId,
-          userId: inputRef.current.value,
-          userName: userNameRef.current.value,
-        })
-      );
+      addRow({ variables: { topicId, userId: inputRef.current.value, userName: userNameRef.current.value } })
       inputRef.current.value = '';
       userNameRef.current.value = '';
     } catch (err) {

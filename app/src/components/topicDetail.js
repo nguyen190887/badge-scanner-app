@@ -18,7 +18,7 @@ const FieldDetail = styled.div`
   flex-basis: 70%;
 `;
 
-const topicDetail = ({ data: { data: { topic } = {} } = {} }) => {
+const topicDetail = ({ data: { topic  = [] } = {} }) => {
   return (
     <TopicTable>
       <TopicRow>

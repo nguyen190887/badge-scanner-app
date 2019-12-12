@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import API, { graphqlOperation } from '@aws-amplify/api';
+import React from 'react';
+import { useQuery } from '@apollo/react-hooks';
+import gql from 'graphql-tag';
 
 import Layout from '../components/layout';
 import SEO from '../components/seo';
@@ -9,25 +10,16 @@ import { allTopics } from '../graphql/queries';
 
 console.log('Index', new Date().toISOString());
 
-async function fetchTopics(setTopics) {
-  const data = await API.graphql(graphqlOperation(allTopics));
-  setTopics({ topics: data, loading: false });
-}
-
 const IndexPage = () => {
-  const [topicsState, setTopics] = useState({
-    topics: [],
-    loading: true,
-  });
-  useEffect(() => {
-    fetchTopics(setTopics);
-  }, [])
+  const { loading, error, data } = useQuery(gql`${allTopics}`);
   return (
     <Layout>
       <SEO title="Scan your badge!" />
       <UserInfo />
-      {topicsState.loading ? <div>Loading</div> :
-        <TopicList topics={topicsState.topics} />
+      {
+        loading ? <p>Loading...</p> :
+          error ? <></> :
+            <TopicList topics={data} />
       }
     </Layout>
   )
