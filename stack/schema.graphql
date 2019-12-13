@@ -21,6 +21,7 @@ type TrackingRow {
 
 type Mutation {
 	addTrackingRow(topicId: Int!, userId: String!, userName: String): TrackingRow!
+	addTrackingRowWithPhoto(srcBucket: String!, srcKey: String!): TrackingRow!
 }
 
 type Query {

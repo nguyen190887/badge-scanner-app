@@ -1,12 +1,14 @@
 import React, { useState, useRef } from 'react';
 import AWS from 'aws-sdk';
+import Button from '@material-ui/core/Button';
+import Input from '@material-ui/core/Input';
 import { callWithCredentials } from '../utils/aws';
 import { IMAGE_BUCKET } from '../constants';
 import { resizeImage } from '../utils/common';
 
 const maxImageWidth = 800;
 
-const Scanner = ({topicId}) => {
+const Scanner = ({ topicId, addRow }) => {
   const [loading, setLoading] = useState(false);
   const imageFileRef = useRef(null);
 
@@ -38,8 +40,13 @@ const Scanner = ({topicId}) => {
         maxImageWidth
       );
       imageFileRef.current.value = '';
-      await uploadFileToS3(fileName, resizedImgFile);
+
+      const result = await uploadFileToS3(fileName, resizedImgFile);
+      console.log(result);
+      addRow({ variables: { srcBucket: result.Bucket, srcKey: result.Key } });
+      setLoading(false);
     } catch (err) {
+      setLoading(false);
       console.error('Failed to upload', err);
     }
   };
@@ -47,12 +54,20 @@ const Scanner = ({topicId}) => {
   return (
     <form>
       <input
-        ref={imageFileRef}
-        type="file"
+        style={{ display: 'none' }}
+        id="raised-button-file"
         accept="image/*"
         capture="camera"
+        type="file"
+        disabled={loading}
+        ref={imageFileRef}
         onChange={handleFileUpload}
       />
+      <label htmlFor="raised-button-file">
+        <Button variant="contained" component="span" color='secondary'>
+          Scanning ID Badge
+        </Button>
+      </label>
       <div>{loading ? 'Processing ...' : ''}</div>
     </form>
   );
