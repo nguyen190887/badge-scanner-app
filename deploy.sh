@@ -10,7 +10,7 @@ cd ..
 # Build app
 cd app
 npm i --production
-. gen_env.sh prod
+. gen_env.sh $STAGE prod
 gatsby build
 
 # Copy S3 website
