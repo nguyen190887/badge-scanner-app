@@ -8,9 +8,11 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TablePagination from '@material-ui/core/TablePagination';
 
+const pageSizes = [10, 25, 50];
+
 export default ({ loading, error, data, refetch }) => {
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(pageSizes[0]);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -34,9 +36,9 @@ export default ({ loading, error, data, refetch }) => {
                 <TableRow key='header'>
                   <TableCell>No.</TableCell>
                   <TableCell>ID</TableCell>
+                  <TableCell>Name</TableCell>
                   <Hidden mdDown>
                     <TableCell>Email</TableCell>
-                    <TableCell>Name</TableCell>
                     <TableCell>ImagePath</TableCell>
                   </Hidden>
                   <TableCell>Rating</TableCell>
@@ -45,12 +47,12 @@ export default ({ loading, error, data, refetch }) => {
               </TableHead>
               <TableBody>
                 {data && data.topicAttendance.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((r, i) => (
-                  <TableRow key={r.id}>
+                  <TableRow key={`row_${i}`}>
                     <TableCell>{page * rowsPerPage + i + 1}</TableCell>
                     <TableCell>{r.userId}</TableCell>
+                    <TableCell>{r.userName}</TableCell>
                     <Hidden mdDown>
                       <TableCell>{r.email}</TableCell>
-                      <TableCell>{r.userName}</TableCell>
                       <TableCell>{r.imagePath}</TableCell>
                     </Hidden>
                     <TableCell>{r.rating}</TableCell>
@@ -61,7 +63,7 @@ export default ({ loading, error, data, refetch }) => {
             </Table>
             <TablePagination
               labelRowsPerPage=''
-              rowsPerPageOptions={[5, 10, 25]}
+              rowsPerPageOptions={pageSizes}
               component="div"
               count={data.topicAttendance ? data.topicAttendance.length : 0}
               rowsPerPage={rowsPerPage}
