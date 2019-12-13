@@ -62,7 +62,6 @@ const Scanner = ({ topicId, addRow }) => {
         accept="image/*"
         capture="camera"
         type="file"
-        disabled={loading}
         ref={imageFileRef}
         onChange={handleFileUpload}
       />
