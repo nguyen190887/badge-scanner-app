@@ -11,7 +11,6 @@ const Scanner = ({topicId}) => {
   const imageFileRef = useRef(null);
 
   const uploadFileToS3 = async (fileName, file) => {
-    // TODO: FIXME - not work
     await callWithCredentials(() => {
       const s3 = new AWS.S3();
       const params = {
@@ -22,10 +21,7 @@ const Scanner = ({topicId}) => {
       s3.upload(params, function(err, data) {
         if (err) console.log(err, err.stack);
         else {
-          setLoading(false);
-          if (imageFileRef && imageFileRef.current) {
-            imageFileRef.current.value = '';
-          }
+          setLoading(false); // todo: set loading separately
           console.log(JSON.stringify(data.Location));
         }
       });
@@ -41,6 +37,7 @@ const Scanner = ({topicId}) => {
         imageFileRef.current.files[0],
         maxImageWidth
       );
+      imageFileRef.current.value = '';
       await uploadFileToS3(fileName, resizedImgFile);
     } catch (err) {
       console.error('Failed to upload', err);
@@ -50,7 +47,6 @@ const Scanner = ({topicId}) => {
   return (
     <form>
       <input
-        disabled={loading}
         ref={imageFileRef}
         type="file"
         accept="image/*"

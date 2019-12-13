@@ -37,7 +37,7 @@ const updateSheet = async (topicId, userId, userName, imagePath) => {
 
   const payload = {
     arguments: {
-      id: topicId,
+      topicId,
       userId,
       userName,
       imagePath,
