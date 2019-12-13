@@ -13,20 +13,23 @@ const Scanner = ({ topicId, addRow }) => {
   const imageFileRef = useRef(null);
 
   const uploadFileToS3 = async (fileName, file) => {
-    await callWithCredentials(() => {
-      const s3 = new AWS.S3();
-      const params = {
-        Bucket: IMAGE_BUCKET,
-        Key: `${topicId}~${fileName}`,
-        Body: file,
-      };
-      s3.upload(params, function(err, data) {
-        if (err) console.log(err, err.stack);
-        else {
-          setLoading(false); // todo: set loading separately
-          console.log(JSON.stringify(data.Location));
-        }
-      });
+    return new Promise(async resolve => {
+      await callWithCredentials(() => {
+        const s3 = new AWS.S3();
+        const params = {
+          Bucket: IMAGE_BUCKET,
+          Key: `${topicId}~${fileName}`,
+          Body: file,
+        };
+          s3.upload(params, function(err, data) {
+            if (err) console.log(err, err.stack);
+            else {
+              setLoading(false); // todo: set loading separately
+              console.log(JSON.stringify(data));
+              resolve(data)
+            }
+          });
+        });
     });
   };
 
