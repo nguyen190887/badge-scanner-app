@@ -13,26 +13,23 @@ const Scanner = ({ topicId, addRow }) => {
   const imageFileRef = useRef(null);
 
   const uploadFileToS3 = async (fileName, file) => {
-    // TODO: FIXME - not work
-    return new Promise(resolve => {
-      callWithCredentials(() => {
+    return new Promise(async resolve => {
+      await callWithCredentials(() => {
         const s3 = new AWS.S3();
         const params = {
           Bucket: IMAGE_BUCKET,
           Key: `${topicId}~${fileName}`,
           Body: file,
         };
-        s3.upload(params, function (err, data) {
-          if (err) console.log(err, err.stack);
-          else {
-            // setLoading(false);
-            if (imageFileRef && imageFileRef.current) {
-              imageFileRef.current.value = '';
+          s3.upload(params, function(err, data) {
+            if (err) console.log(err, err.stack);
+            else {
+              setLoading(false); // todo: set loading separately
+              console.log(JSON.stringify(data));
+              resolve(data)
             }
-            resolve(data);
-          }
+          });
         });
-      })
     });
   };
 
@@ -45,6 +42,8 @@ const Scanner = ({ topicId, addRow }) => {
         imageFileRef.current.files[0],
         maxImageWidth
       );
+      imageFileRef.current.value = '';
+
       const result = await uploadFileToS3(fileName, resizedImgFile);
       console.log(result);
       addRow({ variables: { srcBucket: result.Bucket, srcKey: result.Key } });
@@ -63,7 +62,6 @@ const Scanner = ({ topicId, addRow }) => {
         accept="image/*"
         capture="camera"
         type="file"
-        disabled={loading}
         ref={imageFileRef}
         onChange={handleFileUpload}
       />

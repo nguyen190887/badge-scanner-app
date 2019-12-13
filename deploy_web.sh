@@ -5,6 +5,7 @@ WEBSITE_BUCKET="tnn.badge-scanner-web-$STAGE" #todo: read CF stack
 cd app
 npm i --production
 . gen_env.sh $STAGE prod
+rm -rf public/*
 gatsby build
 
 # Copy S3 website
