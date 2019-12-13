@@ -2,6 +2,7 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
+import Hidden from '@material-ui/core/Hidden';
 import Typography from '@material-ui/core/Typography';
 
 const styles = makeStyles({
@@ -10,7 +11,7 @@ const styles = makeStyles({
   },
 });
 
-const TopicDetail = ({ data: { topic  = {} } = {} }) => {
+const TopicDetail = ({ data: { topic = {} } = {} }) => {
   const classes = styles();
 
   return (
@@ -22,17 +23,19 @@ const TopicDetail = ({ data: { topic  = {} } = {} }) => {
         <Typography className={classes.pos} color="textSecondary">
           {topic.owner}
         </Typography>
-        <Typography variant="body2" component="p">
-          {topic.smeGroup}
-          <br />
-          {topic.date}
-          <br />
-          {topic.status}
-          <br />
-          {topic.duration}
-          <br />
-          {topic.notes}
-        </Typography>
+        <Hidden mdDown>
+          <Typography variant="body2" component="p">
+            {topic.smeGroup}
+            <br />
+            {topic.date}
+            <br />
+            {topic.status}
+            <br />
+            {topic.duration}
+            <br />
+            {topic.notes}
+          </Typography>
+        </Hidden>
       </CardContent>
     </Card>
   );
