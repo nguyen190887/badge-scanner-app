@@ -9,6 +9,7 @@ cd ..
 
 # Build app
 cd app
+rm -rf public/*
 npm i --production
 . gen_env.sh $STAGE prod
 gatsby build
