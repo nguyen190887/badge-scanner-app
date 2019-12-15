@@ -50,8 +50,8 @@ custom:
       - type: Mutation
         dataSource: LambdaSource
         field: addTrackingRowWithPhoto
-        request: "track-topic-request.vtl"
-        response: "common-response.vtl"
+        request: 'track-topic-request.vtl'
+        response: 'common-response.vtl'
     dataSources:
       - type: AWS_LAMBDA
         name: LambdaSource
@@ -130,7 +130,7 @@ functions:
       SHEET_ID: ${self:custom.sheetId}
 
   submitSurveyFn:
-      handler: handlers/submitSurveyHandler.index
+    handler: handlers/submitSurveyHandler.index
     environment:
       PRIVATE_KEY: ${self:custom.googlePrivateKey}
       CLIENT_EMAIL: ${self:custom.googleClientEmail}

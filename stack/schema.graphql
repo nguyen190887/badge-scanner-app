@@ -34,7 +34,6 @@ type RatingResult {
 }
 
 type Mutation {
-  addTrackingRow(id: Int!, userId: String!, userName: String): TrackingRow!
   submitSurvey(
     topicId: Int!
     email: String!
