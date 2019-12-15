@@ -112,8 +112,11 @@ const RatingSurvey = ({
             email,
             rating,
             comment,
+            userId,
           })
         );
+
+        console.log('after summiting');
       } catch (err) {
         console.error(err);
       }

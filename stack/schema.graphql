@@ -30,6 +30,7 @@ type RatingResult {
   rating: String!
   comment: String!
   topicId: Int!
+  userId: String!
 }
 
 type Mutation {
@@ -39,7 +40,8 @@ type Mutation {
     email: String!
     rating: String!
     comment: String!
-  ): RatingResult!
+    userId: String!
+  ): TrackingRow!
   addTrackingRow(topicId: Int!, userId: String!, userName: String): TrackingRow!
   addTrackingRowWithPhoto(srcBucket: String!, srcKey: String!): TrackingRow!
 }

@@ -68,6 +68,11 @@ custom:
         description: 'GoogleSheet WriteDataSource'
         config:
           functionName: write-to-sheet-fn
+      - type: AWS_LAMBDA
+        name: SubmitSurvey
+        description: 'Submit Survey'
+        config:
+          functionName: submitSurveyFn
 
 provider:
   name: aws
@@ -95,7 +100,6 @@ functions:
   process-image-fn:
     handler: handlers/processImageHandler.index
     environment:
-<<<<<<< HEAD
       S3_ARN: { 'Fn::GetAtt': ['ImageStore', 'Arn'] }
       SHEET_UPDATING_LAMBDA: '${self:service.name}-${self:custom.stage}-write-to-sheet-fn' #todo: find better way
     events:
@@ -103,15 +107,13 @@ functions:
           bucket: ${self:custom.imageBucket}
           events: s3:ObjectCreated:*
           existing: true
-=======
-      S3_ARN: { "Fn::GetAtt" : [ "ImageStore", "Arn" ] }
-      SHEET_UPDATING_LAMBDA: "${self:service.name}-${self:custom.stage}-write-to-sheet-fn" #todo: find better way
+    # S3_ARN: { "Fn::GetAtt" : [ "ImageStore", "Arn" ] }
+    # SHEET_UPDATING_LAMBDA: "${self:service.name}-${self:custom.stage}-write-to-sheet-fn" #todo: find better way
     # events:
     #   - s3:
     #       bucket: ${self:custom.imageBucket}
     #       events: s3:ObjectCreated:*
     #       existing: true
->>>>>>> master
 
   write-to-sheet-fn:
     handler: handlers/writeSheetHandler.index
@@ -122,6 +124,13 @@ functions:
 
   read-from-sheet-fn:
     handler: handlers/readSheetHandler.index
+    environment:
+      PRIVATE_KEY: ${self:custom.googlePrivateKey}
+      CLIENT_EMAIL: ${self:custom.googleClientEmail}
+      SHEET_ID: ${self:custom.sheetId}
+
+  submitSurveyFn:
+      handler: handlers/submitSurveyHandler.index
     environment:
       PRIVATE_KEY: ${self:custom.googlePrivateKey}
       CLIENT_EMAIL: ${self:custom.googleClientEmail}
