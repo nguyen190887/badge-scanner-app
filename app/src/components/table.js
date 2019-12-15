@@ -1,30 +1,13 @@
-import styled from '@emotion/styled';
+import { withStyles } from '@material-ui/core/styles';
+import TableRow from '@material-ui/core/TableRow';
 
-export const StyledTable = styled.table`
-  overflow: hidden;
-
-  tr {
-    width: 100%;
-  }
-
-  // a {
-  //   position: absolute;
-  //   width: 100%;
-  //   height: 10px;
-  //   cursor: pointer;
-  //   ${document && document.querySelector('.table').getBoundingClientRect()};
-  // }
-`;
-
-export const Header = styled.tr`
-  background-color: #339933;
-  color: white;
-`;
-
-export const Row = styled.tr`
-  background-color: #fffdf7;
-
-  :hover {
-    background-color: #fff5bf;
-  }
-`;
+export const StyledTableRow = withStyles(theme => ({
+  root: {
+    '&:nth-of-type(even)': {
+      backgroundColor: theme.palette.grey[50],
+    },
+    '&:hover': {
+      backgroundColor: theme.palette.grey[100],
+    },
+  },
+}))(TableRow);

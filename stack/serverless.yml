@@ -47,12 +47,17 @@ custom:
         field: submitSurvey
         request: 'track-topic-request.vtl'
         response: 'common-response.vtl'
+      - type: Mutation
+        dataSource: LambdaSource
+        field: addTrackingRowWithPhoto
+        request: "track-topic-request.vtl"
+        response: "common-response.vtl"
     dataSources:
       - type: AWS_LAMBDA
         name: LambdaSource
         description: 'Lambda DataSource'
         config:
-          functionName: graphql-fn
+          functionName: process-image-fn
       - type: AWS_LAMBDA
         name: GoogleSheetDataSource
         description: 'GoogleSheet DataSource'
@@ -88,8 +93,9 @@ functions:
     handler: graphqlHandler.index
 
   process-image-fn:
-    handler: processImageHandler.index
+    handler: handlers/processImageHandler.index
     environment:
+<<<<<<< HEAD
       S3_ARN: { 'Fn::GetAtt': ['ImageStore', 'Arn'] }
       SHEET_UPDATING_LAMBDA: '${self:service.name}-${self:custom.stage}-write-to-sheet-fn' #todo: find better way
     events:
@@ -97,6 +103,15 @@ functions:
           bucket: ${self:custom.imageBucket}
           events: s3:ObjectCreated:*
           existing: true
+=======
+      S3_ARN: { "Fn::GetAtt" : [ "ImageStore", "Arn" ] }
+      SHEET_UPDATING_LAMBDA: "${self:service.name}-${self:custom.stage}-write-to-sheet-fn" #todo: find better way
+    # events:
+    #   - s3:
+    #       bucket: ${self:custom.imageBucket}
+    #       events: s3:ObjectCreated:*
+    #       existing: true
+>>>>>>> master
 
   write-to-sheet-fn:
     handler: handlers/writeSheetHandler.index

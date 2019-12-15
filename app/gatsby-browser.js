@@ -1,6 +1,6 @@
 import Amplify from '@aws-amplify/core';
 
-export { wrapRootElement } from './src/apollo/wrapRootElement';
+export { wrapRootElement } from './src/apollo';
 
 // todo: put these configs in correct place
 export const onRouteUpdate = ({ location, prevLocation }) => {

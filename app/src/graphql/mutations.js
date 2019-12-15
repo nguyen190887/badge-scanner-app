@@ -22,3 +22,16 @@ export const submitSurvey = `mutation SubmitSurvey($topicId: Int!, $email: Strin
     comment
   }
 }`;
+
+export const addTrackingRowWithPhoto = `mutation AddTrackingRowWithPhoto($srcBucket: String!, $srcKey: String!) {
+  addTrackingRowWithPhoto(srcBucket: $srcBucket, srcKey: $srcKey) {
+    topicId
+    userId
+    email
+    imagePath
+    rating
+    comment
+    userName
+  }
+}
+`;

@@ -3,3 +3,5 @@ export { default as TopicDetail } from './topicDetail';
 export { default as TopicAttendance } from './topicAttendance';
 export { default as IdForm } from './idForm';
 export { default as RatingSurvey } from './ratingSurvey';
+export { default as Layout } from './layout';
+export { default as TrackAttendee } from './trackAttendee';

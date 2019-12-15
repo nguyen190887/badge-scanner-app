@@ -37,7 +37,7 @@ const updateSheet = async (topicId, userId, userName, imagePath) => {
 
   const payload = {
     arguments: {
-      id: topicId,
+      topicId,
       userId,
       userName,
       imagePath,
@@ -51,21 +51,23 @@ const updateSheet = async (topicId, userId, userName, imagePath) => {
       })
       .promise();
     console.info('Invocation Response', data);
+    return data.Payload;
   } catch (err) {
     // advoid lambda execution retry
     console.error('Failed to invoke lambda', err);
+    return {};
   }
 };
 
 module.exports.index = async (event, context, callback) => {
-  console.log('S3 object', event.Records[0].s3);
+  // console.log('S3 object', event.Records[0].s3);
 
   // Read options from the event.
-  const srcBucket = event.Records[0].s3.bucket.name;
+  const srcBucket = event.arguments.srcBucket;
 
   // Object key may have spaces or unicode non-ASCII characters.
   const srcKey = decodeURIComponent(
-    event.Records[0].s3.object.key.replace(/\+/g, ' ')
+    event.arguments.srcKey.replace(/\+/g, ' ')
   );
 
   const topicId = srcKey.split('~')[0];
@@ -100,7 +102,9 @@ module.exports.index = async (event, context, callback) => {
   const textInfo = extractTextInfo(data);
   console.info(textInfo);
 
-  await updateSheet(topicId, textInfo.id, textInfo.name, srcKey);
+  const response = await updateSheet(topicId, textInfo.id, textInfo.name, srcKey);
+  let returnResult = JSON.parse(response);
+  returnResult.topicId = Number.parseInt(topicId);
 
-  return textInfo;
+  return returnResult;
 };
