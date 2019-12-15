@@ -4,6 +4,7 @@ App to scan badge and extract employee ID
 # Getting started
 - Ensure AWS credentials are set
 - Install [Serverless Framework](https://serverless.com/)
+- Ensure `Node.js 12` is installed
 
 ## Web App
 - `cd` to `app/`
