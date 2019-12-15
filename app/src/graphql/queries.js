@@ -1,16 +1,9 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const allPosts = `query AllPosts {
-  allPosts {
-    id
-    title
-  }
-}
-`;
 export const allTopics = `query AllTopics {
   allTopics {
-    no
+    topicId
     date
     name
     owner
@@ -21,9 +14,9 @@ export const allTopics = `query AllTopics {
   }
 }
 `;
-export const topic = `query Topic($id: Int!) {
-  topic(id: $id) {
-    no
+export const topic = `query Topic($topicId: Int!) {
+  topic(topicId: $topicId) {
+    topicId
     date
     name
     owner
@@ -34,9 +27,9 @@ export const topic = `query Topic($id: Int!) {
   }
 }
 `;
-export const topicAttendance = `query TopicAttendance($id: Int!) {
-  topicAttendance(id: $id) {
-    id
+export const topicAttendance = `query TopicAttendance($topicId: Int!) {
+  topicAttendance(topicId: $topicId) {
+    topicId
     userId
     email
     imagePath

@@ -1,109 +1,61 @@
-import React, { useEffect, useReducer, useState } from 'react';
-import API, { graphqlOperation } from '@aws-amplify/api';
-import { topicAttendance, topic } from '../graphql/queries';
-import { onTrackingRowAdded } from '../graphql/subscriptions';
-
+import React from 'react';
+import { useQuery } from '@apollo/react-hooks';
+import gql from 'graphql-tag';
+import { topic } from '../graphql/queries';
+import { makeStyles } from '@material-ui/core/styles';
+import Breadcrumbs from '@material-ui/core/Breadcrumbs';
+import Link from '@material-ui/core/Link';
+import Container from '@material-ui/core/Container';
+import Hidden from '@material-ui/core/Hidden';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
 import Layout from '../components/layout';
 import SEO from '../components/seo';
-import Scanner from '../components/scanner';
-import UserInfo from '../components/userInfo';
-import { TopicDetail, TopicAttendance, IdForm } from '../components';
-import useAuth from '../utils/useAuth';
+import { TopicDetail, TrackAttendee } from '../components';
 
-const initialState = {
-  attendance: [],
-  loading: true,
-  error: false
-}
-// TODO: issue #20
-function reducer(state, action) {
-  switch (action.type) {
-    case 'fetchRowsSuccess':
-      return { ...state, attendance: action.attendance, loading: false }
-    case 'onTrackingRowAdded':
-      return { ...state, attendance: [action.row, ...state.attendance] }
-    case 'fetchRowsError':
-      return { ...state, loading: false, error: true }
-    default:
-      throw new Error();
-  }
-}
+const useStyles = makeStyles(theme => ({
+  breadcrumb: {
+    margin: theme.spacing(2),
+  },
+}));
 
-async function fetchRows(dispatch, topicId) {
-  try {
-    const rowData = await API.graphql(graphqlOperation(topicAttendance, { id: topicId }))
-    dispatch({
-      type: 'fetchRowsSuccess',
-      attendance: rowData.data.topicAttendance
-    })
-  } catch (err) {
-    console.log('error fetching posts...: ', err)
-    dispatch({
-      type: 'fetchRowsError',
-    })
-  }
-}
-
-async function fetchTopic(topicId, setTopic) {
-  try {
-    const data = await API.graphql(graphqlOperation(topic, { id: topicId }));
-    setTopic({ data: data, loading: false, error: false });
-  } catch (err) {
-    setTopic({ loading: false, error: true });
-  }
-}
+const Breadcrumb = (classes, topic) => (
+  <Breadcrumbs aria-label="breadcrumb" className={classes.breadcrumb}>
+    <Link color="inherit" href="/">Topics</Link>
+    <Typography color="textPrimary">{topic.name}</Typography>
+  </Breadcrumbs>
+)
 
 const TopicPage = (props) => {
-  const { loggedIn } = useAuth();
+  const classes = useStyles();
+
   const topicId = props.id ? props.id : '';
 
-  const [rowsState, dispatch] = useReducer(reducer, initialState);
-  const [topicState, setTopic] = useState({
-    data: {},
-    loading: true,
-    error: false,
-  });
-
-  useEffect(() => {
-    fetchTopic(topicId, setTopic);
-    fetchRows(dispatch, topicId);
-    const subscriber = API.graphql(graphqlOperation(onTrackingRowAdded, { id: topicId })).subscribe({
-      next: data => {
-        const newRowFromSub = data.value.data.onTrackingRowAdded
-        dispatch({
-          type: 'onTrackingRowAdded',
-          row: newRowFromSub
-        })
-      }
-    });
-    return () => subscriber.unsubscribe()
-  }, [topicId])
+  const { loading: topicLoading, error: topicError, data: topicData } = useQuery(gql`${topic}`,
+    { variables: { topicId } }
+  );
 
   return (
     <Layout>
       <SEO title="Scan your badge!" />
-      <UserInfo />
-
-      {topicId && (
-        <>
-          {topicState.loading ? <p>Loading</p> :
-            topicState.error ? <></> :
-              <TopicDetail data={topicState.data} />}
-          <fieldset>
-            <legend>Track Attendees</legend>
-            <div>by scanning ID Badge</div>
-            {loggedIn && <Scanner topicId={topicId} />}
-            <div>no luck! By keying ID</div>
-            <IdForm topicId={topicId} />
-          </fieldset>
-          {rowsState.loading ? <div>Loading</div> :
-            rowsState.error ? <></> :
-              rowsState.attendance &&
-              <TopicAttendance records={rowsState.attendance} />
-          }
-        </>
-      )}
-    </Layout>
+      <Container maxWidth='xl'>
+        {topicId && (
+          <Grid container spacing={2}>
+            {topicData && <Hidden mdUp>{Breadcrumb(classes, topicData.topic)}</Hidden>}
+            {topicLoading ? <p>Loading</p> :
+              topicError ? <></> : 
+                <Grid item xs={12} sm={3}>
+                  <TopicDetail data={topicData} />
+                </Grid>
+            }
+            <Grid item xs={12} sm={9}>
+              {topicData && <Hidden mdDown>{Breadcrumb(classes, topicData.topic)}</Hidden>}
+              <TrackAttendee topicId={topicId} />
+            </Grid>
+          </Grid>
+        )}
+      </Container>
+    </Layout >
   );
 };
 

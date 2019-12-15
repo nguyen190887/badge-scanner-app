@@ -6,7 +6,7 @@ const readTopics = async (doc) => {
       let response = [];
       rows.forEach(function (row) {
         response.push({
-          no: row.no,
+          topicId: row.no,
           date: row.date,
           name: row.name,
           owner: row.owner,
@@ -23,13 +23,13 @@ const readTopics = async (doc) => {
 
 const readTopic = async (doc, args) => {
   return new Promise(resolve => {
-    const { id } = args;
+    const { topicId } = args;
     doc.getRows(1, {
-      query: `(no=${id})`
+      query: `(no=${topicId})`
     }, function (err, rows) {
       if (rows) {
         resolve({
-          no: rows[0].no,
+          topicId: rows[0].no,
           date: rows[0].date,
           name: rows[0].name,
           owner: rows[0].owner,
@@ -48,21 +48,22 @@ const readTopic = async (doc, args) => {
 
 const readTopicAttendance = async (doc = new GoogleSpreadsheet(), args) => {
   return new Promise(resolve => {
-    const { id } = args;
+    const { topicId } = args;
     doc.getRows(2, {
-      query: `(topicid=${id})`
+      query: `(topicid=${topicId})`
     }, function (_err, rows) {
       console.info(rows);
       let response = [];
       rows.forEach(row => {
         response.push({
-          id: row.topicid,
+          topicId: row.topicid,
           userId: row.userid,
           userName: row.username,
           email: row.email,
           imagePath: row.imagepath,
           rating: row.rating,
-          comment: row.comment
+          comment: row.comment,
+          userName: row.username
         })
       });
       resolve(response);
