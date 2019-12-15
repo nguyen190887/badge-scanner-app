@@ -70,7 +70,7 @@ custom:
 provider:
   name: aws
   runtime: nodejs12.x
-  stage: ${opt:stage, 'dev3'}
+  stage: ${opt:stage, 'dev'}
   region: us-east-1
 
   iamRoleStatements:
