@@ -21,6 +21,15 @@ Resources:
             Action: "s3:GetObject"
             Resource: !Join ['', ['arn:aws:s3:::', !Ref S3Bucket, '/*']]
       Bucket: !Ref S3Bucket
+  DnsRecord:
+    Type: "AWS::Route53::RecordSet"
+    Properties:
+      HostedZoneName: kbvn.xyz.
+      Name: ${self:custom.DNSName}
+      Type: CNAME
+      TTL: '3600'
+      ResourceRecords:
+      - ${self:custom.CName}
 Outputs:
   WebsiteURL:
     Value: !GetAtt [S3Bucket, WebsiteURL]

@@ -13,6 +13,9 @@ custom:
   sheetId: "1-VB8_PDm15-TI1dmI--t5GLZtFYdKvCe0aaoSuOxT8M"
   websiteBucket: "tnn.badge-scanner-web-${self:custom.stage}"
   imageBucket: "tnn.image-badge-store-${self:custom.stage}"
+  DNSName: "sharing-${self:custom.stage}.kbvn.xyz"
+  aliasHostedZoneId: Z37G7FHUFYKNCZ   
+  CName: "${self:custom.websiteBucket}.s3-website-us-east-1.amazonaws.com"
   # appsync-offline:
   #   port: 62222
   appSync:
@@ -67,7 +70,7 @@ custom:
 provider:
   name: aws
   runtime: nodejs12.x
-  stage: ${opt:stage, 'dev'}
+  stage: ${opt:stage, 'dev3'}
   region: us-east-1
 
   iamRoleStatements:
