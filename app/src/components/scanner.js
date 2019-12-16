@@ -18,7 +18,7 @@ const Scanner = ({ topicId, addRow }) => {
         const s3 = new AWS.S3();
         const params = {
           Bucket: IMAGE_BUCKET,
-          Key: `${topicId}~${fileName}`,
+          Key: `${topicId}~${new Date().getTime()}`,
           Body: file,
         };
           s3.upload(params, function(err, data) {
