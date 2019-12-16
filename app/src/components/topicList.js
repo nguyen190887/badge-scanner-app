@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { Link } from 'gatsby';
 import { makeStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -38,14 +40,38 @@ const useStyles = makeStyles(theme => ({
   details: {
     alignItems: 'center',
   },
+  xsmallColumn: {
+    // flexBasis: '6%',
+    flexBasis: '14.28%'
+  },
+  smallColumn: {
+    // flexBasis: '12%',
+    flexBasis: '14.28%'
+  },
   column: {
-    flexBasis: '18%',
+    // flexBasis: '16%',
+    flexBasis: '14.28%'
+  },
+  wideColumn: {
+    // flexBasis: '20%',
+    flexBasis: '14.28%'
   },
   panel: {
     boxShadow: 'none'
   },
   panelSummary: {
     padding: 0
+  },
+  lastColumn: {
+    boxShadow: '-1px 0 rgba(0,0,0,0.12)',
+    padding: 0
+  },
+  button: {
+    // display: 'block',
+    // padding: '35%',
+    '&:hover': {
+      backgroundColor: 'transparent'
+    }
   },
   helper: {
     borderLeft: `2px solid ${theme.palette.divider}`,
@@ -131,7 +157,6 @@ const TopicList = ({ topics: { allTopics = [] } = {} }) => {
               // <StyledTableRow key={topic.topicId}>
               <TableRow>
                 <TableCell colSpan={6}>
-                  {/* <div className={classes.root}> */}
                   <ExpansionPanel square className={classes.panel}>
                     <ExpansionPanelSummary
                       expandIcon={<ExpandMoreIcon />}
@@ -139,26 +164,22 @@ const TopicList = ({ topics: { allTopics = [] } = {} }) => {
                       id="panel1c-header"
                       className={classes.panelSummary}
                     >
-                      {/* <div className={classes.column}>
-                      <Typography className={classes.heading}>Location</Typography>
-                    </div> */}
-                      <div className={classes.column}>{topic.date}</div>
-                      <div className={classes.column}>{topic.name}</div>
+                      <div className={classes.smallColumn}>{topic.date}</div>
+                      <div className={classes.wideColumn}>{topic.name}</div>
                       <div className={classes.column}>{topic.owner}</div>
                       <div className={classes.column}>{topic.status}</div>
                       <div className={classes.column}>{topic.smeGroup}</div>
-                      <div className={classes.column}>{topic.duration}</div>
+                      <div className={classes.smallColumn}>{topic.duration}</div>
                     </ExpansionPanelSummary>
                     <ExpansionPanelDetails className={classes.details}>
-                      {/* <div className={classes.column} /> */}
                       {topic.notes}
                     </ExpansionPanelDetails>
                   </ExpansionPanel>
-                  {/* </div> */}
                 </TableCell>
-                <TableCell><Link to={`/topic/${topic.topicId}`}>Detail</Link></TableCell>
+                <TableCell className={`${classes.lastColumn} ${classes.xsmallColumn}`}>
+                  <Button href={`/topic/${topic.topicId}`} className={classes.button}><KeyboardArrowRight /></Button>
+                </TableCell>
               </TableRow>
-              // </StyledTableRow>
             ))
           }
         </TableBody>
