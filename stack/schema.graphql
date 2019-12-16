@@ -30,13 +30,7 @@ type Query {
 	topicAttendance(topicId: Int!): [TrackingRow]
 }
 
-type Subscription {
-	onTrackingRowAdded(topicId: Int!): TrackingRow
-	@aws_subscribe(mutations: ["addTrackingRow"])
-}
-
 schema {
 	query: Query
 	mutation: Mutation
-	subscription: Subscription
 }

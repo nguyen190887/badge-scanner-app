@@ -43,7 +43,7 @@ const TopicPage = (props) => {
           <Grid container spacing={2}>
             {topicData && <Hidden mdUp>{Breadcrumb(classes, topicData.topic)}</Hidden>}
             {topicLoading ? <p>Loading</p> :
-              topicError ? <></> : 
+              topicError ? <></> :
                 <Grid item xs={12} sm={3}>
                   <TopicDetail data={topicData} />
                 </Grid>

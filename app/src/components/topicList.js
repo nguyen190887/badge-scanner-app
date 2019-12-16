@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'gatsby';
 import { makeStyles } from '@material-ui/core/styles';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
@@ -12,8 +12,9 @@ import TableBody from '@material-ui/core/TableBody';
 import TableRow from '@material-ui/core/TableRow';
 import TableHead from '@material-ui/core/TableHead';
 import TableCell from '@material-ui/core/TableCell';
+import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Hidden from '@material-ui/core/Hidden';
-import { StyledTableRow } from './table';
+import { stableSort, getSorting } from './table';
 
 const useStyles = makeStyles(theme => ({
   cell: {
@@ -62,28 +63,57 @@ const useStyles = makeStyles(theme => ({
 const TopicList = ({ topics: { allTopics = [] } = {} }) => {
   const classes = useStyles();
 
+  const columns = [
+    { _id: 'date', displayName: 'Date' },
+    { _id: 'topic', displayName: 'Topic' },
+    { _id: 'owner', displayName: 'Owner' },
+    { _id: 'status', displayName: 'Status' },
+    { _id: 'group', displayName: 'SME Group' },
+    { _id: 'duration', displayName: 'Duration' },
+  ];
+
+  const [order, setOrder] = React.useState('asc');
+  const [orderBy, setOrderBy] = React.useState(columns[0]._id);
+
+  const handleSortRequest= (event, property) => {
+    const isDesc = orderBy === property && order === 'desc';
+    setOrder(isDesc ? 'asc' : 'desc');
+    setOrderBy(property);
+  };
+
   return (
     <Paper>
       <Table>
         <TableHead>
           <TableRow>
-            <Hidden smDown>
-              <TableCell align="left">Date</TableCell>
+            {columns.map(column => (
+              <TableCell
+                key={column._id}
+                sortDirection={orderBy === column._id ? order : false}>
+                <TableSortLabel
+                  active={orderBy === column._id}
+                  direction={order}
+                  onClick={ event => handleSortRequest(event, column._id)}>
+                  {column.displayName}
+                </TableSortLabel>
+              </TableCell>
+            ))}
+            {/* <Hidden smDown>
+              <TableCell sortDirection={orderBy === 'date' ? order : false}>Date</TableCell>
             </Hidden>
-            <TableCell align="center">Topic</TableCell>
-            <TableCell align="center">Owner</TableCell>
+            <TableCell sortDirection={orderBy === 'topic' ? order : false}>Topic</TableCell>
+            <TableCell sortDirection={orderBy === 'owner' ? order : false}>Owner</TableCell>
             <Hidden smDown>
-              <TableCell align="center">Status</TableCell>
-              <TableCell align="center">SME Group</TableCell>
-              <TableCell align="left">Duration</TableCell>
-              {/* <TableCell>Notes</TableCell> */}
-            </Hidden>
+              <TableCell sortDirection={orderBy === 'status' ? order : false}>Status</TableCell>
+              <TableCell sortDirection={orderBy === 'group' ? order : false}>SME Group</TableCell>
+              <TableCell sortDirection={orderBy === 'duration' ? order : false}>Duration</TableCell>
+            </Hidden> */}
             <TableCell style={{ minWidth: '50px' }} />
           </TableRow>
         </TableHead>
         <TableBody>
           {
-            allTopics.map((topic) => (
+           stableSort(allTopics, getSorting(order, orderBy)).map((topic) => (
               // <StyledTableRow key={topic.topicId}>
               //   <Hidden smDown>
               //     <TableCell>{topic.date}</TableCell>
