@@ -37,7 +37,7 @@ const TopicPage = (props) => {
 
   return (
     <Layout>
-      <SEO title={topicData.topic.name} />
+      <SEO title={topicData && topicData.topic.name} />
       <Container maxWidth='xl'>
         {topicId && (
           <Grid container spacing={2}>
