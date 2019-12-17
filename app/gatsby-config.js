@@ -4,8 +4,8 @@ require('dotenv').config({
 
 module.exports = {
   siteMetadata: {
-    title: `Badge Scanner App`,
-    description: `The web app to scan and extract ID from employee badge.`,
+    title: `COX Sharing Tracker`,
+    description: `The web app to track sharing activities inside COX.`,
     author: `@nguyen190887`,
   },
   plugins: [

@@ -13,7 +13,7 @@ const IndexPage = () => {
   const { loading, error, data } = useQuery(gql`${allTopics}`);
   return (
     <Layout>
-      <SEO title="Scan your badge!" />
+      <SEO title="Home" />
       <Container maxWidth="lg">
         {
           loading ? <p>Loading...</p> :
