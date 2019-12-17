@@ -52,6 +52,9 @@ const useStyles = makeStyles(theme => ({
     // flexBasis: '16%',
     flexBasis: '14.28%'
   },
+  innerColumn: {
+    flexBasis: '16.66%'
+  },
   wideColumn: {
     // flexBasis: '20%',
     flexBasis: '14.28%'
@@ -91,17 +94,17 @@ const TopicList = ({ topics: { allTopics = [] } = {} }) => {
 
   const columns = [
     { _id: 'date', displayName: 'Date' },
-    { _id: 'topic', displayName: 'Topic' },
+    { _id: 'name', displayName: 'Topic' },
     { _id: 'owner', displayName: 'Owner' },
     { _id: 'status', displayName: 'Status' },
-    { _id: 'group', displayName: 'SME Group' },
+    { _id: 'smeGroup', displayName: 'SME Group' },
     { _id: 'duration', displayName: 'Duration' },
   ];
 
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState(columns[0]._id);
 
-  const handleSortRequest= (event, property) => {
+  const handleSortRequest = (event, property) => {
     const isDesc = orderBy === property && order === 'desc';
     setOrder(isDesc ? 'asc' : 'desc');
     setOrderBy(property);
@@ -115,72 +118,44 @@ const TopicList = ({ topics: { allTopics = [] } = {} }) => {
             {columns.map(column => (
               <TableCell
                 key={column._id}
-                sortDirection={orderBy === column._id ? order : false}>
+                sortDirection={orderBy === column._id ? order : false}
+                className={classes.column}>
                 <TableSortLabel
                   active={orderBy === column._id}
                   direction={order}
-                  onClick={ event => handleSortRequest(event, column._id)}>
+                  onClick={event => handleSortRequest(event, column._id)}>
                   {column.displayName}
                 </TableSortLabel>
               </TableCell>
             ))}
-            {/* <Hidden smDown>
-              <TableCell sortDirection={orderBy === 'date' ? order : false}>Date</TableCell>
-            </Hidden>
-            <TableCell sortDirection={orderBy === 'topic' ? order : false}>Topic</TableCell>
-            <TableCell sortDirection={orderBy === 'owner' ? order : false}>Owner</TableCell>
-            <Hidden smDown>
-              <TableCell sortDirection={orderBy === 'status' ? order : false}>Status</TableCell>
-              <TableCell sortDirection={orderBy === 'group' ? order : false}>SME Group</TableCell>
-              <TableCell sortDirection={orderBy === 'duration' ? order : false}>Duration</TableCell>
-            </Hidden> */}
-            <TableCell style={{ minWidth: '50px' }} />
+            <TableCell/>
           </TableRow>
         </TableHead>
         <TableBody>
-          {
-           stableSort(allTopics, getSorting(order, orderBy)).map((topic) => (
-              // <StyledTableRow key={topic.topicId}>
-              //   <Hidden smDown>
-              //     <TableCell>{topic.date}</TableCell>
-              //   </Hidden>
-              //   <TableCell>{topic.name}</TableCell>
-              //   <TableCell>{topic.owner}</TableCell>
-              //   <Hidden smDown>
-              //     <TableCell>{topic.status}</TableCell>
-              //     <TableCell>{topic.smeGroup}</TableCell>
-              //     <TableCell>{topic.duration}</TableCell>
-              //     <TableCell>{topic.notes}</TableCell>
-              //   </Hidden>
-              //   <TableCell><Link to={`/topic/${topic.topicId}`}>Detail</Link></TableCell>
-              // </StyledTableRow>
-              // <StyledTableRow key={topic.topicId}>
-              <TableRow>
-                <TableCell colSpan={6}>
-                  <ExpansionPanel square className={classes.panel}>
-                    <ExpansionPanelSummary
-                      expandIcon={<ExpandMoreIcon />}
-                      aria-controls="panel1c-content"
-                      id="panel1c-header"
-                      className={classes.panelSummary}
-                    >
-                      <div className={classes.smallColumn}>{topic.date}</div>
-                      <div className={classes.wideColumn}>{topic.name}</div>
-                      <div className={classes.column}>{topic.owner}</div>
-                      <div className={classes.column}>{topic.status}</div>
-                      <div className={classes.column}>{topic.smeGroup}</div>
-                      <div className={classes.smallColumn}>{topic.duration}</div>
-                    </ExpansionPanelSummary>
-                    <ExpansionPanelDetails className={classes.details}>
-                      {topic.notes}
-                    </ExpansionPanelDetails>
-                  </ExpansionPanel>
-                </TableCell>
-                <TableCell className={`${classes.lastColumn} ${classes.xsmallColumn}`}>
-                  <Button href={`/topic/${topic.topicId}`} className={classes.button}><KeyboardArrowRight /></Button>
-                </TableCell>
-              </TableRow>
-            ))
+          {stableSort(allTopics, getSorting(order, orderBy)).map((topic) => { console.log(topic[orderBy]); return (
+            <TableRow key={`${topic.topicId}`}>
+              <TableCell colSpan={6}>
+                <ExpansionPanel square className={classes.panel}>
+                  <ExpansionPanelSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls="panel1c-content"
+                    id="panel1c-header"
+                    className={classes.panelSummary}
+                  >
+                    {columns.map((column, i) => (
+                      <div className={classes.innerColumn} key={`${i}_${column._id}`}>{topic[column._id]}</div>
+                    ))}
+                  </ExpansionPanelSummary>
+                  <ExpansionPanelDetails className={classes.details}>
+                    {topic.notes}
+                  </ExpansionPanelDetails>
+                </ExpansionPanel>
+              </TableCell>
+              <TableCell className={classes.column}>
+                <Link to={`/topic/${topic.topicId}`}>Detail</Link>
+              </TableCell>
+            </TableRow>
+          )})
           }
         </TableBody>
       </Table>

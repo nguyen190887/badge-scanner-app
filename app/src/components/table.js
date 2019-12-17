@@ -13,6 +13,9 @@ export const StyledTableRow = withStyles(theme => ({
 }))(TableRow);
 
 export const desc = (a, b, orderBy) => {
+  if(orderBy === 'date') {
+    return new Date(b.date) - new Date(a.date);
+  }
   if (b[orderBy] < a[orderBy]) {
     return -1;
   }
@@ -33,5 +36,7 @@ export const stableSort = (array, cmp) => {
 }
 
 export const getSorting = (order, orderBy) => {
-  return order === 'desc' ? (a, b) => desc(a, b, orderBy) : (a, b) => -desc(a, b, orderBy);
+  return order === 'desc' ?
+    (a, b) => desc(a, b, orderBy) :
+    (a, b) => -desc(a, b, orderBy);
 }
