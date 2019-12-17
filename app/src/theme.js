@@ -1,21 +1,20 @@
-import { deepPurple, teal, red } from '@material-ui/core/colors';
 import { createMuiTheme } from '@material-ui/core/styles';
 
 // A custom theme for this app
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: deepPurple[700],
-      light: deepPurple[500],
-      dark: deepPurple[900],
+      main: '#104D82',
+      light: '#5797CF',
+      dark: '#092F4F',//#011D36
     },
     secondary: {
-      main: teal.A400,
-      light: teal.A200,
-      dark: teal.A700
+      main: '#0A8F86',
+      light: '#0FDBCE',
+      dark: '#065C56'
     },
     error: {
-      main: red[800],
+      main: '#8F241F',
     },
     background: {
       default: '#fff',
