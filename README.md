@@ -63,3 +63,5 @@ App to scan badge and extract employee ID
 
 # Learning
 - [Serverless Best Practices](https://medium.com/@PaulDJohnston/serverless-best-practices-b3c97d551535)
+- [Serverless Terminal Commands](https://lorenstewart.me/2017/09/19/serverless-framework-terminal-commands/)
+
