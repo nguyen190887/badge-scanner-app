@@ -27,7 +27,11 @@ LABEL "maintainer"="nguyen190887"
 #     if [ ! -e /usr/bin/pip ]; then ln -s pip3 /usr/bin/pip ; fi
 
 # RUN pip3 install awscli --upgrade --user
-RUN apk add aws-cli
+RUN echo "http://dl-2.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories; \
+RUN echo "http://dl-3.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories; \
+RUN echo "http://dl-4.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories; \
+RUN echo "http://dl-5.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories
+RUN apk --update add aws-cli
 RUN npm i -g serverless
 RUN npm i -g gatsby-cli
 
