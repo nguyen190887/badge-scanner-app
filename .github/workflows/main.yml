@@ -1,0 +1,10 @@
+name: Auto build
+on: push
+
+jobs:
+  build:
+    name: Serverless deploy action
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: ./actions
