@@ -9,6 +9,8 @@ LABEL "repository"="https://github.com/nguyen190887/badge-scanner-app"
 LABEL "homepage"="http://github.com/actions"
 LABEL "maintainer"="nguyen190887"
 
+RUN npm i -g serverless
+
 ADD entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
