@@ -9,6 +9,8 @@ LABEL "repository"="https://github.com/nguyen190887/badge-scanner-app"
 LABEL "homepage"="http://github.com/actions"
 LABEL "maintainer"="nguyen190887"
 
+RUN apt install python3-pip
+RUN pip3 install awscli --upgrade --user
 RUN npm i -g serverless
 RUN npm i -g gatsby-cli
 
