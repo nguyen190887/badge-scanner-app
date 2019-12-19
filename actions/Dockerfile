@@ -28,12 +28,8 @@ RUN echo "**** install Python ****" && \
 RUN pip3 --version
 RUN pip --version
 RUN pip3 install awscli --upgrade --user
-# RUN echo "http://dl-2.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories; \
-#     echo "http://dl-3.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories; \
-#     echo "http://dl-4.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories; \
-#     echo "http://dl-5.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories
-
-# RUN apk --update add aws-cli
+RUN export PATH=/root/.local/bin:$PATH
+RUN aws --version
 
 # RUN npm i -g serverless
 # RUN npm i -g gatsby-cli
