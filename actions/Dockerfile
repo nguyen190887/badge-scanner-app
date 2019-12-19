@@ -10,6 +10,7 @@ LABEL "homepage"="http://github.com/actions"
 LABEL "maintainer"="nguyen190887"
 
 RUN npm i -g serverless
+RUN npm i -g gatsby-cli
 
 ADD entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
