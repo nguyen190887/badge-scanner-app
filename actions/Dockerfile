@@ -26,7 +26,7 @@ RUN echo "**** install Python ****" && \
     pip3 install --no-cache --upgrade pip setuptools wheel && \
     if [ ! -e /usr/bin/pip ]; then ln -s pip3 /usr/bin/pip ; fi
 RUN pip3 install awscli --upgrade --user
-RUN export PATH=~/.local/bin:$PATH
+RUN cp /root/.local/bin/* /usr/local/bin
 RUN aws --version
 
 # RUN npm i -g serverless
