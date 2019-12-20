@@ -1,5 +1,7 @@
-# badge-scanner-app
-App to scan badge and extract employee ID
+![](https://github.com/nguyen190887/badge-scanner-app/workflows/Build%20&%20Deploy/badge.svg)
+
+# Sharing Tracker App
+Track sharing activities in a team.
 
 # Getting started
 - Ensure AWS credentials are set
