@@ -10,8 +10,10 @@ LABEL "repository"="https://github.com/nguyen190887/badge-scanner-app"
 LABEL "homepage"="http://github.com/actions"
 LABEL "maintainer"="nguyen190887"
 
-RUN apk add --update nodejs npm
-RUN apk add --update npm
+# RUN apk add --update nodejs npm
+# RUN apk add --update npm
+RUN apk add --update nodejs nodejs-npm
+
 
 RUN npm i -g serverless
 RUN npm i -g gatsby-cli
