@@ -9,3 +9,4 @@ cd ..
 
 # Build app
 . deploy_web.sh $STAGE
+
