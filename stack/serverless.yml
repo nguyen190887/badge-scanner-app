@@ -1,6 +1,5 @@
 service: badge-scanner-api
 app: badge-scanner-app
-org: nguyen190887
 
 plugins:
   - serverless-appsync-plugin
@@ -82,7 +81,7 @@ provider:
 
 functions:
   badge-scanner-fn:
-    handler: handler.index        
+    handler: handler.index
 
   graphql-fn:
     handler: graphqlHandler.index
@@ -111,7 +110,7 @@ functions:
       PRIVATE_KEY: ${self:custom.googlePrivateKey}
       CLIENT_EMAIL: ${self:custom.googleClientEmail}
       SHEET_ID: ${self:custom.sheetId}
-          
+
 resources:
   - ${file(resources/s3-image-bucket.yml)}
   - ${file(resources/s3-website-bucket.yml)}
