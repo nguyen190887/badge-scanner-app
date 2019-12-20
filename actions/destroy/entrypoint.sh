@@ -4,4 +4,5 @@ serverless config credentials --provider aws --key $AWS_ACCESS_KEY_ID --secret $
 STAGE="$BRANCH_NAME"
 
 cd stack
+npm i
 sls remove -s $STAGE
