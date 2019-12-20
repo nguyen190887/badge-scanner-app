@@ -22,15 +22,14 @@ RUN apk -v --update add \
     apk -v --purge del py-pip && \
     rm /var/cache/apk/*
 # VOLUME /root/.aws
-RUN aws --version
+# RUN aws --version
 
 # RUN apk add --update nodejs npm
 # RUN apk add --update npm
 # RUN apk add --update nodejs nodejs-npm
 
-
-# RUN npm i -g serverless
-# RUN npm i -g gatsby-cli
+RUN npm i -g serverless
+RUN npm i -g gatsby-cli
 
 ADD entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
