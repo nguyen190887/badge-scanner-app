@@ -1,10 +1,10 @@
 #!/bin/sh -l
 
-aws s3 ls
+# aws s3 ls
 
-# echo "Access key: $AWS_ACCESS_KEY_ID"
-# echo "Secret key: $AWS_SECRET_ACCESS_KEY"
-# echo "Serverless key: $SERVERLESS_ACCESS_KEY"
+echo "Access key: $AWS_ACCESS_KEY_ID"
+echo "Secret key: $AWS_SECRET_ACCESS_KEY"
+echo "Serverless key: $SERVERLESS_ACCESS_KEY"
 
 # aws --version
 
@@ -13,14 +13,14 @@ aws s3 ls
 # # export AWS_SECRET_ACCESS_KEY="$AWS_SECRET_ACCESS_KEY"
 # # export SERVERLESS_ACCESS_KEY="$SERVERLESS_ACCESS_KEY"
 
-# serverless --version
-# serverless config credentials --provider aws --key $AWS_ACCESS_KEY_ID --secret $AWS_SECRET_ACCESS_KEY
+serverless --version
+serverless config credentials --provider aws --key $AWS_ACCESS_KEY_ID --secret $AWS_SECRET_ACCESS_KEY
 
-# # BRANCH_NAME="${BRANCH_NAME/eng:/}"
-# STAGE="$BRANCH_NAME"
-# if [ "$BRANCH_NAME" = "master" ]; then
-#     STAGE="prod"
-# fi
+# BRANCH_NAME="${BRANCH_NAME/eng:/}"
+STAGE="$BRANCH_NAME"
+if [ "$BRANCH_NAME" = "master" ]; then
+    STAGE="prod"
+fi
 
-# . deploy.sh $STAGE
+. deploy.sh $STAGE
 
