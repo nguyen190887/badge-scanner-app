@@ -1,4 +1,4 @@
-name: Auto destroy
+name: Cleanup
 on: delete
 
 jobs:
