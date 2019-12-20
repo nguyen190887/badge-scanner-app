@@ -13,6 +13,8 @@ export AWS_ACCESS_KEY_ID=p"$AWS_ACCESS_KEY_ID"
 export AWS_SECRET_ACCESS_KEY="$AWS_SECRET_ACCESS_KEY"
 export SERVERLESS_ACCESS_KEY="$SERVERLESS_ACCESS_KEY"
 
+serverless login
+
 STAGE="$BRANCH_NAME"
 if [ "$BRANCH_NAME" = "master" ]; then
     STAGE="prod"
