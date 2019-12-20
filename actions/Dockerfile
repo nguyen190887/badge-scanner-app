@@ -10,6 +10,7 @@ LABEL "repository"="https://github.com/nguyen190887/badge-scanner-app"
 LABEL "homepage"="http://github.com/actions"
 LABEL "maintainer"="nguyen190887"
 
+RUN echo "Key: $AWS_ACCESS_KEY_ID"
 RUN apk -v --update add \
         python \
         py-pip \
