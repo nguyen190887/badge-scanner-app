@@ -19,3 +19,4 @@ if [ "$BRANCH_NAME" = "master" ]; then
 fi
 
 . deploy.sh $STAGE
+
