@@ -2,13 +2,15 @@ import React from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import { topic } from '../graphql/queries';
+import { Link } from 'gatsby';
 import { makeStyles } from '@material-ui/core/styles';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
-import Link from '@material-ui/core/Link';
+// import Link from '@material-ui/core/Link';
 import Container from '@material-ui/core/Container';
 import Hidden from '@material-ui/core/Hidden';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+// import { Link } from 'gatsby-plugin-material-ui';
 import Layout from '../components/layout';
 import SEO from '../components/seo';
 import { TopicDetail, TrackAttendee } from '../components';
@@ -17,11 +19,16 @@ const useStyles = makeStyles(theme => ({
   breadcrumb: {
     margin: theme.spacing(2),
   },
+  link: {
+    textDecoration: 'none'
+  }
 }));
 
 const Breadcrumb = (classes, topic) => (
   <Breadcrumbs aria-label="breadcrumb" className={classes.breadcrumb}>
-    <Link color="inherit" href="/">Topics</Link>
+    <Link to="/" className={classes.link}>
+      <Typography color="textSecondary">Topics</Typography>
+    </Link>
     <Typography color="textPrimary">{topic.name}</Typography>
   </Breadcrumbs>
 )
@@ -43,7 +50,7 @@ const TopicPage = (props) => {
           <Grid container spacing={2}>
             {topicData && <Hidden mdUp>{Breadcrumb(classes, topicData.topic)}</Hidden>}
             {topicLoading ? <p>Loading</p> :
-              topicError ? <></> : 
+              topicError ? <></> :
                 <Grid item xs={12} sm={3}>
                   <TopicDetail data={topicData} />
                 </Grid>
