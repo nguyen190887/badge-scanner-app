@@ -12,6 +12,7 @@ export SERVERLESS_ACCESS_KEY="$SERVERLESS_ACCESS_KEY"
 serverless --version
 serverless config credentials --provider aws --key $AWS_ACCESS_KEY_ID --secret $AWS_SECRET_ACCESS_KEY
 
+BRANCH_NAME="${BRANCH_NAME/eng:/}"
 STAGE="$BRANCH_NAME"
 if [ "$BRANCH_NAME" = "master" ]; then
     STAGE="prod"
