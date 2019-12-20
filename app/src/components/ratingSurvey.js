@@ -95,6 +95,7 @@ const RatingSurvey = ({
   start = 1,
   length = 5,
   topicId,
+  userId,
 }) => {
   const [rating, setRating] = useState(start);
   const [comment, setComment] = useState('');
