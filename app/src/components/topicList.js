@@ -13,7 +13,7 @@ import TableRow from '@material-ui/core/TableRow';
 import TableHead from '@material-ui/core/TableHead';
 import TableCell from '@material-ui/core/TableCell';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
-import Hidden from '@material-ui/core/Hidden';
+import theme from '../theme';
 import { useWindowSize } from './utils';
 import { stableSort, getSorting } from './table';
 
@@ -22,22 +22,22 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
   },
   headerColumn: {
-    width: '35%',
-    [theme.breakpoints.up('sm')]: {
-      width: '20%',
-    },
-    [theme.breakpoints.up('md')]: {
-      width: '14.7%',
-    },
+    width: '14.7%',
+    // [theme.breakpoints.up('sm')]: {
+    //   width: '20%',
+    // },
+    // [theme.breakpoints.up('md')]: {
+    //   width: '20%',
+    // },
   },
   column: {
     flexBasis: '17.66%',
-    [theme.breakpoints.up('sm')]: {
-      flexBasis: '25%',
-    },
-    [theme.breakpoints.up('md')]: {
-      flexBasis: '17.66%'
-    },
+    // [theme.breakpoints.up('sm')]: {
+    //   flexBasis: '25%',
+    // },
+    // [theme.breakpoints.up('md')]: {
+    //   flexBasis: '25%'
+    // },
   },
   panel: {
     boxShadow: 'none'
@@ -62,16 +62,15 @@ const TopicList = ({ topics: { allTopics = [] } = {} }) => {
   const classes = useStyles();
 
   const columns = [
-    { _id: 'date', displayName: 'Date', breakpoints: [] },
-    { _id: 'name', displayName: 'Topic', breakpoints: [] },
-    { _id: 'owner', displayName: 'Owner', breakpoints: ['xs'] },
-    { _id: 'status', displayName: 'Status', breakpoints: ['xs', 'sm'] },
-    { _id: 'smeGroup', displayName: 'SME Group', breakpoints: ['xs', 'sm'] },
-    { _id: 'duration', displayName: 'Duration', breakpoints: ['xs', 'sm'] },
+    { _id: 'date', displayName: 'Date' },
+    { _id: 'name', displayName: 'Topic' },
+    { _id: 'owner', displayName: 'Owner' },
+    { _id: 'status', displayName: 'Status' },
+    { _id: 'smeGroup', displayName: 'SME Group' },
+    { _id: 'duration', displayName: 'Duration' },
   ];
 
-  const [colSpan, setColSpan] = useState(7);
-  const { width } = useWindowSize();
+  const [colSpan, setColSpan] = useState(6);
   const [order, setOrder] = useState('desc');
   const [orderBy, setOrderBy] = useState(columns[0]._id);
 
@@ -80,66 +79,56 @@ const TopicList = ({ topics: { allTopics = [] } = {} }) => {
     setOrder(isDesc ? 'asc' : 'desc');
     setOrderBy(property);
   };
-
-  useEffect(() => {
-    setColSpan(document.querySelectorAll('th').length - 2);
-  }, [width]);
-
   return (
     <Paper>
       <Table>
         <TableHead>
           <TableRow>
             {columns.map(column => (
-              <Hidden only={column.breakpoints}>
-                <TableCell
-                  key={column._id}
-                  sortDirection={orderBy === column._id ? order : false}
-                  className={classes.headerColumn}>
-                  <TableSortLabel
-                    active={orderBy === column._id}
-                    direction={order}
-                    onClick={event => handleSortRequest(event, column._id)}>
-                    {column.displayName}
-                  </TableSortLabel>
-                </TableCell>
-              </Hidden>
+              <TableCell
+                key={column._id}
+                sortDirection={orderBy === column._id ? order : false}
+                className={classes.headerColumn}>
+                <TableSortLabel
+                  active={orderBy === column._id}
+                  direction={order}
+                  onClick={event => handleSortRequest(event, column._id)}>
+                  {column.displayName}
+                </TableSortLabel>
+              </TableCell>
             ))}
-            <TableCell />
-            <TableCell />
+            <TableCell
+              className={classes.headerColumn}
+            />
           </TableRow>
         </TableHead>
         <TableBody>
-          {stableSort(allTopics, getSorting(order, orderBy)).map((topic) => {
-            console.log(topic[orderBy]); return (
-              <TableRow key={`${topic.topicId}`}>
-                <TableCell colSpan={colSpan}>
-                  <ExpansionPanel square className={classes.panel}>
-                    <ExpansionPanelSummary
-                      expandIcon={<ExpandMoreIcon />}
-                      aria-controls="panel1c-content"
-                      id="panel1c-header"
-                      className={classes.panelSummary}
-                    >
-                      {columns.map((column, i) => (
-                        <Hidden only={column.breakpoints}>
-                          <div className={classes.column} key={`${i}_${column._id}`}>{topic[column._id]}</div>
-                        </Hidden>
-                      ))}
-                    </ExpansionPanelSummary>
-                    <ExpansionPanelDetails className={classes.details}>
-                      {topic.notes}
-                    </ExpansionPanelDetails>
-                  </ExpansionPanel>
-                </TableCell>
-                <TableCell>
-                  <Link to={`/topic/${topic.topicId}`} className={classes.link}>
-                    <Typography color="primary">Detail</Typography>
-                  </Link>
-                </TableCell>
-              </TableRow>
-            )
-          })
+          {stableSort(allTopics, getSorting(order, orderBy)).map((topic) => (
+            <TableRow key={`${topic.topicId}`}>
+              <TableCell colSpan={6}>
+                <ExpansionPanel square className={classes.panel}>
+                  <ExpansionPanelSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls="panel1c-content"
+                    id="panel1c-header"
+                    className={classes.panelSummary}
+                  >
+                    {columns.map((column, i) => (
+                      <div className={classes.column} key={`${i}_${column._id}`}>{topic[column._id]}</div>
+                    ))}
+                  </ExpansionPanelSummary>
+                  <ExpansionPanelDetails className={classes.details}>
+                    {topic.notes}
+                  </ExpansionPanelDetails>
+                </ExpansionPanel>
+              </TableCell>
+              <TableCell>
+                <Link to={`/topic/${topic.topicId}`} className={classes.link}>
+                  <Typography color="primary">Detail</Typography>
+                </Link>
+              </TableCell>
+            </TableRow>
+          ))
           }
         </TableBody>
       </Table>

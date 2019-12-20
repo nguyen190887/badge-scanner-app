@@ -2,6 +2,17 @@ import { createMuiTheme } from '@material-ui/core/styles';
 
 // A custom theme for this app
 const theme = createMuiTheme({
+  // breakpoints: {
+  //   keys: ["xs", "sm", "md", "lg", "xl", "xxl", "x3l"],
+  //   values: {
+  //     sm: 360,
+  //     md: 564,
+  //     lg: 768,
+  //     xl: 1024,
+  //     xxl: 1280,
+  //     x3l: 1920
+  //   }
+  // },
   palette: {
     primary: {
       main: '#104D82',

@@ -1,9 +1,10 @@
 import { useState, useEffect, useCallback } from 'react';
 import { throttle } from 'lodash';
+import { isClient } from '.';
 
 export default () => {
-    if (typeof window === 'undefined') {
-        return { width: 0 };
+    if (!isClient) {
+        return { loading: 0 };
     }
     const [width, setWidth] = useState(window.innerWidth);
     const updateWidth = useCallback(throttle(() => setWidth(window.innerWidth), 100), [width]);
