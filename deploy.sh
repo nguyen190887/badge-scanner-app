@@ -3,7 +3,7 @@ WEBSITE_BUCKET="tnn.badge-scanner-web-$STAGE" #todo: read CF stack
 
 # Deploy stack
 cd stack
-npm i --production
+npm i
 sls deploy -v -s $STAGE
 cd ..
 
