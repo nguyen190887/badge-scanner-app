@@ -25,13 +25,14 @@ RUN echo "**** install Python ****" && \
     rm -r /usr/lib/python*/ensurepip && \
     pip3 install --no-cache --upgrade pip setuptools wheel && \
     if [ ! -e /usr/bin/pip ]; then ln -s pip3 /usr/bin/pip ; fi
+
 RUN pip3 install awscli --upgrade --user
 RUN cp -r /root/.local/bin/* /usr/local/bin
 RUN aws --version
 
-# RUN npm i -g serverless
-# RUN npm i -g gatsby-cli
+RUN npm i -g serverless
+RUN npm i -g gatsby-cli
 
-# ADD entrypoint.sh /entrypoint.sh
-# RUN chmod +x /entrypoint.sh
-# ENTRYPOINT ["/entrypoint.sh"]
+ADD entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
