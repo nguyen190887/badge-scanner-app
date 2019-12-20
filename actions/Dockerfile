@@ -28,6 +28,7 @@ RUN echo "**** install Python ****" && \
 
 RUN pip3 install awscli --upgrade --user
 RUN cp -r /root/.local/bin/* /usr/local/bin
+RUN export PATH=~/.local/bin:$PATH
 RUN aws --version
 
 RUN npm i -g serverless
