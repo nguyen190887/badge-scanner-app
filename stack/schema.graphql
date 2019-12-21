@@ -26,21 +26,21 @@ type TrackingRow {
 
 type RatingResult {
   id: Int!
-  email: String!
-  rating: String!
-  comment: String!
-  topicId: Int!
-  userId: String!
+  email: String
+  rating: String
+  comment: String
+  topicId: Int
+  userId: String
 }
 
 type Mutation {
   submitSurvey(
-    topicId: Int!
-    email: String!
+    topicId: String!
     rating: String!
     comment: String!
     userId: String!
-  ): TrackingRow!
+    email: String
+  ): RatingResult
   addTrackingRow(topicId: Int!, userId: String!, userName: String): TrackingRow!
   addTrackingRowWithPhoto(srcBucket: String!, srcKey: String!): TrackingRow!
 }

@@ -16,25 +16,41 @@ module.exports.index = async event => {
         console.log(err);
       }
       let { topicId, email, rating, comment, userId } = event.arguments;
-      userId = "'" + ('0000' + userId).slice(-4);
+      userId = parseInt(userId) < 1000 ? '0' + userId : userId;
       doc.getRows(
         2,
         {
-          query: `(topicid=${topicId} and userid=${userId})`,
+          query: `(topicid=${topicId})`,
         },
-        (_err, rows) => {
-          console.log(rows);
-          const row = rows.filter(x => x.userid === userid && x.topicid === topicId);
+        async (_err, rows) => {
+          const row = rows && rows.find(x => x.userid === userId);
+          console.info('rows', rows);
+          console.info('row', row);
+          console.log('userId', userId);
+          console.log('topicId', topicId);
+
           if (row) {
             row.email = email;
             row.rating = rating;
             row.comment = comment;
+            row.userid = "'" + ('0000' + userId).slice(-4);
 
             await row.save();
+
+            // resolve({
+            //   topicId: row.topicid,
+            //   userId: userId,
+            //   userName: row.username,
+            //   email: row.email,
+            //   imagePath: row.imagepath,
+            //   rating: row.rating,
+            //   comment: row.comment,
+            // });
+
             resolve(row);
           }
 
-          return row;
+          return row || null;
         }
       );
     });
