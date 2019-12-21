@@ -63,6 +63,13 @@ Track sharing activities in a team.
   - Run `amplify codegen` in `stack`
   - New type is added to `app/graphql` to use on client side 
 
+# Built-with
+- GatsbyJS
+- GraphQL, AWS Amplify
+- AWS Cognito, Lambda, AppSync
+- Google Sheet/Form API (“Sheet As A Database” - SAAD)
+- Serverless Framework, GitHub Action
+
 # Learning
 - [Serverless Best Practices](https://medium.com/@PaulDJohnston/serverless-best-practices-b3c97d551535)
 - [Serverless Terminal Commands](https://lorenstewart.me/2017/09/19/serverless-framework-terminal-commands/)
