@@ -16,8 +16,10 @@ jobs:
       #   shell: bash
       #   run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
       #   id: extract_branch
-      - uses: ./.github/actions/build
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          BRANCH_NAME: ${{ github.event.ref }}
+      - name: Test branch
+        run: echo ${{ github.ref }}; echo ${{ github.head_ref }}; echo ${{ github.base_ref }};
+      # - uses: ./.github/actions/build
+      #   env:
+      #     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      #     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      #     BRANCH_NAME: ${{ github.event.ref }}
