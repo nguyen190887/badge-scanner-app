@@ -5,6 +5,8 @@ on:
     - 'app/'
     - 'stack/'
     - 'deploy*'
+    - '.github/workflows/build.yml'
+    - '.github/actions/build/'
 
 jobs:
   build:
