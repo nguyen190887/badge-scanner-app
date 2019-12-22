@@ -14,7 +14,7 @@ export const addTrackingRow = `mutation AddTrackingRow($topicId: Int!, $userId: 
 }
 `;
 
-export const submitSurvey = `mutation SubmitSurvey($topicId: Int!, $email: String!, $rating: String!, $comment: String!, $userId: String!) {
+export const submitSurvey = `mutation SubmitSurvey($topicId: String!, $email: String, $rating: String!, $comment: String!, $userId: String!) {
   submitSurvey(topicId: $topicId, email: $email, rating: $rating, comment: $comment, userId: $userId) {
     topicId
     email
