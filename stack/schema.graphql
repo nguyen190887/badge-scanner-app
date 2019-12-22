@@ -1,10 +1,5 @@
-type Post {
-  id: Int!
-  title: String!
-}
-
 type Topic {
-  no: Int!
+  topicId: Int!
   date: String
   name: String
   owner: String
@@ -15,7 +10,7 @@ type Topic {
 }
 
 type TrackingRow {
-  id: Int!
+  topicId: Int!
   userId: String
   email: String
   imagePath: String
@@ -46,10 +41,9 @@ type Mutation {
 }
 
 type Query {
-  allPosts: [Post]
   allTopics: [Topic]
-  topic(id: Int!): Topic
-  topicAttendance(id: Int!): [TrackingRow]
+  topic(topicId: Int!): Topic
+  topicAttendance(topicId: Int!): [TrackingRow]
 }
 
 schema {
