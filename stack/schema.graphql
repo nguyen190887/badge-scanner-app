@@ -1,36 +1,52 @@
 type Topic {
-	topicId: Int!
-	date: String
-	name: String
-	owner: String
-	status: String
-	smeGroup: String
-	duration: String
-	notes: String
+  topicId: Int!
+  date: String
+  name: String
+  owner: String
+  status: String
+  smeGroup: String
+  duration: String
+  notes: String
 }
 
 type TrackingRow {
-	topicId: Int!
-	userId: String
-	email: String
-	imagePath: String
-	rating: String
-	comment: String
-	userName: String
+  topicId: Int!
+  userId: String
+  email: String
+  imagePath: String
+  rating: String
+  comment: String
+  userName: String
+}
+
+type RatingResult {
+  id: Int!
+  email: String
+  rating: String
+  comment: String
+  topicId: Int
+  userId: String
 }
 
 type Mutation {
-	addTrackingRow(topicId: Int!, userId: String!, userName: String): TrackingRow!
-	addTrackingRowWithPhoto(srcBucket: String!, srcKey: String!): TrackingRow!
+  submitSurvey(
+    topicId: String!
+    rating: String!
+    comment: String!
+    userId: String!
+    email: String
+  ): RatingResult
+  addTrackingRow(topicId: Int!, userId: String!, userName: String): TrackingRow!
+  addTrackingRowWithPhoto(srcBucket: String!, srcKey: String!): TrackingRow!
 }
 
 type Query {
-	allTopics: [Topic]
-	topic(topicId: Int!): Topic
-	topicAttendance(topicId: Int!): [TrackingRow]
+  allTopics: [Topic]
+  topic(topicId: Int!): Topic
+  topicAttendance(topicId: Int!): [TrackingRow]
 }
 
 schema {
-	query: Query
-	mutation: Mutation
+  query: Query
+  mutation: Mutation
 }
