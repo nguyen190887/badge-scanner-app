@@ -9,12 +9,6 @@ import Link from '@material-ui/core/Link';
 import UserInfo from '../components/userInfo';
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    flexGrow: 1,
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
   title: {
     flexGrow: 1,
   },

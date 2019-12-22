@@ -1,6 +1,5 @@
 service: badge-scanner-api
 app: badge-scanner-app
-org: nguyen190887
 
 plugins:
   - serverless-appsync-plugin

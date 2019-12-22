@@ -1,20 +1,16 @@
 import fetch from 'isomorphic-fetch';
 import { ApolloClient } from 'apollo-client';
-import { InMemoryCache, defaultDataIdFromObject } from 'apollo-cache-inmemory';
+import { InMemoryCache } from 'apollo-cache-inmemory';
 import { ApolloLink } from 'apollo-link';
 import { setContext } from 'apollo-link-context';
 import { onError } from 'apollo-link-error';
 import { createHttpLink } from 'apollo-link-http';
 import { toIdValue } from 'apollo-utilities';
+import dataIdFromObject from './dataIdFromObject';
 
 const cacheInstance = new InMemoryCache({
   addTypename: true,
-  dataIdFromObject: object => {
-    if (object.topicId || object.userId) {
-      return `${object.__typename}${object.topicId ? `:${object.topicId}` : ''}${object.userId ? `:${object.userId}` : ''}`
-    }
-    return defaultDataIdFromObject(object);
-  },
+  dataIdFromObject,
   cacheRedirects: {
     Query: {
       topic: (_, args) => toIdValue(cache.config.dataIdFromObject({ __typename: 'Topic', topicId: args.topicId })),

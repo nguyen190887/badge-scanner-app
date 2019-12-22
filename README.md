@@ -1,9 +1,12 @@
-# badge-scanner-app
-App to scan badge and extract employee ID
+![](https://github.com/nguyen190887/badge-scanner-app/workflows/Build%20&%20Deploy/badge.svg)
+
+# Sharing Tracker App
+Track sharing activities in a team.
 
 # Getting started
 - Ensure AWS credentials are set
 - Install [Serverless Framework](https://serverless.com/)
+- Ensure `Node.js 12` is installed
 
 ## Web App
 - `cd` to `app/`
@@ -60,5 +63,14 @@ App to scan badge and extract employee ID
   - Run `amplify codegen` in `stack`
   - New type is added to `app/graphql` to use on client side 
 
+# Built-with
+- GatsbyJS
+- GraphQL, AWS Amplify
+- AWS Cognito, Lambda, AppSync
+- Google Sheet/Form API (“Sheet As A Database” - SAAD)
+- Serverless Framework, GitHub Action
+
 # Learning
 - [Serverless Best Practices](https://medium.com/@PaulDJohnston/serverless-best-practices-b3c97d551535)
+- [Serverless Terminal Commands](https://lorenstewart.me/2017/09/19/serverless-framework-terminal-commands/)
+

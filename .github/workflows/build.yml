@@ -1,0 +1,25 @@
+name: Build & Deploy
+on:
+  push:
+    paths:
+    - 'app/'
+    - 'stack/'
+    - 'deploy*'
+    - '.github/workflows/build.yml'
+    - '.github/actions/build/'
+
+jobs:
+  build:
+    name: Serverless deploy action
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Extract branch name
+        shell: bash
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        id: extract_branch
+      - uses: ./.github/actions/build
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          BRANCH_NAME: ${{ steps.extract_branch.outputs.branch }}
