@@ -1,54 +1,14 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Link } from 'gatsby';
+import React from 'react';
+import { navigate } from 'gatsby';
+import { MuiThemeProvider } from '@material-ui/core/styles';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import MUIDataTable from 'mui-datatables';
 import theme from '../theme';
 import { stableSort, getSorting } from './table';
 
-const useStyles = makeStyles(theme => ({
-  details: {
-    alignItems: 'center',
-  },
-  headerColumn: {
-    width: '14.7%',
-    // [theme.breakpoints.up('sm')]: {
-    //   width: '20%',
-    // },
-    // [theme.breakpoints.up('md')]: {
-    //   width: '20%',
-    // },
-  },
-  column: {
-    flexBasis: '17.66%',
-    // [theme.breakpoints.up('sm')]: {
-    //   flexBasis: '25%',
-    // },
-    // [theme.breakpoints.up('md')]: {
-    //   flexBasis: '25%'
-    // },
-  },
-  panel: {
-    boxShadow: 'none'
-  },
-  panelSummary: {
-    padding: 0,
-    [theme.breakpoints.up('md')]: {
-    },
-  },
-  button: {
-    '&:hover': {
-      backgroundColor: 'transparent'
-    }
-  },
-  link: {
-    color: theme.palette.primary.main,
-    textDecoration: 'none',
-  },
-}));
-
 const TopicList = ({ topics: { allTopics = [] } = {} }) => {
-  const classes = useStyles();
+  const data = stableSort(allTopics, getSorting('desc', 'date'));
 
   const columnsData = [
     { _id: 'date', displayName: 'Date' },
@@ -59,15 +19,6 @@ const TopicList = ({ topics: { allTopics = [] } = {} }) => {
     { _id: 'duration', displayName: 'Duration' },
   ];
 
-  // const [colSpan, setColSpan] = useState(6);
-  // const [order, setOrder] = useState('desc');
-  // const [orderBy, setOrderBy] = useState(columns[0]._id);
-
-  // const handleSortRequest = (event, property) => {
-  //   const isDesc = orderBy === property && order === 'desc';
-  //   setOrder(isDesc ? 'asc' : 'desc');
-  //   setOrderBy(property);
-  // };
   const columns = [
     {
       name: "date", label: "Date", options: { filter: true, sort: true, }
@@ -99,79 +50,41 @@ const TopicList = ({ topics: { allTopics = [] } = {} }) => {
     renderExpandableRow: (rowData) => (
       <td colSpan={5}>{rowData[6]}</td>
     ),
-    customSort: (data, col, order = 'desc') => {
-      console.log(col)
-      return stableSort(data, getSorting(order, columnsData[col]._id))
+    customSort: (data, colIndex, order) => {
+      // sort by Date
+      if (colIndex === 0) {
+        return data.sort((a, b) => {
+          return (new Date(a.data[colIndex]) < new Date(b.data[colIndex]) ? -1 : 1) * (order === 'desc' ? 1 : -1);
+        });
+      }
+      // sort alphabetically
+      return data.sort((a, b) => {
+        return (a.data[colIndex] < b.data[colIndex] ? -1 : 1) * (order === 'desc' ? 1 : -1);
+      });
+    },
+    onCellClick: (_, { colIndex, dataIndex, event }) => {
+      if (colIndex !== 0) {
+        event.stopPropagation();
+        navigate(`/topic/${data[dataIndex].topicId}`);
+      }
     },
     print: false,
     download: false,
     isRowSelectable: false,
-  }
+    responsive: 'scrollMaxHeight',
+    rowsPerPage: 15,
+    rowsPerPageOptions: [15, 25, 50],
+  };
 
   return (
-    <Paper>
+    <MuiThemeProvider theme={theme.overrides}>
       <MUIDataTable
         title='Topics'
-        data={allTopics}
+        data={data}
         columns={columns}
         options={options}
-      >
-
-      </MUIDataTable>
-    </Paper>
-    // <Paper>
-    //   <Table>
-    //     <TableHead>
-    //       <TableRow>
-    //         {columns.map(column => (
-    //           <TableCell
-    //             key={column._id}
-    //             sortDirection={orderBy === column._id ? order : false}
-    //             className={classes.headerColumn}>
-    //             <TableSortLabel
-    //               active={orderBy === column._id}
-    //               direction={order}
-    //               onClick={event => handleSortRequest(event, column._id)}>
-    //               {column.displayName}
-    //             </TableSortLabel>
-    //           </TableCell>
-    //         ))}
-    //         <TableCell
-    //           className={classes.headerColumn}
-    //         />
-    //       </TableRow>
-    //     </TableHead>
-    //     <TableBody>
-    //       {stableSort(allTopics, getSorting(order, orderBy)).map((topic) => (
-    //         <TableRow key={`${topic.topicId}`}>
-    //           <TableCell colSpan={6}>
-    //             <ExpansionPanel square className={classes.panel}>
-    //               <ExpansionPanelSummary
-    //                 expandIcon={<ExpandMoreIcon />}
-    //                 aria-controls="panel1c-content"
-    //                 id="panel1c-header"
-    //                 className={classes.panelSummary}
-    //               >
-    //                 {columns.map((column, i) => (
-    //                   <div className={classes.column} key={`${i}_${column._id}`}>{topic[column._id]}</div>
-    //                 ))}
-    //               </ExpansionPanelSummary>
-    //               <ExpansionPanelDetails className={classes.details}>
-    //                 {topic.notes}
-    //               </ExpansionPanelDetails>
-    //             </ExpansionPanel>
-    //           </TableCell>
-    //           <TableCell>
-    //             <Link to={`/topic/${topic.topicId}`} className={classes.link}>
-    //               <Typography color="primary">Detail</Typography>
-    //             </Link>
-    //           </TableCell>
-    //         </TableRow>
-    //       ))
-    //       }
-    //     </TableBody>
-    //   </Table>
-    // </Paper>
+      />
+    </MuiThemeProvider>
   )
 }
 

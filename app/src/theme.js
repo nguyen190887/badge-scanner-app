@@ -31,6 +31,16 @@ const theme = createMuiTheme({
       default: '#fff',
     },
   },
+  overrides: {
+    MUIDataTable: {
+      responsiveScrollMaxHeight: {
+        maxHeight: '80%'
+      },
+      paper: {
+        height: '90vh'
+      },
+    }
+  }
 });
 
 export default theme;
