@@ -1,23 +1,10 @@
 import React from 'react';
 import { navigate } from 'gatsby';
-import { MuiThemeProvider } from '@material-ui/core/styles';
-import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
 import MUIDataTable from 'mui-datatables';
-import theme from '../theme';
 import { stableSort, getSorting } from './table';
 
 const TopicList = ({ topics: { allTopics = [] } = {} }) => {
   const data = stableSort(allTopics, getSorting('desc', 'date'));
-
-  const columnsData = [
-    { _id: 'date', displayName: 'Date' },
-    { _id: 'name', displayName: 'Topic' },
-    { _id: 'owner', displayName: 'Owner' },
-    { _id: 'status', displayName: 'Status' },
-    { _id: 'smeGroup', displayName: 'SME Group' },
-    { _id: 'duration', displayName: 'Duration' },
-  ];
 
   const columns = [
     {
@@ -48,7 +35,10 @@ const TopicList = ({ topics: { allTopics = [] } = {} }) => {
     expandableRows: true,
     expandableRowsOnClick: true,
     renderExpandableRow: (rowData) => (
-      <td colSpan={5}>{rowData[6]}</td>
+      <tr>
+        <td/>
+        <td colSpan={5} dangerouslySetInnerHTML={{ __html: rowData[6] }} />
+      </tr>
     ),
     customSort: (data, colIndex, order) => {
       // sort by Date
@@ -77,14 +67,12 @@ const TopicList = ({ topics: { allTopics = [] } = {} }) => {
   };
 
   return (
-    <MuiThemeProvider theme={theme.overrides}>
-      <MUIDataTable
-        title='Topics'
-        data={data}
-        columns={columns}
-        options={options}
-      />
-    </MuiThemeProvider>
+    <MUIDataTable
+      title='Topics'
+      data={data}
+      columns={columns}
+      options={options}
+    />
   )
 }
 
