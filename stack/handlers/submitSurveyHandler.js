@@ -41,7 +41,9 @@ module.exports.index = async event => {
               });
             });
           }
-          resolve({});
+          else {
+            resolve({});
+          }
         }
       );
     });
