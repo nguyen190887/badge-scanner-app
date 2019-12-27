@@ -24,6 +24,11 @@ const theme = createMuiTheme({
       light: '#0FDBCE',
       dark: '#065C56'
     },
+    tertiary: {
+      main: '#C3CF0E',
+      light: '#E6D305',
+      dark: '#4A4F02'
+    },
     error: {
       main: '#8F241F',
     },
@@ -31,6 +36,16 @@ const theme = createMuiTheme({
       default: '#fff',
     },
   },
+  overrides: {
+    MUIDataTable: {
+      responsiveScrollMaxHeight: {
+        maxHeight: '80%'
+      },
+      paper: {
+        height: '90vh'
+      },
+    }
+  }
 });
 
 export default theme;

@@ -5,16 +5,20 @@ import CardContent from '@material-ui/core/CardContent';
 import Hidden from '@material-ui/core/Hidden';
 import Typography from '@material-ui/core/Typography';
 
-const styles = makeStyles({
+const useStyles = makeStyles(theme => ({
   pos: {
     marginBottom: 12,
   },
-});
+  card: {
+    marginTop: theme.spacing(2),
+  }
+}));
 
 const TopicDetail = ({ data: { topic = {} } = {} }) => {
-  const classes = styles();
+  const classes = useStyles();
 
   return (
+    <>
     <Card>
       <CardContent>
         <Typography variant="h5" component="h2">
@@ -32,12 +36,16 @@ const TopicDetail = ({ data: { topic = {} } = {} }) => {
             {topic.status}
             <br />
             {topic.duration}
-            <br />
-            {topic.notes}
           </Typography>
         </Hidden>
       </CardContent>
     </Card>
+    <Card className={classes.card}>
+      <CardContent>
+        <Typography variant="body2" component="div" dangerouslySetInnerHTML={{ __html: topic.notes }} />
+      </CardContent>
+    </Card>
+    </>
   );
 }
 
