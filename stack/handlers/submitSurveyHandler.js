@@ -25,6 +25,7 @@ module.exports.index = async event => {
           const row = rows && rows.find(x => x.userid === userId);
 
           if (row) {
+            row.userid = `'${userId}`;
             row.rating = rating;
             row.comment = comment;
 
