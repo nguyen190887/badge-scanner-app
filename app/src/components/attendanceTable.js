@@ -7,10 +7,11 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TablePagination from '@material-ui/core/TablePagination';
+import useAuth from '../utils/useAuth';
 
 const pageSizes = [10, 25, 50];
 
-export default ({ loading, error, data, refetch }) => {
+export default ({ isLoggedIn, loading, error, data, refetch }) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(pageSizes[0]);
 
@@ -34,29 +35,29 @@ export default ({ loading, error, data, refetch }) => {
             <Table aria-label='Attendee Table'>
               <TableHead>
                 <TableRow key='header'>
-                  <TableCell>No.</TableCell>
-                  <TableCell>ID</TableCell>
+                  {isLoggedIn && <TableCell>No.</TableCell>}
+                  {isLoggedIn && <TableCell>ID</TableCell>}
                   <TableCell>Name</TableCell>
                   <Hidden mdDown>
                     <TableCell>Email</TableCell>
-                    <TableCell>ImagePath</TableCell>
+                   {isLoggedIn && <TableCell>ImagePath</TableCell>}
                   </Hidden>
-                  <TableCell>Rating</TableCell>
-                  <TableCell>Comment</TableCell>
+                  {isLoggedIn && <TableCell>Rating</TableCell>}
+                  {isLoggedIn && <TableCell>Comment</TableCell>}
                 </TableRow>
               </TableHead>
               <TableBody>
                 {data && data.topicAttendance.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((r, i) => (
                   <TableRow key={`row_${i}`}>
-                    <TableCell>{page * rowsPerPage + i + 1}</TableCell>
-                    <TableCell>{r.userId}</TableCell>
+                    {isLoggedIn && <TableCell>{page * rowsPerPage + i + 1}</TableCell>}
+                    {isLoggedIn && <TableCell>{r.userId}</TableCell>}
                     <TableCell>{r.userName}</TableCell>
                     <Hidden mdDown>
                       <TableCell>{r.email}</TableCell>
-                      <TableCell>{r.imagePath}</TableCell>
+                      {isLoggedIn && <TableCell>{r.imagePath}</TableCell>}
                     </Hidden>
-                    <TableCell>{r.rating}</TableCell>
-                    <TableCell>{r.comment}</TableCell>
+                    {isLoggedIn && <TableCell>{r.rating}</TableCell>}
+                    {isLoggedIn && <TableCell>{r.comment}</TableCell>}
                   </TableRow>
                 ))}
               </TableBody>

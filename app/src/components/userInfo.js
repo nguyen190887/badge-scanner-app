@@ -7,17 +7,19 @@ import Paper from '@material-ui/core/Paper';
 import Popper from '@material-ui/core/Popper';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
-import { isLoggedIn, getUserName, signOut } from '../utils/auth';
+import { isLoggedIn, getUserName, signOut, getRole } from '../utils/auth';
 
 export default () => {
   const [loggedIn, setLoggedIn] = useState(false);
   const [username, setUserName] = useState('');
+  let roleName = ['guest'];
 
   useEffect(() => {
     (async () => {
       const loggedIn = await isLoggedIn();
       if (loggedIn) {
         setUserName(await getUserName());
+        roleName = await getRole();
         setLoggedIn(loggedIn);
       }
     })();

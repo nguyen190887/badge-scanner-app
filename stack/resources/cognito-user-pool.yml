@@ -22,7 +22,22 @@ Resources:
       ExplicitAuthFlows:
         - ADMIN_NO_SRP_AUTH
       GenerateSecret: false
-
+  CognitoGroupAdmin:
+    Type: "AWS::Cognito::UserPoolGroup"
+    Properties:
+      GroupName: "Admin"
+      Description: "Group for Admin"
+      UserPoolId: !Ref CognitoUserPool
+  CognitoGroupEditor:
+    Type: "AWS::Cognito::UserPoolGroup"
+    Properties:
+      GroupName: "Editor"
+      UserPoolId: !Ref CognitoUserPool
+  CognitoGroupUser:
+    Type: "AWS::Cognito::UserPoolGroup"
+    Properties:
+      GroupName: "User"
+      UserPoolId: !Ref CognitoUserPool
 # Print out the Id of the User Pool that is created
 Outputs:
   UserPoolId:

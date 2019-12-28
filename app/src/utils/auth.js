@@ -14,10 +14,16 @@ export const isLoggedIn = async () => {
   return currentSession && currentSession.isValid();
 };
 
-export const getUserName = async () =>
+export const getRole = async () => {
+  if (isBrowser) {
+    const user = await Auth.currentAuthenticatedUser();
+    return user.signInUserSession.accessToken.payload["cognito:groups"];
+  }
+}
+
+export const getUserName = async () => 
   isBrowser && (await Auth.currentUserInfo()).attributes.email;
-
-
+  
 export const _getUserName = async () => {
 const userInfo = await Auth.currentUserInfo();
 console.log(userInfo);
