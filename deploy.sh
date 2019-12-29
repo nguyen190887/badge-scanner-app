@@ -6,7 +6,7 @@ cd stack
 npm i
 
 if [ "$STAGE" = "prod" ]; then
-    sed -i '' 's/\/dev\//\/prod\//g' ssm-params.json
+    sed -i 's/\/dev\//\/prod\//g' ssm-params.json
 fi
 
 sls deploy -v -s $STAGE
