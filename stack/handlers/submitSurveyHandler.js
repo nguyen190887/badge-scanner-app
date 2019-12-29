@@ -11,46 +11,40 @@ module.exports.index = async event => {
   console.log(event.queryStringParameters);
 
   return new Promise(resolve => {
-    doc.useServiceAccountAuth(creds, function(err) {
+    doc.useServiceAccountAuth(creds, function (err) {
       if (err) {
         console.log(err);
       }
       let { topicId, email, rating, comment, userId } = event.arguments;
-      userId = parseInt(userId) < 1000 ? '0' + userId : userId;
+      userId = ("0000" + userId).slice(-4);
       doc.getRows(
         2,
         {
           query: `(topicid=${topicId})`,
-        },
-        async (_err, rows) => {
+        }, function (err, rows) {
           const row = rows && rows.find(x => x.userid === userId);
-          console.info('rows', rows);
-          console.info('row', row);
-          console.log('userId', userId);
-          console.log('topicId', topicId);
 
           if (row) {
-            row.email = email;
+            row.userid = `'${userId}`;
             row.rating = rating;
             row.comment = comment;
-            row.userid = "'" + ('0000' + userId).slice(-4);
 
-            await row.save();
-
-            // resolve({
-            //   topicId: row.topicid,
-            //   userId: userId,
-            //   userName: row.username,
-            //   email: row.email,
-            //   imagePath: row.imagepath,
-            //   rating: row.rating,
-            //   comment: row.comment,
-            // });
-
-            resolve(row);
+            row.save(function () {
+              console.info('row', row);
+              resolve({
+                topicId: row.topicid,
+                userId: row.userid.slice(-4),
+                userName: row.username,
+                email: row.email,
+                imagePath: row.imagepath,
+                rating: row.rating,
+                comment: row.comment
+              });
+            });
           }
-
-          return row || null;
+          else {
+            resolve({});
+          }
         }
       );
     });
