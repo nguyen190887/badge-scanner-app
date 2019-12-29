@@ -1,0 +1,5 @@
+{
+    "PrivateKey": "/SharingTracker/dev/GooglePrivateKey",
+    "ClientEmail": "/SharingTracker/dev/ClientEmail",
+    "SheetId": "/SharingTracker/dev/TrackingSheetId"
+}
