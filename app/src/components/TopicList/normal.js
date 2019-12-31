@@ -3,14 +3,8 @@ import { navigate } from 'gatsby';
 import MUIDataTable from 'mui-datatables';
 import { makeStyles } from '@material-ui/core/styles';
 import Chip from '@material-ui/core/Chip';
-import { stableSort, getSorting } from './table';
-import theme from '../theme';
-
-const chipColors = {
-  'Frontend': 'primary',
-  'Backend': 'secondary',
-  'DevOps': `${theme.palette.tertiary.light}`
-}
+import { stableSort, getSorting } from '../table';
+import theme from '../../theme';
 
 const useStyles = makeStyles(theme => ({
   Frontend: {
