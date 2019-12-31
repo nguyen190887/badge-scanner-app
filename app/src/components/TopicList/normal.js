@@ -3,8 +3,6 @@ import { navigate } from 'gatsby';
 import MUIDataTable from 'mui-datatables';
 import { makeStyles } from '@material-ui/core/styles';
 import Chip from '@material-ui/core/Chip';
-import { stableSort, getSorting } from '../table';
-import theme from '../../theme';
 
 const useStyles = makeStyles(theme => ({
   Frontend: {
@@ -37,7 +35,6 @@ const parseGroups = (topics) => {
 
 const TopicList = ({ topics: { allTopics = [] } = {} }) => {
   const classes = useStyles();
-  const data = stableSort(allTopics, getSorting('desc', 'date'));
   const smeGroups = parseGroups(allTopics);
   const [smeState, setSmeState] = useState([]);
 
@@ -121,7 +118,7 @@ const TopicList = ({ topics: { allTopics = [] } = {} }) => {
     onCellClick: (_, { colIndex, dataIndex, event }) => {
       if (colIndex !== 0) {
         event.stopPropagation();
-        navigate(`/topic/${data[dataIndex].topicId}`);
+        navigate(`/topic/${allTopics[dataIndex].topicId}`);
       }
     },
     print: false,
@@ -135,7 +132,7 @@ const TopicList = ({ topics: { allTopics = [] } = {} }) => {
   return (
     <MUIDataTable
       title='Topics'
-      data={data}
+      data={allTopics}
       columns={columns}
       options={options}
     />
