@@ -20,3 +20,4 @@ printf "\nAPPSYNC_ENDPOINT=$(getValue GraphQlApiUrl)" >> $ENV_FILE
 printf "\nAPPSYNC_API_KEY=$(getValue GraphQlApiKeyDefault)" >> $ENV_FILE
 printf "\nIMAGE_BUCKET=$(getValue ImageBucket)" >> $ENV_FILE
 cd ../app
+
