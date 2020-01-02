@@ -4,8 +4,8 @@ require('dotenv').config({
 
 module.exports = {
   siteMetadata: {
-    title: `COX Sharing Tracker`,
-    description: `The web app to track sharing activities inside COX.`,
+    title: `${process.env.PROJECT_NAME} Sharing Tracker`,
+    description: `The web app to track sharing activities inside ${process.env.PROJECT_NAME}.`,
     author: `@nguyen190887`,
   },
   plugins: [
