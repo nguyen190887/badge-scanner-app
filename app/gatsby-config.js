@@ -2,10 +2,12 @@ require('dotenv').config({
   path: `.env.${process.env.NODE_ENV}`,
 });
 
+const projectName = process.env.PROJECT_NAME || '';
+
 module.exports = {
   siteMetadata: {
-    title: `COX Sharing Tracker`,
-    description: `The web app to track sharing activities inside COX.`,
+    title: `${projectName} Sharing Tracker`,
+    description: `The web app to track sharing activities inside ${projectName}.`,
     author: `@nguyen190887`,
   },
   plugins: [
