@@ -1,5 +1,5 @@
 "use strict";
-// export async function index(event) {
+
 module.exports.index = async event => {
   console.log('Event', event);
 
