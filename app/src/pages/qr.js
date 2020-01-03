@@ -3,7 +3,7 @@ import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
-import { QRGenerator, SEO, Layout, TopicListDense } from '../components';
+import { QRComponent, SEO, Layout, TopicListDense } from '../components';
 import { allTopics } from '../graphql/queries';
 
 const QRPage = () => {
@@ -23,7 +23,7 @@ const QRPage = () => {
                 <TopicListDense topics={data} onClickHandler={setCurrentTopicId} />
           }
           <Grid item xs={12} sm={9}>
-            <QRGenerator topicId={currentTopicId} />
+            <QRComponent topicId={currentTopicId} {...{ loading, error }} />
           </Grid>
         </Grid>
       </Container>
