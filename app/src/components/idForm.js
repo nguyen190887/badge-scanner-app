@@ -32,7 +32,7 @@ export default ({ topicId, addRow }) => {
 
   return (
     <form onSubmit={onSubmit} className={classes.root}>
-      <TextField inputRef={inputRef} label="Employee ID" id="standard-size-normal" type='tel' />
+      <TextField inputRef={inputRef} label="Employee ID" id="standard-size-normal" type='tel' autofocus />
       <TextField inputRef={userNameRef} label="Name" id="standard-size-normal" type='text' />
       <Button type='submit' variant='text' className={classes.button}>Submit</Button>
     </form>

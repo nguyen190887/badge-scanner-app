@@ -11,8 +11,8 @@ const useStyles = makeStyles(theme => ({
   },
   largeImage: {
     transition: 'all 0.2s ease',
-    width: windowWidth => `${windowWidth / 3}px`,
-    height: windowWidth => `${windowWidth / 3}px`,
+    width: windowWidth => `${windowWidth / 2.5}px`,
+    height: windowWidth => `${windowWidth / 2.5}px`,
   },
   normalImage: {
     transition: 'all 0.2s ease',

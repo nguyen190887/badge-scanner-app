@@ -17,11 +17,12 @@ const QRPage = () => {
         <Grid container spacing={2}>
           {/* Yes we need breadcrumb */}
           {/* {topicData && <Hidden mdUp>{Breadcrumb(classes, topicData.topic)}</Hidden>} */}
-          {
-            loading ? <p>Loading...</p> :
-              error ? <></> :
-                <TopicListDense topics={data} onClickHandler={setCurrentTopicId} />
-          }
+          <Grid item xs={12} sm={3}>
+            {
+              loading ? <p>Loading...</p> :
+                error ? <></> :
+                  <TopicListDense topics={data} onClickHandler={setCurrentTopicId} />
+            }</Grid>
           <Grid item xs={12} sm={9}>
             <QRComponent topicId={currentTopicId} {...{ loading, error }} />
           </Grid>

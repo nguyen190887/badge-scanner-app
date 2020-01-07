@@ -36,6 +36,9 @@ const theme = createMuiTheme({
       default: '#fff',
     },
   },
+  zIndex: {
+    drawer: 10
+  },
   overrides: {
     MUIDataTable: {
       responsiveScrollMaxHeight: {
