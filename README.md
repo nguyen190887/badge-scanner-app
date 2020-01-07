@@ -44,6 +44,9 @@ Track sharing activities in a team.
 ## Deploy a function
 - Run `sls deploy function -f <fn_name>`
 
+# CI/CD
+Use [Github Actions](https://github.com/features/actions) for CI/CD. Each time codes are pushed to `app/` or `stack/` folder, CloudFormation stack will be created and executed. See you more at `.github/` folder.
+
 # FAQs
 1. How to get Cognito info?
   - `cd` to `stack/`, then run `sls info -v`
