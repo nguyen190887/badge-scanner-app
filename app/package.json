@@ -37,6 +37,7 @@
     "lodash": "^4.17.15",
     "mui-datatables": "^2.13.3",
     "prop-types": "^15.7.2",
+    "qrcode": "^1.4.4",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
     "react-helmet": "^5.2.1"

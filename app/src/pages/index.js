@@ -4,7 +4,7 @@ import gql from 'graphql-tag';
 import Container from '@material-ui/core/Container';
 import Layout from '../components/layout';
 import SEO from '../components/seo';
-import TopicList from '../components/topicList';
+import { TopicList } from '../components/TopicList';
 import { allTopics } from '../graphql/queries';
 
 console.log('Index', new Date().toISOString());

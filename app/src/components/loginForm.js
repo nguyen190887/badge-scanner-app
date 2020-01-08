@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { navigate } from 'gatsby';
 import { signIn } from '../utils/auth';
 
-import { Paper, makeStyles, Typography, Grid, TextField, Button, FormControlLabel, Checkbox } from '@material-ui/core';
+import { Paper, makeStyles, Typography, Grid, TextField, Button } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
   margin: {
