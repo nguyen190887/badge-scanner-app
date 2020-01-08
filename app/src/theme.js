@@ -37,7 +37,7 @@ const theme = createMuiTheme({
     },
   },
   zIndex: {
-    drawer: 10
+    drawer: 1000
   },
   overrides: {
     MUIDataTable: {

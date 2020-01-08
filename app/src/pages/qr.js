@@ -1,12 +1,18 @@
 import React, { useState } from 'react';
+import { navigate } from 'gatsby';
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
+import useAuth from '../utils/useAuth';
 import { QRComponent, SEO, Layout, TopicListDense } from '../components';
 import { allTopics } from '../graphql/queries';
 
 const QRPage = () => {
+  const { loggedIn } = useAuth();
+  if (!loggedIn) {
+    navigate('/login');
+  };
   const { loading, error, data } = useQuery(gql`${allTopics}`);
   const [currentTopicId, setCurrentTopicId] = useState();
 

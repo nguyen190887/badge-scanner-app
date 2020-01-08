@@ -12,13 +12,10 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
-import UserInfo from '../components/userInfo';
-import { isLoggedIn } from '../utils/auth';
+import { UserInfo, DrawerMenu } from '.';
+import useAuth from '../utils/useAuth';
 
 const useStyles = makeStyles(theme => ({
-  appBar: {
-    zIndex: theme.zIndex.drawer + 1
-  },
   title: {
     flexGrow: 1,
   },
@@ -27,15 +24,10 @@ const useStyles = makeStyles(theme => ({
       textDecoration: 'none'
     }
   },
-  drawer: {
-    zIndex: theme.zIndex.drawer
-  },
-  drawerPaper: {
-    zIndex: theme.zIndex.drawer
-  }
 }));
 
 const Header = ({ siteTitle }) => {
+  const { loggedIn } = useAuth();
   const classes = useStyles();
   const [open, setOpen] = useState(false);
 
@@ -49,9 +41,9 @@ const Header = ({ siteTitle }) => {
 
   return (
     <>
-      <AppBar position="static" className={classes.appBar}>
+      <AppBar position="static">
         <Toolbar>
-          {isLoggedIn &&
+          {loggedIn &&
             <IconButton
               color="inherit"
               aria-label="open drawer"
@@ -67,29 +59,7 @@ const Header = ({ siteTitle }) => {
           <UserInfo />
         </Toolbar>
       </AppBar>
-      <Drawer
-        className={classes.drawer}
-        anchor="left"
-        open={open}
-        onClose={toggleDrawer(false)}
-        classes={{
-          paper: classes.drawerPaper,
-        }}
-      >
-        <div
-          className={classes.list}
-          role="presentation"
-          onClick={toggleDrawer(false)}
-          onKeyDown={toggleDrawer(false)}
-        >
-          <List>
-            <ListItem button onClick={event => { navigate(`/qr`) }}>
-              {/* <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon> */}
-              <ListItemText primary='QR Generator' />
-            </ListItem>
-          </List>
-        </div>
-      </Drawer>
+      <DrawerMenu toggleHandler={toggleDrawer} openState={open} />
     </>
   )
 }

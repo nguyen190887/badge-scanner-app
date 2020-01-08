@@ -51,11 +51,11 @@ const TopicPage = (props) => {
             {topicData && <Hidden mdUp>{Breadcrumb(classes, topicData.topic)}</Hidden>}
             {topicLoading ? <p>Loading</p> :
               topicError ? <></> :
-                <Grid item xs={12} sm={3}>
+                <Grid item xs={12} md={3}>
                   <TopicDetail data={topicData} />
                 </Grid>
             }
-            <Grid item xs={12} sm={9}>
+            <Grid item xs={12} md={9}>
               {topicData && <Hidden mdDown>{Breadcrumb(classes, topicData.topic)}</Hidden>}
               <TrackAttendee topicId={topicId} />
             </Grid>
