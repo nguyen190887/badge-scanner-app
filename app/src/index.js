@@ -7,3 +7,4 @@ export const wrapRootElement = ({ element }) => (
     <Layout>{element}</Layout>
   </ApolloWrapRootElement>
 )
+
