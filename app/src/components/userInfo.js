@@ -7,7 +7,16 @@ import Paper from '@material-ui/core/Paper';
 import Popper from '@material-ui/core/Popper';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
+import styled from '@emotion/styled';
 import { isLoggedIn, getUserName, signOut } from '../utils/auth';
+import { Box } from '@material-ui/core';
+
+const StyledLink = styled.div(`
+  a {
+    color: #fff;
+    text-decoration: none;
+  }
+`);
 
 export default () => {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -91,7 +100,9 @@ export default () => {
           </Popper>
         </div>
       ) : (
-          <Button color="inherit" href='/login/'>Login</Button>
+          <StyledLink>
+            <Link  to="/login">Login</Link>
+          </StyledLink>
         )}
     </>
   );
