@@ -6,7 +6,7 @@ on:
     - 'stack/**'
     - 'deploy*'
     - '.github/workflows/build.yml'
-    - '.github/actions/build/'
+    - '.github/actions/build/**'
 
 jobs:
   build:
