@@ -2,8 +2,8 @@ name: Build & Deploy
 on:
   push:
     paths:
-    - 'app/'
-    - 'stack/'
+    - 'app/**'
+    - 'stack/**'
     - 'deploy*'
     - '.github/workflows/build.yml'
     - '.github/actions/build/'
