@@ -34,6 +34,11 @@ export default ({ loading, error, data, refetch }) => {
     responsive: 'scrollMaxHeight',
     rowsPerPage: 15,
     rowsPerPageOptions: [10, 25, 50],
+    textLabels: {
+      body: {
+        noMatch: 'No records found',
+      },
+    }
   };
 
   return (

@@ -2,6 +2,7 @@ import React from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import Container from '@material-ui/core/Container';
+import LinearProgress from '@material-ui/core/LinearProgress';
 import Layout from '../components/layout';
 import SEO from '../components/seo';
 import { TopicList } from '../components/TopicList';
@@ -16,7 +17,7 @@ const IndexPage = () => {
       <SEO title="Home" />
       <Container maxWidth="lg">
         {
-          loading ? <p>Loading...</p> :
+          loading ? <LinearProgress /> :
             error ? <></> :
               <TopicList topics={data} />
         }
