@@ -10,3 +10,4 @@ export { QRComponent };
 export { TopicList, TopicListDense };
 export { default as DrawerMenu } from './DrawerMenu';
 export { default as UserInfo } from './UserInfo';
+export { default as IdDialog } from './InputComponent/IdDialog';

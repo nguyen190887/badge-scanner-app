@@ -6,11 +6,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import { topicAttendance } from '../graphql/queries';
-import { addTrackingRow, addTrackingRowWithPhoto } from '../graphql/mutations';
+import { addTrackingRowWithPhoto } from '../graphql/mutations';
 import Scanner from '../components/scanner';
 import useAuth from '../utils/useAuth';
 import AttendanceTable from './attendanceTable';
-import IdForm from './idForm';
+import IdForm from './InputComponent/IdForm';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const TrackAttendee = ({ topicId }) => {
+const TrackAttendee = ({ topicId, addRow }) => {
   const { loggedIn } = useAuth();
   const classes = useStyles();
 
@@ -29,19 +29,6 @@ const TrackAttendee = ({ topicId }) => {
     { variables: { topicId } }
   );
 
-  const [addRow] = useMutation(gql`${addTrackingRow}`,
-    {
-      update(cache, { data: { addTrackingRow } }) {
-        const data = cache.readQuery({ query: gql`${topicAttendance}`, variables: { topicId } });
-        data.topicAttendance = [addTrackingRow, ...data.topicAttendance];
-        cache.writeQuery({
-          query: gql`${topicAttendance}`,
-          variables: { topicId },
-          data
-        });
-      },
-    }
-  );
   const [addRowWithPhoto] = useMutation(gql`${addTrackingRowWithPhoto}`,
     {
       update(cache, { data: { addTrackingRowWithPhoto } }) {

@@ -1,7 +1,8 @@
 import React from 'react';
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery, useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
-import { topic } from '../graphql/queries';
+import { topic, topicAttendance } from '../graphql/queries';
+import { addTrackingRow } from '../graphql/mutations';
 import { Link } from 'gatsby';
 import { makeStyles } from '@material-ui/core/styles';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
@@ -11,9 +12,8 @@ import Hidden from '@material-ui/core/Hidden';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 // import { Link } from 'gatsby-plugin-material-ui';
-import Layout from '../components/layout';
 import SEO from '../components/seo';
-import { TopicDetail, TrackAttendee } from '../components';
+import { TopicDetail, TrackAttendee, IdDialog, Layout } from '../components';
 
 const useStyles = makeStyles(theme => ({
   breadcrumb: {
@@ -42,9 +42,24 @@ const TopicPage = (props) => {
     { variables: { topicId } }
   );
 
+  const [addRow] = useMutation(gql`${addTrackingRow}`,
+    {
+      update(cache, { data: { addTrackingRow } }) {
+        const data = cache.readQuery({ query: gql`${topicAttendance}`, variables: { topicId } });
+        data.topicAttendance = [addTrackingRow, ...data.topicAttendance];
+        cache.writeQuery({
+          query: gql`${topicAttendance}`,
+          variables: { topicId },
+          data
+        });
+      },
+    }
+  );
+
   return (
     <Layout>
       <SEO title={topicData && topicData.topic.name} />
+      <IdDialog topicId={topicId} addRow={addRow} />
       <Container maxWidth='xl'>
         {topicId && (
           <Grid container spacing={2}>
@@ -57,7 +72,7 @@ const TopicPage = (props) => {
             }
             <Grid item xs={12} md={9}>
               {topicData && <Hidden mdDown>{Breadcrumb(classes, topicData.topic)}</Hidden>}
-              <TrackAttendee topicId={topicId} />
+              <TrackAttendee topicId={topicId} addRow={addRow} />
             </Grid>
           </Grid>
         )}
