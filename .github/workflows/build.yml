@@ -24,3 +24,4 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           BRANCH_NAME: ${{ steps.extract_branch.outputs.branch }}
           PROJECT_NAME: ${{ secrets.PROJECT_NAME }}
+          CF_DISTRIBUTION_ID: ${{ secrets.CF_DISTRIBUTION_ID }}
