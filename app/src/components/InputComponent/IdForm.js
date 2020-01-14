@@ -1,7 +1,10 @@
 import React, { useRef } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
+import Box from '@material-ui/core/Box';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import InputTabs from './InputTabs';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -9,21 +12,24 @@ const useStyles = makeStyles(theme => ({
       margin: theme.spacing(1),
     },
   },
+  box: {
+    maxWidth: '400px'
+  },
   button: {
-    verticalAlign: 'bottom'
+    alignSelf: 'flex-end'
   }
 }));
 
 export default ({ topicId, addRow }) => {
-  const inputRef = useRef(null);
+  const idRef = useRef(null);
   const userNameRef = useRef(null);
   const classes = useStyles();
 
   const onSubmit = async e => {
     e.preventDefault();
     try {
-      addRow({ variables: { topicId, userId: inputRef.current.value, userName: userNameRef.current.value } })
-      inputRef.current.value = '';
+      addRow({ variables: { topicId, userId: idRef.current.value, userName: userNameRef.current.value } })
+      idRef.current.value = '';
       userNameRef.current.value = '';
     } catch (err) {
       console.error(err);
@@ -31,10 +37,11 @@ export default ({ topicId, addRow }) => {
   };
 
   return (
-    <form onSubmit={onSubmit} className={classes.root}>
-      <TextField inputRef={inputRef} label="Employee ID" id="standard-size-normal" type='tel' autofocus />
-      <TextField inputRef={userNameRef} label="Name" id="standard-size-normal" type='text' />
+    <Box display='flex'>
+      <Box className={classes.box}>
+        <InputTabs idRef={idRef} userNameRef={userNameRef} />
+      </Box>
       <Button type='submit' variant='text' className={classes.button}>Submit</Button>
-    </form>
+    </Box>
   );
 };

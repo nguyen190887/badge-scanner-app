@@ -1,18 +1,17 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
-import { topic, topicAttendance } from '../graphql/queries';
-import { addTrackingRow } from '../graphql/mutations';
 import { Link } from 'gatsby';
 import { makeStyles } from '@material-ui/core/styles';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
-// import Link from '@material-ui/core/Link';
 import Container from '@material-ui/core/Container';
 import Hidden from '@material-ui/core/Hidden';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-// import { Link } from 'gatsby-plugin-material-ui';
+import { topic, topicAttendance } from '../graphql/queries';
+import { addTrackingRow } from '../graphql/mutations';
 import SEO from '../components/seo';
+import { isClient } from '../components/utils';
 import { TopicDetail, TrackAttendee, IdDialog, Layout } from '../components';
 
 const useStyles = makeStyles(theme => ({
@@ -35,6 +34,7 @@ const Breadcrumb = (classes, topic) => (
 
 const TopicPage = (props) => {
   const classes = useStyles();
+  const [openDialog, setOpenDialog] = useState(false);
 
   const topicId = props.id ? props.id : '';
 
@@ -56,10 +56,21 @@ const TopicPage = (props) => {
     }
   );
 
+  useEffect(() => {
+    if (isClient) {
+      const query = window.location.search.substring(1).split("=");
+      if (query.length > 1) {
+        if (query[0] === 'src' && query[1] === 'qr') {
+          setOpenDialog(true)
+        }
+      }
+    }
+  }, [])
+
   return (
     <Layout>
       <SEO title={topicData && topicData.topic.name} />
-      <IdDialog topicId={topicId} addRow={addRow} />
+      <IdDialog topicId={topicId} addRow={addRow} open={openDialog} setOpen={setOpenDialog} />
       <Container maxWidth='xl'>
         {topicId && (
           <Grid container spacing={2}>
