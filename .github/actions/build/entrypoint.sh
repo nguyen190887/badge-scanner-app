@@ -8,3 +8,7 @@ fi
 
 . deploy.sh $STAGE
 
+# invalidate CF distro
+if [ "$BRANCH_NAME" = "master" ]; then
+    aws cloudfront create-invalidation --distribution-id $CF_DISTRIBUTION_ID --paths "/*"
+fi
