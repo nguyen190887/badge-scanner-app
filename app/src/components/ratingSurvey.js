@@ -1,148 +1,132 @@
 import React, { useState } from 'react';
-import styled from '@emotion/styled';
-import { css } from '@emotion/core';
 import API, { graphqlOperation } from '@aws-amplify/api';
 import { submitSurvey } from '../graphql/mutations';
+import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+import TextField from '@material-ui/core/TextField';
+import Rating from '@material-ui/lab/Rating';
+import Grid from '@material-ui/core/Grid';
+import Container from '@material-ui/core/Container';
+import Button from '@material-ui/core/Button';
+import red from '@material-ui/core/colors/red';
 
-const RatingChoices = styled('ul')`
-  text-decoration: none;
-  list-style: none;
-  > * {
-    display: inline-block;
-    margin-right: 15px;
-  }
-`;
+const useQuestionStyles = makeStyles(theme => ({
+  required: {
+    '&::before': {
+      content: '"*"',
+      color: red[700],
+      marginRight: '5px'
+    }
+  },
+})); 
 
-const RatingsContainer = styled('div')`
-  display: flex;
-`;
-
-const Rating = styled('li')`
-  > label {
-    margin-right: 5px;
-  }
-`;
-
-const SurveyTitle = ({ title }) => {
-  return <h1>{title}</h1>;
+const Question = ({ children, isRequired = true }) => {
+  const classes = useQuestionStyles();
+  return <Typography variant="h6" className={isRequired ? classes.required : ''}>{children}</Typography>
 };
 
-const Email = ({ email }) => {
-  return <span>{email}</span>;
+const Description = ({ children }) => {
+  return <Typography variant="caption">{children}</Typography>
 };
 
-const Ratings = ({ start, length, rating, setRating }) => {
-  return (
-    <>
-      <h3>Your ratings? *</h3>
-      <RatingsContainer>
-        <span>
-          Min
-          <span role="img" aria-label="min">
-            &#128554;
-          </span>
-        </span>
-        <RatingChoices>
-          {Array(length + start - 1)
-            .fill(0)
-            .map((x, index) => {
-              const value = start + index;
-              const id = `id${value}`;
-              const isChecked = parseInt(value) === parseInt(rating);
-              return (
-                <Rating key={index}>
-                  <label htmlFor={id}>{value}</label>
-                  <input
-                    type="radio"
-                    id={id}
-                    name="rating"
-                    value={value}
-                    checked={isChecked}
-                    onChange={e => setRating(e.target.value)}
-                  />
-                </Rating>
-              );
-            })}
-        </RatingChoices>
-        <span>
-          Max
-          <span role="img" aria-label="max">
-            &#128540;
-          </span>
-        </span>
-      </RatingsContainer>
-    </>
-  );
-};
-
-const Comment = ({ content, setComment }) => {
-  return (
-    <>
-      <h3>Any comment/recommentdation to make this session better</h3>
-      <textarea
-        rows="4"
-        cols="50"
-        value={content}
-        onChange={e => setComment(e.target.value)}
-      />
-    </>
-  );
+const RatingQuestion = ({ question, description, name, handleChange, value }) => {
+  return <Grid container direction="column">
+    <Question>{question}</Question>
+    <Description>{description}</Description>
+    <Rating
+      name={name}
+      value={value}
+      onChange={(event, value) => {
+        handleChange(value);
+      }}
+    />
+  </Grid> 
 };
 
 const RatingSurvey = ({
-  title = 'Dynamic Title',
-  email = 'Dynamic Email',
+  title= "Title",
+  email,
   start = 1,
   length = 5,
   topicId,
   userId,
 }) => {
-  const [rating, setRating] = useState(start);
+  const [ratings, setRatings] = useState([3, 3, 3]);
   const [comment, setComment] = useState('');
   const [isValid, setValidStatus] = useState(true);
 
-  const handleSubmit = async e => {
-    e.preventDefault();
-    if (!rating || !email || !rating) {
-      setValidStatus(false);
-    } else {
-      try {
-        await API.graphql(
-          graphqlOperation(submitSurvey, {
-            topicId,
-            email,
-            rating,
-            comment,
-            userId,
-          })
-        );
+  // const handleSubmit = async e => {
+  //   e.preventDefault();
+  //   if (!rating || !email || !rating) {
+  //     setValidStatus(false);
+  //   } else {
+  //     try {
+  //       await API.graphql(
+  //         graphqlOperation(submitSurvey, {
+  //           topicId,
+  //           email,
+  //           rating,
+  //           comment,
+  //           userId,
+  //         })
+  //       );
 
-        console.log('after summiting');
-      } catch (err) {
-        console.error(err);
-      }
-    }
+  //       console.log('after summiting');
+  //     } catch (err) {
+  //       console.error(err);
+  //     }
+  //   }
+  // };
+
+  const handleChange = () => {
+
   };
 
-  console.log('rating', rating);
+  const ratingQuestions = [
+    {
+      question: 'How is the Content?',
+      description: 'Relevant to work / Enough deep (in comparison with seniority of presenter) / ... everything about the content',
+      name: 'content'
+    },
+    {
+      question: 'How is the Quality of Slide & Presentation Skill of presenter?',
+      description: 'Is the slide good? / Is the presenter good at presenting the topic? / ... everything about "UI"',
+      name: 'ui'
+    },
+    {
+      question: 'Your overall rating?',
+      description: '',
+      name: 'overall'
+    }
+  ];
 
   return (
-    <div>
-      <SurveyTitle title={title} />
-      <Email email={email} />
-      <Ratings
-        start={start}
-        length={length}
-        setRating={setRating}
-        rating={rating}
-      />
-      <Comment comment={comment} setComment={setComment} />
-      {!isValid && 'Please fill in the required fields'}
-      <div>
-        <button onClick={handleSubmit}>Submit</button>
-        <sub>* is required field</sub>
-      </div>
-    </div>
+    <Container maxWidth="sm">
+      <Grid container direction="column" spacing={3}>
+        <Grid item>        
+          <Typography variant="h3">{title}</Typography>
+          <Typography variant="caption" color="error">* is required</Typography>
+        </Grid>
+        <Grid item>
+          <TextField required fullWidth label="Email" />
+        </Grid>
+          {ratingQuestions.map((x, index) => <Grid item><RatingQuestion question={x.question} description={x.description} name={x.name} value={ratings[index]} handleChange={handleChange} /></Grid>)}
+        <Grid item>
+          <Question>Any comment/recommendation to make this session better?</Question>
+          <TextField
+            fullWidth
+            margin="normal"
+            label="Comment"
+            multiline
+            rows="4"
+            variant="outlined"
+          />
+        </Grid>
+        <Grid item>
+          <Button variant="contained" size="large" color="primary">Submit</Button>
+        </Grid>
+      </Grid>
+    </Container>
   );
 };
 
