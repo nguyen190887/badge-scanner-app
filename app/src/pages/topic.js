@@ -1,19 +1,18 @@
-import React from 'react';
-import { useQuery } from '@apollo/react-hooks';
+import React, { useState, useEffect } from 'react';
+import { useQuery, useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
-import { topic } from '../graphql/queries';
 import { Link } from 'gatsby';
 import { makeStyles } from '@material-ui/core/styles';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
-// import Link from '@material-ui/core/Link';
 import Container from '@material-ui/core/Container';
 import Hidden from '@material-ui/core/Hidden';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-// import { Link } from 'gatsby-plugin-material-ui';
-import Layout from '../components/layout';
+import { topic, topicAttendance } from '../graphql/queries';
+import { addTrackingRow } from '../graphql/mutations';
 import SEO from '../components/seo';
-import { TopicDetail, TrackAttendee } from '../components';
+import { isClient } from '../components/utils';
+import { TopicDetail, TrackAttendee, IdDialog, Layout } from '../components';
 
 const useStyles = makeStyles(theme => ({
   breadcrumb: {
@@ -35,6 +34,7 @@ const Breadcrumb = (classes, topic) => (
 
 const TopicPage = (props) => {
   const classes = useStyles();
+  const [openDialog, setOpenDialog] = useState(false);
 
   const topicId = props.id ? props.id : '';
 
@@ -42,9 +42,35 @@ const TopicPage = (props) => {
     { variables: { topicId } }
   );
 
+  const [addRow] = useMutation(gql`${addTrackingRow}`,
+    {
+      update(cache, { data: { addTrackingRow } }) {
+        const data = cache.readQuery({ query: gql`${topicAttendance}`, variables: { topicId } });
+        data.topicAttendance = [addTrackingRow, ...data.topicAttendance];
+        cache.writeQuery({
+          query: gql`${topicAttendance}`,
+          variables: { topicId },
+          data
+        });
+      },
+    }
+  );
+
+  useEffect(() => {
+    if (isClient) {
+      const query = window.location.search.substring(1).split("=");
+      if (query.length > 1) {
+        if (query[0] === 'src' && query[1] === 'qr') {
+          setOpenDialog(true)
+        }
+      }
+    }
+  }, [])
+
   return (
     <Layout>
       <SEO title={topicData && topicData.topic.name} />
+      <IdDialog topicId={topicId} addRow={addRow} open={openDialog} setOpen={setOpenDialog} />
       <Container maxWidth='xl'>
         {topicId && (
           <Grid container spacing={2}>
@@ -57,7 +83,7 @@ const TopicPage = (props) => {
             }
             <Grid item xs={12} md={9}>
               {topicData && <Hidden mdDown>{Breadcrumb(classes, topicData.topic)}</Hidden>}
-              <TrackAttendee topicId={topicId} />
+              <TrackAttendee topicId={topicId} addRow={addRow} />
             </Grid>
           </Grid>
         )}

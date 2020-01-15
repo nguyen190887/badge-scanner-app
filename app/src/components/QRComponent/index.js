@@ -5,7 +5,7 @@ import PlainTextSection from './plainText';
 
 const QRComponent = ({ topicId, loading, error }) => {
   // TODO: a better way to do Gatsby route management
-  const location = isClient ? `${window.location.origin}/topic/${topicId}` : '';
+  const location = isClient ? `${window.location.origin}/topic/${topicId}?src=qr` : '';
   const [containerWidth, setContainerWidth] = useState(0);
   const containerRef = useRef();
 
