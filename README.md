@@ -5,7 +5,7 @@ Track sharing activities in a team.
 
 # Getting started
 - Ensure AWS credentials are set
-- Install [Serverless Framework](https://serverless.com/)
+- Install [Serverless Framework](https://serverless.com/) | `yarn global add serverless`
 - Ensure `Node.js 12` is installed
 
 ## Web App
@@ -22,12 +22,12 @@ Track sharing activities in a team.
     APPSYNC_ENDPOINT=<endpoint>
     ```
   - To generate for another stage, run `. gen_env.sh <stage>`
-- Run `npm i` to install packages
-- Run `npm start` (or `gatsby develop`)
+- Run `yarn` or `npm i` to install packages
+- Run `yarn start` or `npm start` (or `gatsby develop`)
 
 ## Backend
 - `cd` to `stack/`
-- Run `npm i` to install packages
+- Run `yarn` or `npm i` to install packages
 - Run `sls offline`
 
 # Deploy
@@ -76,4 +76,6 @@ Use [Github Actions](https://github.com/features/actions) for CI/CD. Each time c
 # Learning
 - [Serverless Best Practices](https://medium.com/@PaulDJohnston/serverless-best-practices-b3c97d551535)
 - [Serverless Terminal Commands](https://lorenstewart.me/2017/09/19/serverless-framework-terminal-commands/)
+- [Yarn](https://yarnpkg.com/en/docs)
+- Yarn is much faster than NPM [Yarn vs NPM](https://medium.com/@j.dumadag718/yarn-vs-npm-b2d58289fb9b)
 
