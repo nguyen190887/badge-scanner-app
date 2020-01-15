@@ -1,17 +1,13 @@
 import PropTypes from "prop-types"
 import React, { useState } from 'react';
-import { navigate } from 'gatsby';
+import { Link } from 'gatsby';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
-import Link from '@material-ui/core/Link';
+import styled from '@emotion/styled';
 import MenuIcon from '@material-ui/icons/Menu';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import Drawer from '@material-ui/core/Drawer';
-import List from '@material-ui/core/List';
 import { UserInfo, DrawerMenu } from '.';
 import useAuth from '../utils/useAuth';
 
@@ -25,6 +21,14 @@ const useStyles = makeStyles(theme => ({
     }
   },
 }));
+
+// TODO: should have better way
+const StyledLink = styled.div(`
+  a {
+    color: #fff;
+    text-decoration: none;
+  }
+`);
 
 const Header = ({ siteTitle }) => {
   const { loggedIn } = useAuth();
@@ -54,7 +58,9 @@ const Header = ({ siteTitle }) => {
             </IconButton>
           }
           <Typography variant="h6" className={classes.title}>
-            <Link color="inherit" href="/" className={classes.link}>{siteTitle}</Link>
+            <StyledLink>
+              <Link to="/" className={classes.link}>{siteTitle}</Link>
+            </StyledLink>
           </Typography>
           <UserInfo />
         </Toolbar>
