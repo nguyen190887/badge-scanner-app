@@ -5,7 +5,7 @@ Track sharing activities in a team.
 
 # Getting started
 - Ensure AWS credentials are set
-- Install [Serverless Framework](https://serverless.com/) | `yarn global add serverless`
+- Install [Serverless Framework](https://serverless.com/) (`yarn global add serverless`)
 - Ensure `Node.js 12` is installed
 
 ## Web App
@@ -45,7 +45,8 @@ Track sharing activities in a team.
 - Run `sls deploy function -f <fn_name>`
 
 # CI/CD
-Use [Github Actions](https://github.com/features/actions) for CI/CD. Each time codes are pushed to `app/` or `stack/` folder, CloudFormation stack will be created and executed. See you more at `.github/` folder.
+- Use [Github Actions](https://github.com/features/actions) for CI/CD. Each time codes are pushed to `app/` or `stack/` folder, CloudFormation stack will be created and executed. See you more at `.github/` folder.
+- Ensure Github Secrets were set correctly (find them by exploring files in `.github/workflows/` folder)
 
 # FAQs
 1. How to get Cognito info?
