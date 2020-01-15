@@ -17,7 +17,7 @@ const TabPanel = (props) => {
   )
 };
 
-export default ({ idRef, userNameRef }) => {
+const InputTabs = ({ idRef, userNameRef }) => {
   const classes = useStyles();
   const [value, setValue] = useState(0);
 
@@ -40,3 +40,5 @@ export default ({ idRef, userNameRef }) => {
     </>
   )
 }
+
+export default InputTabs;

@@ -6,7 +6,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { makeStyles } from '@material-ui/core/styles';
-import InputTabs from './InputTabs';
+import InputTabs from './inputTabs';
 
 const useStyles = makeStyles(theme => ({
   buttons: {
@@ -15,7 +15,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default ({ topicId, addRow, open, setOpen }) => {
+const IdDialog = ({ topicId, addRow, open, setOpen }) => {
   const classes = useStyles();
   const idRef = useRef(null);
   const userNameRef = useRef(null);
@@ -67,3 +67,5 @@ export default ({ topicId, addRow, open, setOpen }) => {
     </div>
   );
 }
+
+export default IdDialog;

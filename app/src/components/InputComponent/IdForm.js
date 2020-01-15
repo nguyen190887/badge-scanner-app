@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
-import InputTabs from './InputTabs';
+import InputTabs from './inputTabs';
 
 const useStyles = makeStyles(theme => ({
   wrapper: {
@@ -16,7 +16,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default ({ topicId, addRow }) => {
+const IdForm = ({ topicId, addRow }) => {
   const idRef = useRef(null);
   const userNameRef = useRef(null);
   const classes = useStyles();
@@ -56,3 +56,5 @@ export default ({ topicId, addRow }) => {
     </Box>
   );
 };
+
+export default IdForm;

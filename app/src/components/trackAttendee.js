@@ -10,7 +10,7 @@ import { addTrackingRowWithPhoto } from '../graphql/mutations';
 import Scanner from '../components/scanner';
 import useAuth from '../utils/useAuth';
 import AttendanceTable from './attendanceTable';
-import IdForm from './InputComponent/IdForm';
+import { IdForm } from './InputComponent';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -51,7 +51,7 @@ const TrackAttendee = ({ topicId, addRow }) => {
       <Typography className={classes.pos} color="textSecondary">
         Upload a photo of your ID badge or input your ID to text field below
       </Typography>
-      {loggedIn && <Scanner topicId={topicId} addRow={addRowWithPhoto}/>}
+      {loggedIn && <Scanner topicId={topicId} addRow={addRowWithPhoto} />}
       <IdForm topicId={topicId} addRow={addRow} />
       <AttendanceTable {...topicAttendanceQuery} />
     </Paper>
