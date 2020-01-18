@@ -62,10 +62,26 @@ Track sharing activities in a team.
   aws cognito-idp admin-set-user-password --user-pool-id $USERPOOL_ID --username $USERNAME --password $PASSWORD --permanent
   ```
 
-3. How to add new GraphQL type?
+## How to create new GraphQL query + resolver
+1. Add new type (object, query, mutation, etc.)
   - Declare new type in `stack/schema.graphql`
   - Run `amplify codegen` in `stack`
   - New type is added to `app/graphql` to use on client side 
+2. Add resolver for new query
+  - Declare resources in `stack/serverless.yml`
+    - Declare AppSync resources including mappingTemplates and dataSources as seen on AppSync
+    - For dataSources point the config to a lambda function which will act as the resolver
+      ```yml
+      type: AWS_LAMBDA
+      config:
+        functionName: newFunc
+      ```
+    - Declare new lambda function in function section to register the resolver function, point the function to a handler
+      ```yml
+      newFunc:
+        handler: handlers/funcHandler.index
+      ```
+  - Add a handler to where we point to in the lambda declaration, in this case, `handlers/funcHandler.js`
 
 # Built-with
 - GatsbyJS
