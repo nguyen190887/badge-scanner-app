@@ -13,3 +13,4 @@ aws s3 sync public/ s3://$WEBSITE_BUCKET --cache-control max-age=31557600 --excl
 aws s3 cp public/index.html s3://$WEBSITE_BUCKET/index.html
 
 cd ..
+
