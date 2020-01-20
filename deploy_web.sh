@@ -1,5 +1,5 @@
 STAGE=${1:-dev}
-WEBSITE_BUCKET="tnn.badge-scanner-web-$STAGE" #todo: read CF stack
+WEBSITE_BUCKET="kka.sharing-tracker-web-$STAGE" #todo: read CF stack
 
 # Build app
 cd app

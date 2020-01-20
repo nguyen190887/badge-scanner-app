@@ -10,8 +10,8 @@ custom:
   googlePrivateKey: ${ssm:${file(./ssm-params.json):PrivateKey}}
   googleClientEmail: ${ssm:${file(./ssm-params.json):ClientEmail}}
   sheetId: ${ssm:${file(./ssm-params.json):SheetId}}
-  websiteBucket: "tnn.badge-scanner-web-${self:custom.stage}"
-  imageBucket: "tnn.image-badge-store-${self:custom.stage}"
+  websiteBucket: "kka.sharing-tracker-web-${self:custom.stage}"
+  imageBucket: "kka.shaing-tracker-image-store-${self:custom.stage}"
   # appsync-offline:
   #   port: 62222
   appSync:
