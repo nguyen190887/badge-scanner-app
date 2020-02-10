@@ -21,7 +21,7 @@ export const getUserName = async () => {
 
 
 export const _getUserName = async () => {
-const userInfo = await Auth.currentUserInfo();
-console.log(userInfo);
-return 'test';
+  const userInfo = await Auth.currentUserInfo();
+  console.log(userInfo);
+  return 'test';
 }
