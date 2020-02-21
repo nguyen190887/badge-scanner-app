@@ -65,7 +65,7 @@
     "serve:dev": "gatsby build && gatsby serve",
     "clean": "gatsby clean",
     "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1",
-    "eslint": "eslint --ext .js .",
+    "eslint": "eslint --ext .js ./src/",
     "eslint:fix": "eslint --fix --ext .js ./src"
   },
   "repository": {
