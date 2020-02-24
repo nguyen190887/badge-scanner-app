@@ -1,9 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
-import QRCode from 'qrcode';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Input from '@material-ui/core/Input';
-import { isClient } from '../utils';
 
 const useStyles = makeStyles(theme => ({
   margin: {
@@ -21,8 +19,6 @@ const PlainTextSection = ({ locationText }) => {
   const copyToClipboard = (e) => {
     textAreaRef.current.select();
     document.execCommand('copy');
-    // This is just personal preference.
-    // I prefer to not show the the whole text area selected.
     // e.target.focus();
     setCopySuccess('Copied!');
   };

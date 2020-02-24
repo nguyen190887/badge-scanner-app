@@ -1,6 +1,6 @@
 import QRComponent from './QRComponent';
 import { TopicList, TopicListDense } from './TopicList';
-import { IdDialog, IdForm } from './InputComponent';
+import { IdDialog, IdForm } from './CheckInComponent';
 
 export { default as TopicDetail } from './topicDetail';
 export { default as RatingSurvey } from './ratingSurvey';

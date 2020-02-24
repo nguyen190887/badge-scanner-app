@@ -49,3 +49,38 @@ export const addTrackingRowWithPhoto = `mutation AddTrackingRowWithPhoto($srcBuc
   }
 }
 `;
+export const updateTopic = `mutation UpdateTopic(
+  $topicId: Int!
+  $date: String
+  $name: String
+  $owner: String
+  $status: String
+  $smeGroup: String
+  $duration: String
+  $note: String
+) {
+  updateTopic(
+    topicId: $topicId
+    date: $date
+    name: $name
+    owner: $owner
+    status: $status
+    smeGroup: $smeGroup
+    duration: $duration
+    note: $note
+  ) {
+    topicId
+    date
+    name
+    owner
+    status
+    smeGroup
+    duration
+    notes
+  }
+}
+`;
+export const deleteTopic = `mutation DeleteTopic($topicId: Int!) {
+  deleteTopic(topicId: $topicId)
+}
+`;
