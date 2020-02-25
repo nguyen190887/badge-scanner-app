@@ -39,7 +39,7 @@ custom:
       - type: Mutation
         dataSource: GoogleSheetWriteDataSource
         field: addTrackingRow
-        request: "track-topic-request.vtl"
+        request: "write-tracking-row-request.vtl"
         response: "common-response.vtl"
       - type: Mutation
         dataSource: LambdaSource
