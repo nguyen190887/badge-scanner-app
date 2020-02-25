@@ -1,6 +1,7 @@
 const { GoogleSpreadsheet } = require('google-spreadsheet');
 
 const writeTrackingRow = async (doc, args) => {
+  console.info(args);
   let { topicId, userId, userName = '', imagePath = '' } = args;
   userId = "'" + ("0000" + userId).slice(-4);
 
@@ -22,8 +23,32 @@ const writeTrackingRow = async (doc, args) => {
   };
 };
 
+const submitSurvey = async (doc, args) => {
+  let { topicId, rating, comment, userId } = args;
+  userId = ("0000" + userId).slice(-4);
+  const sheet = doc.sheetsByIndex[1];
+  const rows = await sheet.getRows();
+  const row = rows.find(row => row['Topic ID'] === `${topicId}` && row['User ID'] === userId);
+
+  if (row) {
+    row.Rating = rating;
+    row.Comment = comment;
+    await row.save();
+    return {
+      topicId: row['Topic ID'],
+      userId: row['User ID'],
+      userName: row.UserName,
+      email: row.Email,
+      imagePath: row.ImagePath,
+      rating: row.Rating,
+      comment: row.Comment,
+    };
+  }
+};
+
 const fieldMapping = {
   addTrackingRow: writeTrackingRow,
+  submitSurvey: submitSurvey
 };
 
 module.exports.index = async event => {
