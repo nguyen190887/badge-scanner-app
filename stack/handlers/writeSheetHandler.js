@@ -1,41 +1,62 @@
-const GoogleSpreadsheet = require('google-spreadsheet');
+const { GoogleSpreadsheet } = require('google-spreadsheet');
+const { mapAttendanceSheetRowToObject, mapTopicSheetRowToObject } = require('./utils');
 
-module.exports.index = async (event) => {
-  console.log('Write Sheet Handler', event);
-  var doc = new GoogleSpreadsheet(process.env.SHEET_ID);
-  var creds =
-  {
-    "private_key": process.env.PRIVATE_KEY,
-    "client_email": process.env.CLIENT_EMAIL
-  };
+const writeTrackingRow = async (doc, args) => {
+  console.info(args);
+  let { topicId, userId, userName = '', imagePath = '' } = args;
+  userId = "'" + ("0000" + userId).slice(-4);
 
-  console.log(event.queryStringParameters);
-
-  return new Promise(resolve => {
-    doc.useServiceAccountAuth(creds, function (err) {
-      if (err) {
-        console.log(err);
-      }
-      let { topicId: topicid, userId: userid, userName: username = '', imagePath: imagepath = '' } = event.arguments;
-      userid = "'" + ("0000" + userid).slice(-4);
-      doc.addRow(2, {
-        topicid,
-        userid,
-        username,
-        imagepath
-      }, function (data) {
-        console.info('Added', data);
-        resolve({
-          topicId: topicid,
-          userId: userid.slice(-4),
-          userName: username,
-          email: '',
-          imagePath: imagepath,
-          rating: '',
-          comment: ''
-        });
-        return {};
-      });
-    });
+  const sheet = doc.sheetsByIndex[1];
+  await sheet.addRow({
+    'Topic ID': topicId,
+    'User ID': userId,
+    UserName: userName,
+    ImagePath: imagePath,
   });
+  return {
+    topicId,
+    userId: userId.slice(-4),
+    userName,
+    email: '',
+    imagePath,
+    rating: '',
+    comment: ''
+  };
+};
+
+const submitSurvey = async (doc, args) => {
+  let { topicId, rating, comment, userId } = args;
+  userId = ("0000" + userId).slice(-4);
+  const sheet = doc.sheetsByIndex[1];
+  const rows = await sheet.getRows();
+  const row = rows.find(row => row['Topic ID'] === `${topicId}` && row['User ID'] === userId);
+
+  if (row) {
+    row.Rating = rating;
+    row.Comment = comment;
+    await row.save();
+    return mapAttendanceSheetRowToObject(row);
+  }
+};
+
+const fieldMapping = {
+  addTrackingRow: writeTrackingRow,
+  submitSurvey: submitSurvey
+};
+
+module.exports.index = async event => {
+  console.log('Write Sheet Handler');
+  console.log(event.field);
+
+  const doc = new GoogleSpreadsheet(process.env.SHEET_ID);
+  const creds = {
+    private_key: process.env.PRIVATE_KEY,
+    client_email: process.env.CLIENT_EMAIL,
+  };
+  await doc.useServiceAccountAuth(creds);
+  await doc.loadInfo();
+
+  if (fieldMapping[event.field]) {
+    return await fieldMapping[event.field](doc, event.arguments);
+  }
 };
