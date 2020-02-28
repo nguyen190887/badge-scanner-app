@@ -39,17 +39,17 @@ custom:
       - type: Mutation
         dataSource: GoogleSheetWriteDataSource
         field: addTrackingRow
-        request: "track-topic-request.vtl"
+        request: "write-tracking-row-request.vtl"
         response: "common-response.vtl"
       - type: Mutation
         dataSource: LambdaSource
         field: addTrackingRowWithPhoto
-        request: "track-topic-request.vtl"
+        request: "write-tracking-row-request.vtl"
         response: "common-response.vtl"
       - type: Mutation
-        dataSource: SubmitSurvey
+        dataSource: GoogleSheetWriteDataSource
         field: submitSurvey
-        request: "track-topic-request.vtl"
+        request: "submit-survey-request.vtl"
         response: "common-response.vtl"
     dataSources:
       - type: AWS_LAMBDA
@@ -67,11 +67,6 @@ custom:
         description: "GoogleSheet WriteDataSource"
         config:
           functionName: write-to-sheet-fn
-      - type: AWS_LAMBDA
-        name: SubmitSurvey
-        description: 'Submit Survey'
-        config:
-          functionName: submitSurveyFn
 
 provider:
   name: aws
@@ -116,13 +111,6 @@ functions:
 
   read-from-sheet-fn:
     handler: handlers/readSheetHandler.index
-    environment:
-      PRIVATE_KEY: ${self:custom.googlePrivateKey}
-      CLIENT_EMAIL: ${self:custom.googleClientEmail}
-      SHEET_ID: ${self:custom.sheetId}
-
-  submitSurveyFn:
-    handler: handlers/submitSurveyHandler.index
     environment:
       PRIVATE_KEY: ${self:custom.googlePrivateKey}
       CLIENT_EMAIL: ${self:custom.googleClientEmail}
