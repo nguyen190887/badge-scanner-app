@@ -1,19 +1,11 @@
 const { GoogleSpreadsheet } = require('google-spreadsheet');
+const { mapAttendanceSheetRowToObject, mapTopicSheetRowToObject } = require('./utils');
 
 const readTopics = async (doc) => {
   const sheet = doc.sheetsByIndex[0];
   const rows = await sheet.getRows();
   const result = [];
-  rows.forEach(row => result.push({
-    topicId: row.No,
-    date: row.Date,
-    name: row.Name,
-    owner: row.Owner,
-    status: row.Status,
-    smeGroup: row['SME Group'],
-    duration: row.Duration,
-    notes: row.Notes,
-  }))
+  rows.forEach(row => result.push(mapTopicSheetRowToObject(row)))
   result.sort((a, b) => {
     return new Date(b.date) - new Date(a.date);
   });
@@ -25,16 +17,7 @@ const readTopic = async (doc, args) => {
   const sheet = doc.sheetsByIndex[0];
   const rows = await sheet.getRows();
   const row = rows.find(row => row.No === `${topicId}`);
-  return {
-    topicId: row.No,
-    date: row.Date,
-    name: row.Name,
-    owner: row.Owner,
-    status: row.Status,
-    smeGroup: row['SME Group'],
-    duration: row.Duration,
-    notes: row.Notes,
-  };
+  return mapTopicSheetRowToObject(row);
 };
 
 // TODO: limit fetched row with each requests
@@ -44,15 +27,7 @@ const readTopicAttendance = async (doc, args) => {
   const rows = await sheet.getRows();
   const attendance = rows.filter(row => row['Topic ID'] === `${topicId}`);
   const result = [];
-  attendance.forEach(row => result.push({
-    topicId: row['Topic ID'],
-    userId: row['User ID'],
-    userName: row.UserName,
-    email: row.Email,
-    imagePath: row.ImagePath,
-    rating: row.Rating,
-    comment: row.Comment,
-  }));
+  attendance.forEach(row => result.push(mapAttendanceSheetRowToObject(row)));
   return result;
 };
 

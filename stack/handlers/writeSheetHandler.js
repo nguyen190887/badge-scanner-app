@@ -1,4 +1,5 @@
 const { GoogleSpreadsheet } = require('google-spreadsheet');
+const { mapAttendanceSheetRowToObject, mapTopicSheetRowToObject } = require('./utils');
 
 const writeTrackingRow = async (doc, args) => {
   console.info(args);
@@ -34,15 +35,7 @@ const submitSurvey = async (doc, args) => {
     row.Rating = rating;
     row.Comment = comment;
     await row.save();
-    return {
-      topicId: row['Topic ID'],
-      userId: row['User ID'],
-      userName: row.UserName,
-      email: row.Email,
-      imagePath: row.ImagePath,
-      rating: row.Rating,
-      comment: row.Comment,
-    };
+    return mapAttendanceSheetRowToObject(row);
   }
 };
 
