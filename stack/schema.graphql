@@ -23,7 +23,7 @@ type Mutation {
   submitSurvey(topicId: Int!, rating: String!, comment: String!, userId: String!, email: String): TrackingRow!
   addTrackingRow(topicId: Int!, userId: String!, userName: String): TrackingRow!
   addTrackingRowWithPhoto(srcBucket: String!, srcKey: String!): TrackingRow!
-  updateTopic(topicId: Int!, date: String, name: String, owner: String, status: String, smeGroup: String, duration: String, note: String): Topic!
+  updateTopic(topicId: Int, date: String, name: String, owner: String, status: String, smeGroup: String, duration: String, note: String): Topic!
   deleteTopic(topicId: Int!): Boolean
 }
 

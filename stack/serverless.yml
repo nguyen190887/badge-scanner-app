@@ -54,12 +54,12 @@ custom:
       - type: Mutation
         dataSource: GoogleSheetWriteDataSource
         field: updateTopic
-        request: "common-mutation-request.vtl"
+        request: "write-topic-request.vtl"
         response: "common-response.vtl"
       - type: Mutation
         dataSource: GoogleSheetWriteDataSource
         field: deleteTopic
-        request: "common-mutation-request.vtl"
+        request: "delete-topic-request.vtl"
         response: "common-response.vtl"
     dataSources:
       - type: AWS_LAMBDA
@@ -95,12 +95,6 @@ provider:
       Resource: "*"
 
 functions:
-  badge-scanner-fn:
-    handler: handler.index
-
-  graphql-fn:
-    handler: graphqlHandler.index
-
   process-image-fn:
     handler: handlers/processImageHandler.index
     environment:

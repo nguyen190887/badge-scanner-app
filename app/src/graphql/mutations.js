@@ -50,7 +50,7 @@ export const addTrackingRowWithPhoto = `mutation AddTrackingRowWithPhoto($srcBuc
 }
 `;
 export const updateTopic = `mutation UpdateTopic(
-  $topicId: Int!
+  $topicId: Int
   $date: String
   $name: String
   $owner: String
