@@ -12,3 +12,4 @@ export { TopicList, TopicListDense };
 export { IdDialog, IdForm };
 export { default as DrawerMenu } from './drawerMenu';
 export { default as UserInfo } from './userInfo';
+export { default as TopicRegisterDialog } from './topicRegisterDialog';

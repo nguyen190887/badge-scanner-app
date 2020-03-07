@@ -8,7 +8,10 @@ import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
+import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
+import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
 
 const useStyles = makeStyles(theme => ({
   buttons: {
@@ -26,13 +29,21 @@ const useStyles = makeStyles(theme => ({
 
 const TopicRegisterDialog = ({ updateTopic, open, setOpen }) => {
   const classes = useStyles();
-  const dateRef = useRef(null);
+  const [selectedDate, setDate] = React.useState(new Date());
   const nameRef = useRef(null);
   const ownerRef = useRef(null);
   const statusRef = useRef(null);
-  const smeGroupRef = useRef(null);
   const durationRef = useRef(null);
   const noteRef = useRef(null);
+  const [smeGroup, setSmeGroup] = React.useState('frontend');
+  const [status, setStatus] = React.useState('initial');
+
+  const handleGroupChange = event => {
+    setSmeGroup(event.target.value);
+  };
+  const handleStatusChange = event => {
+    setStatus(event.target.value);
+  };
 
   const handleClose = () => {
     setOpen(false);
@@ -45,8 +56,8 @@ const TopicRegisterDialog = ({ updateTopic, open, setOpen }) => {
           date: dateRef,
           name: nameRef,
           owner: ownerRef,
-          status: statusRef,
-          smeGroup: smeGroupRef,
+          status: status,
+          smeGroup: smeGroup,
           duration: durationRef,
           note: noteRef
         },
@@ -54,7 +65,7 @@ const TopicRegisterDialog = ({ updateTopic, open, setOpen }) => {
           __typename: "Mutation",
           addTrackingRow: {
             __typename: "Topic",
-            date: dateRef.current.value,
+            date: selectedDate,
             name: nameRef.current.value,
             owner: ownerRef.current.value,
             status: statusRef.current.value,
@@ -77,13 +88,14 @@ const TopicRegisterDialog = ({ updateTopic, open, setOpen }) => {
         <DialogContent>
           <TextField inputRef={nameRef} label="Topic" type="text" autoFocus fullWidth className={classes.textField} />
           <TextField inputRef={ownerRef} label="Owner" type="text" fullWidth className={classes.textField} />
+          <TextField inputRef={durationRef} label="Duration" type="text" fullWidth className={classes.textField} />
           <FormControl className={classes.formControl}>
-            <InputLabel id="demo-simple-select-label">SME Group</InputLabel>
+            <InputLabel id="topic-group-label">SME Group</InputLabel>
             <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={age}
-              onChange={handleChange}
+              labelId="topic-group-label"
+              id="topic-group-simple-select"
+              value={smeGroup}
+              onChange={handleGroupChange}
             >
               <MenuItem value="frontend">Frontend</MenuItem>
               <MenuItem value="backend">Backend</MenuItem>
@@ -91,9 +103,31 @@ const TopicRegisterDialog = ({ updateTopic, open, setOpen }) => {
               <MenuItem value="other">Other</MenuItem>
             </Select>
           </FormControl>
-          <TextField inputRef={dateRef} label="Present date" type="date" fullWidth className={classes.textField} />
-          <TextField inputRef={durationRef} label="Duration" type="text" fullWidth className={classes.textField} />
-          <TextField inputRef={statusRef} label="Status" type="text" fullWidth className={classes.textField} />
+          <FormControl className={classes.formControl}>
+            <InputLabel id="topic-status-label">Status</InputLabel>
+            <Select
+              labelId="topic-status-label"
+              id="topic-status-simple-select"
+              value={status}
+              onChange={handleStatusChange}
+            >
+              <MenuItem value="initial">Initial</MenuItem>
+              <MenuItem value="planning">Planning</MenuItem>
+              <MenuItem value="completed">Completed</MenuItem>
+              <MenuItem value="voting">Voting</MenuItem>
+            </Select>
+          </FormControl>
+          <FormControl className={classes.formControl}>
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <DatePicker
+                showTodayButton
+                label="Present Date"
+                views={['year', 'month', 'date']}
+                value={selectedDate}
+                onChange={setDate}
+              />
+            </MuiPickersUtilsProvider>
+          </FormControl>
           <TextField inputRef={noteRef} label="Note" type="text" fullWidth className={classes.textField} />
         </DialogContent>
         <DialogActions className={classes.buttons}>

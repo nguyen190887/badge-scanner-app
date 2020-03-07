@@ -10,7 +10,7 @@ import { addTrackingRowWithPhoto } from '../graphql/mutations';
 import Scanner from '../components/scanner';
 import useAuth from '../utils/useAuth';
 import AttendanceTable from './attendanceTable';
-import { IdForm } from './InputComponent';
+import { IdForm } from './CheckInComponent';
 
 const useStyles = makeStyles(theme => ({
   root: {
