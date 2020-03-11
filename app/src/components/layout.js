@@ -2,12 +2,23 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useStaticQuery, graphql } from 'gatsby';
 import { Helmet } from 'react-helmet';
-import CssBaseline from '@material-ui/core/CssBaseline';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/core/styles';
 import theme from '../theme';
 import Header from './header';
 
+const useStyles = makeStyles(theme => ({
+  overflowHidden: {
+    overflowX: 'hidden',
+  },
+  content: {
+    flexGrow: 1,
+    padding: theme.spacing(2),
+  },
+}));
+
 const Layout = ({ children }) => {
+  const classes = useStyles();
   const data = useStaticQuery(graphql`
     query SiteTitleQuery {
       site {
@@ -30,9 +41,13 @@ const Layout = ({ children }) => {
         />
       </Helmet>
       <ThemeProvider theme={theme}>
-        <Header siteTitle={data.site.siteMetadata.title} />
-          <CssBaseline />
-          {children}
+        <div className={classes.overflowHidden}>
+          <Header siteTitle={data.site.siteMetadata.title} />
+          <main className={classes.content}>
+            <div className={classes.toolbar} />
+            {children}
+          </main>
+        </div>
       </ThemeProvider>
     </React.Fragment>
   );

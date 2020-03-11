@@ -2,6 +2,7 @@ import PropTypes from "prop-types"
 import React, { useState } from 'react';
 import { Link } from 'gatsby';
 import { makeStyles } from '@material-ui/core/styles';
+import CssBaseline from '@material-ui/core/CssBaseline';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -12,6 +13,9 @@ import { UserInfo, DrawerMenu } from '.';
 import useAuth from '../utils/useAuth';
 
 const useStyles = makeStyles(theme => ({
+  root: {
+    display: 'flex',
+  },
   title: {
     flexGrow: 1,
   },
@@ -20,6 +24,9 @@ const useStyles = makeStyles(theme => ({
       textDecoration: 'none'
     }
   },
+  appBar: {
+    zIndex: theme.zIndex.drawer + 1,
+  }
 }));
 
 // TODO: should have better way
@@ -44,14 +51,16 @@ const Header = ({ siteTitle }) => {
   };
 
   return (
-    <>
-      <AppBar position="static">
+    // <>
+    <div className={classes.root}>
+      <CssBaseline />
+      <AppBar position="static" className={classes.appBar}>
         <Toolbar>
           {loggedIn &&
             <IconButton
               color="inherit"
               aria-label="open drawer"
-              onClick={toggleDrawer(true)}
+              onClick={toggleDrawer(!open)}
               edge="start"
             >
               <MenuIcon />
@@ -65,8 +74,9 @@ const Header = ({ siteTitle }) => {
           <UserInfo />
         </Toolbar>
       </AppBar>
-      <DrawerMenu toggleHandler={toggleDrawer} openState={open} />
-    </>
+      <DrawerMenu openState={open} />
+    </div>
+    // </>
   )
 }
 

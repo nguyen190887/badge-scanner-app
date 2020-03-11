@@ -1,16 +1,17 @@
 import React from 'react';
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery, useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Fab from '@material-ui/core/Fab';
-import AddIcon from '@material-ui/icons/Add';
 import Snackbar from '@material-ui/core/Snackbar';
+import AddIcon from '@material-ui/icons/Add';
 import MuiAlert from '@material-ui/lab/Alert';
 import Layout from '../components/layout';
 import SEO from '../components/seo';
 import { TopicList } from '../components/TopicList';
 import { allTopics } from '../graphql/queries';
+import { updateTopic } from '../graphql/mutations';
 import { TopicRegisterDialog } from '../components';
 
 const useStyles = makeStyles(theme => ({
@@ -29,6 +30,19 @@ const IndexPage = () => {
   const handleClose = () => {
     setOpen(false);
   };
+  const [addTopic] = useMutation(gql`${updateTopic}`,
+    // {
+    //   update(cache, { data: { updateTopic } }) {
+    //     const data = cache.readQuery({ query: gql`${topicAttendance}`, variables: { topicId } });
+    //     data.topicAttendance = [addTrackingRow, ...data.topicAttendance];
+    //     cache.writeQuery({
+    //       query: gql`${topicAttendance}`,
+    //       variables: { topicId },
+    //       data
+    //     });
+    //   },
+    // }
+  );
   return (
     <Layout>
       <SEO title="Home" />
@@ -41,7 +55,7 @@ const IndexPage = () => {
             error ? <></> :
               <TopicList topics={data} />
         }
-        <TopicRegisterDialog open={openOverlay} setOpen={setOpenOverlay} />
+        <TopicRegisterDialog open={openOverlay} setOpen={setOpenOverlay} updateTopic={addTopic} />
       </Container>
       <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
         <MuiAlert elevation={6} variant="filled" onClose={handleClose} severity="success">

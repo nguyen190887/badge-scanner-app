@@ -47,7 +47,7 @@ const writeTopic = async (doc, args) => {
   const sheet = doc.sheetsByIndex[0];
   if (!topicId) {
      result = await sheet.addRow({
-      No: '=generateTopicId(INDIRECT("R[-1]C[0]", FALSE))',
+      No: '=ARRAYFORMULA(ROW())',
       Date: date,
       Name: name,
       Owner: owner,
