@@ -25,18 +25,27 @@ const useStyles = makeStyles(theme => ({
 
 const ManagePage = () => {
   const classes = useStyles();
-  const [openDrawer, setOpenDrawer] = React.useState(false);
-
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
+  const { loading, error, data } = useQuery(gql`${allTopics}`);
 
   return (
     <Layout>
+      <Container maxWidth="lg">
+        {
+          loading ? <p>Loading...</p> :
+            error ? <></> :
+              <TopicList
+                topics={data}
+                onCellClick={(_, { colIndex, dataIndex, event }) => {
+                  if (colIndex !== 0) {
+                    event.stopPropagation();
+                    navigate(`/topic/${data.allTopics[dataIndex].topicId}`);
+                  }
+                }}
+              />
+        }
+        {/* <TopicRegisterDialog open={openOverlay} setOpen={setOpenOverlay} updateTopic={addTopic} /> */}
+      </Container>
+
     </Layout>
   )
 };

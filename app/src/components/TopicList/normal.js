@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { navigate } from 'gatsby';
 import MUIDataTable from 'mui-datatables';
 import { makeStyles } from '@material-ui/core/styles';
 import Chip from '@material-ui/core/Chip';
@@ -33,7 +32,7 @@ const parseGroups = (topics) => {
   return Object.keys(groups);
 }
 
-const TopicList = ({ topics: { allTopics = [] } = {} }) => {
+const TopicList = ({ topics: { allTopics = [] } = {}, onCellClick }) => {
   const classes = useStyles();
   const smeGroups = parseGroups(allTopics);
   const [smeState, setSmeState] = useState([]);
@@ -115,12 +114,7 @@ const TopicList = ({ topics: { allTopics = [] } = {} }) => {
         return (a.data[colIndex] < b.data[colIndex] ? -1 : 1) * (order === 'desc' ? 1 : -1);
       });
     },
-    onCellClick: (_, { colIndex, dataIndex, event }) => {
-      if (colIndex !== 0) {
-        event.stopPropagation();
-        navigate(`/topic/${allTopics[dataIndex].topicId}`);
-      }
-    },
+    onCellClick,
     print: false,
     download: false,
     isRowSelectable: false,

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useQuery, useMutation } from '@apollo/react-hooks';
+import { navigate } from 'gatsby';
 import gql from 'graphql-tag';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
@@ -43,6 +44,7 @@ const IndexPage = () => {
     //   },
     // }
   );
+
   return (
     <Layout>
       <SEO title="Home" />
@@ -53,7 +55,15 @@ const IndexPage = () => {
         {
           loading ? <p>Loading...</p> :
             error ? <></> :
-              <TopicList topics={data} />
+              <TopicList
+                topics={data}
+                onCellClick={(_, { colIndex, dataIndex, event }) => {
+                  if (colIndex !== 0) {
+                    event.stopPropagation();
+                    navigate(`/topic/${data.allTopics[dataIndex].topicId}`);
+                  }
+                }}
+              />
         }
         <TopicRegisterDialog open={openOverlay} setOpen={setOpenOverlay} updateTopic={addTopic} />
       </Container>
