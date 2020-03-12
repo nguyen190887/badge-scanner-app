@@ -7,6 +7,12 @@ const readTopics = async (doc) => {
   const result = [];
   rows.forEach(row => result.push(mapTopicSheetRowToObject(row)))
   result.sort((a, b) => {
+    if (isNaN(Date.parse(b.date))) {
+      return -1;
+    }
+    else if (isNaN(Date.parse(a.date))) {
+      return 1;
+    }
     return new Date(b.date) - new Date(a.date);
   });
   return result;
