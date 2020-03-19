@@ -4,24 +4,18 @@ const { mapAttendanceSheetRowToObject, mapTopicSheetRowToObject } = require('./u
 const writeTrackingRow = async (doc, args) => {
   console.info(args);
   let { topicId, userId, userName = '', imagePath = '' } = args;
-  userId = "'" + ("0000" + userId).slice(-4);
+  const directoryRange = (startCol, endCol) => `'KBB Directory'!$${startCol}$2:$${endCol}$200`;
 
   const sheet = doc.sheetsByIndex[1];
-  await sheet.addRow({
+  const result = await sheet.addRow({
     'Topic ID': topicId,
-    'User ID': userId,
-    UserName: userName,
+    'User ID': userId ? "'" + ("0000" + userId).slice(-4) : `=ArrayFormula(VLOOKUP(INDIRECT(ADDRESS(ROW(),COLUMN()+5)),{${directoryRange('C', 'C')}&" "&${directoryRange('D', 'D')}, ${directoryRange('A', 'A')}},2, FALSE))`,
+    UserName: userName ? userName : `=TEXTJOIN(" ", TRUE, VLOOKUP(INDIRECT(ADDRESS(ROW(),COLUMN()-5)), ${directoryRange('A', 'D')},3, false), VLOOKUP(INDIRECT(ADDRESS(ROW(),COLUMN()-5)), ${directoryRange('A', 'D')},4, false))`,
+    Email: `=VLOOKUP(INDIRECT(ADDRESS(ROW(),COLUMN()-1)), ${directoryRange('A', 'D')},2, false)`,
     ImagePath: imagePath,
   });
-  return {
-    topicId,
-    userId: userId.slice(-4),
-    userName,
-    email: '',
-    imagePath,
-    rating: '',
-    comment: ''
-  };
+
+  return mapAttendanceSheetRowToObject(result);
 };
 
 const submitSurvey = async (doc, args) => {

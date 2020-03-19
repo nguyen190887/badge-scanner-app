@@ -8,6 +8,8 @@ import Container from '@material-ui/core/Container';
 import Hidden from '@material-ui/core/Hidden';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 import { topic, topicAttendance } from '../graphql/queries';
 import { addTrackingRow } from '../graphql/mutations';
 import SEO from '../components/seo';
@@ -35,6 +37,15 @@ const Breadcrumb = (classes, topic) => (
 const TopicPage = (props) => {
   const classes = useStyles();
   const [openDialog, setOpenDialog] = useState(false);
+  const [openInfoBar, setOpenInfoBar] = useState(false);
+  const [openSuccessBar, setOpenSuccessBar] = useState(false);
+
+  const toggleInfoBar = () => {
+    setOpenInfoBar(!openInfoBar);
+  };
+  const toggleSuccessBar = () => {
+    setOpenSuccessBar(!openSuccessBar);
+  };
 
   const topicId = props.id ? props.id : '';
 
@@ -53,6 +64,9 @@ const TopicPage = (props) => {
           data
         });
       },
+      onCompleted() {
+        toggleSuccessBar();
+      }
     }
   );
 
@@ -83,11 +97,21 @@ const TopicPage = (props) => {
             }
             <Grid item xs={12} md={9}>
               {topicData && <Hidden mdDown>{Breadcrumb(classes, topicData.topic)}</Hidden>}
-              <TrackAttendee topicId={topicId} addRow={addRow} />
+              <TrackAttendee topicId={topicId} addRow={addRow} toggleInfoBar={toggleInfoBar} />
             </Grid>
           </Grid>
         )}
       </Container>
+      <Snackbar open={openInfoBar} autoHideDuration={6000} onClose={toggleInfoBar}>
+        <MuiAlert elevation={6} variant="filled" onClose={toggleInfoBar} severity="info">
+          Adding your attendance info...
+        </MuiAlert>
+      </Snackbar>
+      <Snackbar open={openSuccessBar} autoHideDuration={6000} onClose={toggleSuccessBar}>
+        <MuiAlert elevation={6} variant="filled" onClose={toggleSuccessBar} severity="success">
+          Attendance info added successfully!
+        </MuiAlert>
+      </Snackbar>
     </Layout >
   );
 };

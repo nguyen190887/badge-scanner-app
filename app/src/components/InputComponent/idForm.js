@@ -16,13 +16,14 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const IdForm = ({ topicId, addRow }) => {
+const IdForm = ({ topicId, addRow, toggleInfoBar }) => {
   const idRef = useRef(null);
   const userNameRef = useRef(null);
   const classes = useStyles();
 
   const onSubmit = async e => {
     e.preventDefault();
+    toggleInfoBar();
     try {
       addRow({
         variables: { topicId, userId: idRef.current.value, userName: userNameRef.current.value },

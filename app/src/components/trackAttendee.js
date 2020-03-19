@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const TrackAttendee = ({ topicId, addRow }) => {
+const TrackAttendee = ({ topicId, addRow, toggleInfoBar }) => {
   const { loggedIn } = useAuth();
   const classes = useStyles();
 
@@ -52,7 +52,7 @@ const TrackAttendee = ({ topicId, addRow }) => {
         Upload a photo of your ID badge or input your ID to text field below
       </Typography>
       {loggedIn && <Scanner topicId={topicId} addRow={addRowWithPhoto} />}
-      <IdForm topicId={topicId} addRow={addRow} />
+      <IdForm topicId={topicId} addRow={addRow} toggleInfoBar={toggleInfoBar} />
       <AttendanceTable {...topicAttendanceQuery} />
     </Paper>
   );

@@ -35,6 +35,15 @@ const theme = createMuiTheme({
     background: {
       default: '#fff',
     },
+    success: {
+      main: '#4caf50'
+    },
+    warning: {
+      main: '#ff9800'
+    },
+    info: {
+      main: '#03a9f4'
+    },
   },
   zIndex: {
     drawer: 1000
