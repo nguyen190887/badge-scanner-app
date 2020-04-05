@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { navigate } from 'gatsby';
 import MUIDataTable from 'mui-datatables';
-import { makeStyles } from '@material-ui/core/styles';
+import makeStyles from '@material-ui/core/styles/makeStyles';
+import Typography from '@material-ui/core/Typography';
 import Chip from '@material-ui/core/Chip';
 
 const useStyles = makeStyles(theme => ({
@@ -16,6 +17,18 @@ const useStyles = makeStyles(theme => ({
   DevOps: {
     color: '#000',
     backgroundColor: theme.palette.tertiary.light
+  },
+  ShortLink: { // TODO: add js to shorten URL text instead of using JS
+    fontSize: '14px',
+
+    '& a': {
+      display: 'inline-block',
+      height: '21px',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+      verticalAlign: 'bottom',
+      width: '150px'
+    }
   }
 }));
 
@@ -89,20 +102,19 @@ const TopicList = ({ topics: { allTopics = [] } = {} }) => {
       name: "duration", label: "Duration", options: { filter: false, sort: false, searchable: false }
     },
     {
-      name: "notes", label: "Notes", options: { filter: false, sort: false, display: false }
+      name: "notes",
+      label: "Notes",
+      options: {
+        filter: false,
+        sort: false,
+      customBodyRender: value => (
+        <Typography component="div" className={classes.ShortLink} dangerouslySetInnerHTML={{__html: value}}></Typography>
+      )}
     },
   ];
   const options = {
     selectableRowsHeader: false,
     selectableRows: 'none',
-    expandableRows: true,
-    expandableRowsOnClick: true,
-    renderExpandableRow: (rowData) => (
-      <tr>
-        <td />
-        <td colSpan={5} dangerouslySetInnerHTML={{ __html: rowData[6] }} />
-      </tr>
-    ),
     customSort: (data, colIndex, order) => {
       // sort by Date
       if (colIndex === 0) {
@@ -136,7 +148,7 @@ const TopicList = ({ topics: { allTopics = [] } = {} }) => {
       columns={columns}
       options={options}
     />
-  )
+  );
 }
 
 export default TopicList;
