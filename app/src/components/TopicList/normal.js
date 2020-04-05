@@ -18,17 +18,8 @@ const useStyles = makeStyles(theme => ({
     color: '#000',
     backgroundColor: theme.palette.tertiary.light
   },
-  ShortLink: { // TODO: add js to shorten URL text instead of using JS
-    fontSize: '14px',
-
-    '& a': {
-      display: 'inline-block',
-      height: '21px',
-      overflow: 'hidden',
-      textOverflow: 'ellipsis',
-      verticalAlign: 'bottom',
-      width: '150px'
-    }
+  ShortLink: {
+    fontSize: '14px'
   }
 }));
 
@@ -44,6 +35,18 @@ const parseGroups = (topics) => {
     }
   })
   return Object.keys(groups);
+}
+
+const shortenLinkText = (text, maxLength = 70) => {
+  const replacer = (_match, p1, p2, p3) => {
+    let shortText = p2;
+    if (shortText.length > maxLength) {
+      shortText = `${shortText.substring(0, 30)}...`;
+    }
+    return `${p1}${shortText}${p3}`;
+  };
+
+  return text.replace(/(<a.*?>)(.+?)(<\/a>)/gi, replacer);
 }
 
 const TopicList = ({ topics: { allTopics = [] } = {} }) => {
@@ -108,7 +111,10 @@ const TopicList = ({ topics: { allTopics = [] } = {} }) => {
         filter: false,
         sort: false,
       customBodyRender: value => (
-        <Typography component="div" className={classes.ShortLink} dangerouslySetInnerHTML={{__html: value}}></Typography>
+        <Typography 
+          component="div"
+          className={classes.ShortLink}
+          dangerouslySetInnerHTML={{__html: shortenLinkText(value)}}></Typography>
       )}
     },
   ];
