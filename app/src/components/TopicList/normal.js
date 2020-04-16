@@ -38,6 +38,10 @@ const parseGroups = (topics) => {
 }
 
 const shortenLinkText = (text, maxLength = 70) => {
+  if (!text) {
+    return '';
+  }
+  
   const replacer = (_match, p1, p2, p3) => {
     let shortText = p2;
     if (shortText.length > maxLength) {
