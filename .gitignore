@@ -65,6 +65,8 @@ public
 yarn-error.log
 .pnp/
 .pnp.js
+# Only use npm on server
+yarn.lock
 # Yarn Integrity file
 .yarn-integrity
 # Serverless

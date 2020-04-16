@@ -2,7 +2,7 @@
 // this is an auto generated file. This will be overwritten
 
 export const submitSurvey = `mutation SubmitSurvey(
-  $topicId: String!
+  $topicId: Int!
   $rating: String!
   $comment: String!
   $userId: String!
