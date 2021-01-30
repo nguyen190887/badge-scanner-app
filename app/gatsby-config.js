@@ -12,6 +12,18 @@ module.exports = {
   },
   plugins: [
     {
+      resolve: 'gatsby-plugin-eslint',
+      options: {
+        test: /\.js$|\.jsx$/,
+        exclude: /(node_modules|.cache|public)/,
+        stages: ['develop'],
+        options: {
+          emitWarning: true,
+          failOnError: false
+        }
+      }
+    },
+    {
       resolve: 'gatsby-plugin-material-ui',
       // If you want to use styled components you should change the injection order.
       options: {
